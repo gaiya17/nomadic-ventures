@@ -2,14 +2,17 @@
 node_modules/
 .pnpm-store/
 
-# ── Next.js build output ────────────────────────────────────────────────────
+# ── Next.js build output ─────────────────────────────────────────────────────
 frontend/.next/
 frontend/out/
 frontend/build/
 
-# ── Backend build output ─────────────────────────────────────────────────────
+# ── Backend build output (keep until backend folder is fully retired) ────────
 backend/dist/
 backend/build/
+
+# ── Prisma generated client (regenerated on every install via postinstall) ───
+frontend/node_modules/.prisma/
 
 # ── Environment variables (NEVER commit these — contains secrets!) ──────────
 .env
@@ -37,3 +40,7 @@ desktop.ini
 
 # ── Docker ───────────────────────────────────────────────────────────────────
 docker-compose.override.yml
+
+# ── Uploads (local disk — replaced by Cloudinary in production) ──────────────
+backend/uploads/
+frontend/uploads/

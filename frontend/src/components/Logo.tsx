@@ -1,5 +1,5 @@
 "use client";
-import logoSrc from "@/imports/Normadic.png";
+const logoSrc = "/logo.png";
 
 type Props = {
   accent?: string;
@@ -21,7 +21,7 @@ export function Logo({
       }}
     >
       <img
-        src={logoSrc.src}
+        src={logoSrc}
         alt="Normadic Ventures"
         style={{
           width: size,

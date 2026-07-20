@@ -1,6 +1,6 @@
-
 import type { Metadata } from 'next';
 import '../globals.css';
+import { GlobalLoader } from '@/components/GlobalLoader';
 
 export const metadata: Metadata = {
   title: 'Nomadic Ventures',
@@ -16,7 +16,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Suppress hydration errors caused by browser extensions (Bitwarden etc.) */}
-        <script dangerouslySetInnerHTML={{ __html: `
+        <script dangerouslySetInnerHTML={{
+          __html: `
           (function() {
             var orig = window.console.error;
             window.console.error = function() {
@@ -38,6 +39,7 @@ export default function RootLayout({
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased" suppressHydrationWarning>
+        <GlobalLoader />
         {children}
       </body>
     </html>

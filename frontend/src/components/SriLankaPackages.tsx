@@ -4,67 +4,15 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, Clock, MapPin } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { slugify } from "@/data/tours";
+import { slugify } from "@/lib/utils";
 
-const PACKAGES = [
-  {
-    name: "Essence of Sri Lanka",
-    duration: "7 Days",
-    places: "Colombo · Sigiriya · Kandy · Ella",
-    price: "699",
-    image:
-      "https://images.unsplash.com/photo-1713101335374-59ab9bb1fd54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Bestseller",
-  },
-  {
-    name: "Southern Coast Escape",
-    duration: "5 Days",
-    places: "Galle · Mirissa · Bentota",
-    price: "499",
-    image:
-      "https://images.unsplash.com/photo-1650970366119-34cb82f8b4c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Beaches",
-  },
-  {
-    name: "Wildlife Discovery",
-    duration: "6 Days",
-    places: "Yala · Udawalawe",
-    price: "599",
-    image:
-      "https://images.unsplash.com/photo-1566650576880-6740b03eaad1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Safari",
-  },
-  {
-    name: "Hill Country Tea Trails",
-    duration: "4 Days",
-    places: "Nuwara Eliya · Ella",
-    price: "449",
-    image:
-      "https://images.unsplash.com/photo-1578519050142-afb511e518de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Scenic",
-  },
-  {
-    name: "Cultural Triangle",
-    duration: "5 Days",
-    places: "Sigiriya · Polonnaruwa · Kandy",
-    price: "549",
-    image:
-      "https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Heritage",
-  },
-  {
-    name: "Ultimate Sri Lanka",
-    duration: "10 Days",
-    places: "Island Wide Experience",
-    price: "999",
-    image:
-      "https://images.unsplash.com/photo-1609681980718-340e7f4b11d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600",
-    tag: "Signature",
-  },
-];
-
-export function SriLankaPackages() {
+export function SriLankaPackages({ tours }: { tours?: any[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
+
+  // Fallback if no tours are found (for development or empty DB)
+  const displayTours = tours && tours.length > 0 ? tours : [];
+
+  if (displayTours.length === 0) return null;
 
   return (
     <section
@@ -119,20 +67,22 @@ export function SriLankaPackages() {
                 Carefully designed itineraries combining culture, nature, luxury
                 and authentic local experiences.
               </p>
-              <motion.button
-                whileHover={{ x: 4 }}
-                className="flex items-center gap-2 text-white border-b border-white/30 pb-1 whitespace-nowrap"
-                style={{ fontSize: 13, letterSpacing: "0.1em" }}
-              >
-                VIEW ALL <ArrowUpRight className="w-4 h-4" />
-              </motion.button>
+              <Link href="/journeys">
+                <motion.button
+                  whileHover={{ x: 4 }}
+                  className="flex items-center gap-2 text-white border-b border-white/30 pb-1 whitespace-nowrap"
+                  style={{ fontSize: 13, letterSpacing: "0.1em" }}
+                >
+                  VIEW ALL <ArrowUpRight className="w-4 h-4" />
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
         </div>
 
         {/* CLEAN 3-COL EDITORIAL GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-14">
-          {PACKAGES.map((pkg, i) => (
+          {displayTours.map((pkg, i) => (
             <motion.article
               key={pkg.name}
               initial={{ opacity: 0, y: 40 }}
@@ -147,7 +97,7 @@ export function SriLankaPackages() {
               onMouseLeave={() => setHovered(null)}
               className="group cursor-pointer"
             >
-              <Link href={`/tours/sri-lanka/${slugify(pkg.name)}`} className="block">
+              <Link href={`/tours/${pkg.slug}`} className="block">
               {/* IMAGE */}
               <div
                 className="relative overflow-hidden rounded-[28px] mb-6"
@@ -181,7 +131,7 @@ export function SriLankaPackages() {
                       letterSpacing: "0.1em",
                     }}
                   >
-                    {pkg.tag.toUpperCase()}
+                    {pkg.tag ? pkg.tag.toUpperCase() : "FEATURED"}
                   </span>
                   <motion.div
                     animate={{
@@ -198,72 +148,63 @@ export function SriLankaPackages() {
                   </motion.div>
                 </div>
 
-                {/* Duration */}
-                <div className="absolute bottom-5 left-5 flex items-center gap-3 text-white/90">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span
+                {/* Quick Info overlays at bottom */}
+                <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3">
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white"
                     style={{
-                      fontSize: 12,
-                      letterSpacing: "0.1em",
+                      background: "rgba(0,0,0,0.35)",
+                      backdropFilter: "blur(8px)",
+                      fontSize: 11.5,
                     }}
                   >
-                    {pkg.duration.toUpperCase()}
-                  </span>
+                    <Clock className="w-3.5 h-3.5" style={{ color: "#F4B942" }} />
+                    {pkg.duration}
+                  </div>
+                  {pkg.places && (
+                    <div
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white max-w-[60%] overflow-hidden"
+                      style={{
+                        background: "rgba(0,0,0,0.35)",
+                        backdropFilter: "blur(8px)",
+                        fontSize: 11.5,
+                      }}
+                    >
+                      <MapPin className="w-3.5 h-3.5 shrink-0" style={{ color: "#F4B942" }} />
+                      <span className="truncate">{pkg.places}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* META */}
-              <div className="px-1">
-                <div
-                  className="flex items-center gap-1.5 text-white/55 mb-3"
-                  style={{ fontSize: 12, letterSpacing: "0.05em" }}
-                >
-                  <MapPin className="w-3 h-3" />
-                  {pkg.places}
-                </div>
+              {/* TEXT CONTENT */}
+              <div>
                 <h3
-                  className="text-white mb-4"
+                  className="text-white mb-2 transition-colors duration-300"
                   style={{
                     fontFamily: "'Clash Display', sans-serif",
                     fontSize: 24,
-                    lineHeight: 1.15,
                     letterSpacing: "-0.01em",
+                    color: hovered === i ? "#F4B942" : "white",
                   }}
                 >
                   {pkg.name}
                 </h3>
-                <div className="flex items-baseline justify-between pt-4 border-t border-white/10">
-                  <div className="flex items-baseline gap-1.5">
-                    <span
-                      className="text-white/55"
-                      style={{ fontSize: 12, letterSpacing: "0.05em" }}
-                    >
-                      From
-                    </span>
-                    <span
-                      className="text-white"
-                      style={{
-                        fontFamily: "'Clash Display', sans-serif",
-                        fontSize: 22,
-                      }}
-                    >
-                      ${pkg.price}
-                    </span>
-                    <span
-                      className="text-white/50"
-                      style={{ fontSize: 12 }}
-                    >
-                      /person
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between pt-4 mt-2 border-t border-white/10">
                   <span
-                    className="text-white group-hover:text-[#F4B942] transition-colors"
                     style={{
-                      fontSize: 12,
-                      letterSpacing: "0.15em",
+                      fontSize: 17,
+                      color: "#F4B942",
+                      fontFamily: "'Clash Display', sans-serif",
                     }}
                   >
-                    EXPLORE →
+                    Rate/ On request
+                  </span>
+                  <span
+                    className="text-[#F4B942] flex items-center gap-1 group-hover:gap-2 transition-all"
+                    style={{ fontSize: 13, letterSpacing: "0.1em" }}
+                  >
+                    EXPLORE <ArrowUpRight className="w-4 h-4" />
                   </span>
                 </div>
               </div>

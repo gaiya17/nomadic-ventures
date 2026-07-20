@@ -62,9 +62,11 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     font-size: var(--font-size);
   }

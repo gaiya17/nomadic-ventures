@@ -182,7 +182,7 @@ export function MaldivesSection() {
               <motion.button
                 whileHover={{ scale: 1.04, boxShadow: "0 0 40px rgba(34,211,238,0.35)" }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => navigate("/resorts/maldives")}
+                onClick={() => navigate("/maldives-resort")}
                 className="flex items-center gap-2 px-7 py-4 rounded-2xl text-white"
                 style={{
                   background: "linear-gradient(120deg, #0891B2 0%, #22D3EE 100%)",
@@ -199,7 +199,7 @@ export function MaldivesSection() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => navigate("/contact")}
+                onClick={() => navigate("/plan-trip")}
                 className="flex items-center gap-2 px-7 py-4 rounded-2xl border text-white"
                 style={{
                   background: "rgba(255,255,255,0.06)",
@@ -233,7 +233,7 @@ export function MaldivesSection() {
 
             {/* ── Main clickable card ── */}
             <motion.button
-              onClick={() => navigate("/resorts/maldives")}
+              onClick={() => navigate("/maldives-resort")}
               whileHover={{ scale: 1.03, y: -8 }}
               whileTap={{ scale: 0.98 }}
               className="relative rounded-[36px] overflow-hidden text-left group cursor-pointer flex-shrink-0"

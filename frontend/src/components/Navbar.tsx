@@ -9,10 +9,10 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 const NAV_ITEMS = [
   { label: "Home",              to: "/" },
   { label: "Journeys",          to: "/journeys" },
-  { label: "Maldives",          to: "/resorts/maldives" },
-  { label: "Experiences",       to: "/gallery" },
+  { label: "Maldives",          to: "/maldives-resort" },
+  { label: "Experiences",       to: "/experiences" },
   { label: "Travel in Comfort", to: "/travel-in-comfort" },
-  { label: "Why Normadic",      to: "/about" },
+  { label: "Why Nomadic",       to: "/why-nomadic" },
 ];
 
 type Props = { accent?: string; glow?: string; solid?: boolean };
@@ -49,7 +49,7 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
               ))}
             </nav>
             <div className="p-5" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-              <button onClick={() => go("/contact")} className="w-full py-4 rounded-2xl text-white"
+              <button onClick={() => go("/plan-trip")} className="w-full py-4 rounded-2xl text-white"
                 style={{ background: "linear-gradient(135deg,#F4B942 0%,#7BC8A4 100%)", fontSize: 13, letterSpacing: "0.1em", fontFamily: "'Clash Display',sans-serif" }}>
                 PLAN MY TRIP
               </button>
@@ -146,7 +146,7 @@ export function Navbar({ accent = "#F4B942", glow = "rgba(244,185,66,0.35)", sol
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => router.push("/contact")}
+              onClick={() => router.push("/plan-trip")}
               className="hidden xl:block px-5 py-2 rounded-full border text-white"
               style={{
                 background: "rgba(255,255,255,0.1)",

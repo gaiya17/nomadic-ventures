@@ -393,7 +393,7 @@ export default function Page() {
                 background: "linear-gradient(135deg, rgba(244,185,66,0.1) 0%, rgba(34,211,238,0.07) 100%)",
                 border: "1px solid rgba(244,185,66,0.22)",
               }}
-              onClick={() => navigate("/contact")}
+              onClick={() => navigate("/plan-trip")}
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -717,7 +717,7 @@ export default function Page() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => navigate("/contact")}
+                onClick={() => navigate("/plan-trip")}
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white"
                 style={{
                   background: "linear-gradient(135deg, #F4B942 0%, #22D3EE 100%)",

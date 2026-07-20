@@ -354,7 +354,7 @@ export function TransportService() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate("/contact")}
+                  onClick={() => navigate("/plan-trip")}
                   className="w-full flex items-center justify-between px-5 py-3.5 rounded-xl"
                   style={{
                     background: "#F4B942",
