@@ -84,10 +84,24 @@ export default function ExperienceWizard({ onClose, onSave, initialData }: any) 
   };
 
   // Media
+  const [isUploading, setIsUploading] = useState(false);
   const handleUploadGallery = async (files: File[]) => {
-    // In a real app you'd upload these. Here we'll simulate it by creating object URLs
-    const urls = files.map(f => URL.createObjectURL(f));
-    setFormData((p: any) => ({ ...p, gallery: [...p.gallery, ...urls].slice(0, 4) }));
+    setIsUploading(true);
+    try {
+      const data = new FormData();
+      files.forEach((f) => data.append("images", f));
+      const res = await axios.post("/api/admin/upload?folder=experiences", data, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      if (res.data.success && res.data.urls) {
+        setFormData((p: any) => ({ ...p, gallery: [...p.gallery, ...res.data.urls].slice(0, 4) }));
+      }
+    } catch (e) {
+      console.error("Upload failed", e);
+      alert("Failed to upload images");
+    } finally {
+      setIsUploading(false);
+    }
   };
   const { getRootProps: galleryProps, getInputProps: galleryInput } = useDropzone({
     accept: { "image/*": [] },
@@ -243,10 +257,12 @@ export default function ExperienceWizard({ onClose, onSave, initialData }: any) 
             <div className="space-y-6">
               <h3 className="text-sm font-semibold text-[#030213] mb-4">Gallery Images (Exactly 4 recommended)</h3>
               
-              <div {...galleryProps()} className="border-2 border-dashed border-gray-200 rounded-2xl p-12 text-center cursor-pointer hover:border-[#C1A87D] transition bg-white">
-                <input {...galleryInput()} />
+              <div {...galleryProps()} className={`border-2 border-dashed border-gray-200 rounded-2xl p-12 text-center transition bg-white ${isUploading ? 'opacity-50 cursor-wait' : 'cursor-pointer hover:border-[#C1A87D]'}`}>
+                <input {...galleryInput()} disabled={isUploading} />
                 <UploadCloud className="mx-auto text-gray-400 mb-4" size={32} />
-                <p className="text-sm text-[#030213] font-medium">Click or drag images to upload</p>
+                <p className="text-sm text-[#030213] font-medium">
+                  {isUploading ? "Uploading images..." : "Click or drag images to upload"}
+                </p>
                 <p className="text-xs text-gray-400 mt-2">Upload up to 4 high-quality photos</p>
               </div>
 
