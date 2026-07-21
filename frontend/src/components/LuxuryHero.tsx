@@ -26,7 +26,7 @@ const SL = {
   glow: "rgba(244,185,66,0.35)",
 };
 
-export function LuxuryHero() {
+export function LuxuryHero({ heroImage }: { heroImage?: string }) {
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
 
@@ -38,7 +38,7 @@ export function LuxuryHero() {
       {/* ── Static background ── */}
       <div className="absolute inset-0">
         <ImageWithFallback
-          src={SL.image}
+          src={heroImage || SL.image}
           alt="Sri Lanka"
           className="w-full h-full object-cover"
         />

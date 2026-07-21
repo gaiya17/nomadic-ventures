@@ -41,10 +41,13 @@ export default async function Page() {
     tags: c.destinations ? c.destinations.split(',').map((d: string) => d.trim()).slice(0, 3) : [],
   }));
 
+  const settings = await prisma.siteSettings.findUnique({ where: { key: "homepage_hero_image" } });
+  const homepageHeroImage = settings?.value || "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
+
   return (
     <>
       <Navbar accent="#F4B942" glow="rgba(244,185,66,0.35)" />
-      <LuxuryHero />
+      <LuxuryHero heroImage={homepageHeroImage} />
       <SriLankaExperiences categories={featuredCategories} />
       <SriLankaPackages tours={featuredTours} />
       <JourneyCTA />

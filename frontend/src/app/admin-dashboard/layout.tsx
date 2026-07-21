@@ -4,6 +4,7 @@ import React from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { useAuth } from "@/hooks/useAuth";
+import { Toaster } from "sonner";
 import { useEffect } from "react";
 
 export default function AdminLayout({
@@ -41,6 +42,7 @@ export default function AdminLayout({
           {children}
         </main>
       </div>
+      <Toaster richColors position="top-right" />
     </div>
   );
 }
