@@ -1,22 +1,83 @@
-import supabase from '@/lib/supabase';
-import { NextRequest } from 'next/server';
-import { verifyToken, unauthorizedResponse } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
-// GET /api/admin/users — list all admin users (protected)
-export async function GET(request: NextRequest) {
-  const admin = verifyToken(request);
-  if (!admin) return unauthorizedResponse();
+const prisma = new PrismaClient();
 
+// GET all admin users
+export async function GET(req: NextRequest) {
   try {
-    const { data: users, error } = await supabase
-      .from('admin_users')
-      .select('id, email, name, role, created_at, last_login')
-      .order('created_at', { ascending: false });
+    const users = await prisma.admin_users.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        created_at: true,
+        last_login: true,
+      },
+      orderBy: { created_at: "desc" },
+    });
+    
+    return NextResponse.json({ success: true, users });
+  } catch (error: any) {
+    console.error("Error fetching admin users:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to fetch admin users" },
+      { status: 500 }
+    );
+  }
+}
 
-    if (error) throw error;
-    return Response.json({ success: true, users });
-  } catch (err) {
-    console.error(err);
-    return Response.json({ success: false, error: 'Failed to fetch users' }, { status: 500 });
+// POST create new admin user
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { name, email, password, role } = body;
+
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { success: false, error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Check if email already exists
+    const existing = await prisma.admin_users.findUnique({
+      where: { email },
+    });
+    if (existing) {
+      return NextResponse.json(
+        { success: false, error: "Email already in use" },
+        { status: 409 }
+      );
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
+
+    const newUser = await prisma.admin_users.create({
+      data: {
+        name,
+        email,
+        password_hash,
+        role: role || "admin",
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        created_at: true,
+      }
+    });
+
+    return NextResponse.json({ success: true, user: newUser });
+  } catch (error: any) {
+    console.error("Error creating admin user:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to create admin user" },
+      { status: 500 }
+    );
   }
 }
