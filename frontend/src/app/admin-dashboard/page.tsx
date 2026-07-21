@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { 
   Map, 
@@ -10,7 +11,8 @@ import {
   Plus, 
   RefreshCcw,
   Building,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -18,16 +20,26 @@ import axios from "axios";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-  const [resortCount, setResortCount] = useState(0);
+  const router = useRouter();
+  const [stats, setStats] = useState<any>(null);
+  const [recent, setRecent] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios.get("/api/admin/resorts")
+  const fetchDashboardData = () => {
+    setLoading(true);
+    axios.get("/api/admin/dashboard")
       .then((res) => {
         if (res.data.success) {
-          setResortCount(res.data.resorts.length);
+          setStats(res.data.stats);
+          setRecent(res.data.recent);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
   }, []);
 
   // Format today's date
@@ -59,9 +71,13 @@ export default function AdminDashboard() {
           </p>
         </div>
         
-        <button className="relative z-10 flex items-center gap-2 bg-[#F4B942] hover:bg-[#e0a83b] transition-colors px-6 py-3 rounded-xl font-semibold text-black text-sm shadow-lg shadow-[#F4B942]/20">
-          <RefreshCcw size={16} />
-          Sync Data
+        <button 
+          onClick={fetchDashboardData}
+          disabled={loading}
+          className="relative z-10 flex items-center gap-2 bg-[#F4B942] hover:bg-[#e0a83b] transition-colors px-6 py-3 rounded-xl font-semibold text-black text-sm shadow-lg shadow-[#F4B942]/20 disabled:opacity-70"
+        >
+          <RefreshCcw size={16} className={loading ? "animate-spin" : ""} />
+          {loading ? "Syncing..." : "Sync Data"}
         </button>
 
         {/* Decorative Background Elements */}
@@ -71,10 +87,10 @@ export default function AdminDashboard() {
       {/* Stat Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { title: "TOUR PACKAGES", count: 15, active: 15, icon: Map, color: "text-blue-500", bg: "bg-blue-50" },
-          { title: "MALDIVES RESORTS", count: resortCount, active: resortCount, icon: Building, color: "text-purple-500", bg: "bg-purple-50" },
-          { title: "EXPERIENCES", count: 8, active: null, icon: ImageIcon, color: "text-emerald-500", bg: "bg-emerald-50" },
-          { title: "ADMINISTRATORS", count: 2, active: null, icon: Users, color: "text-orange-500", bg: "bg-orange-50" },
+          { title: "TOUR PACKAGES", count: stats?.tours?.total || 0, active: stats?.tours?.active || 0, icon: Map, color: "text-blue-500", bg: "bg-blue-50" },
+          { title: "MALDIVES RESORTS", count: stats?.resorts?.total || 0, active: stats?.resorts?.active || 0, icon: Building, color: "text-purple-500", bg: "bg-purple-50" },
+          { title: "EXPERIENCES", count: stats?.experiences?.total || 0, active: stats?.experiences?.active || 0, icon: ImageIcon, color: "text-emerald-500", bg: "bg-emerald-50" },
+          { title: "ADMINISTRATORS", count: stats?.admins?.total || 0, active: null, icon: Users, color: "text-orange-500", bg: "bg-orange-50" },
         ].map((stat, i) => (
           <motion.div 
             key={stat.title}
@@ -126,26 +142,34 @@ export default function AdminDashboard() {
           </div>
 
           <div className="space-y-4">
-            {[
-              { name: "Dhigufaru Island Resort Maldives", type: "RESORT", date: "6/22/2026", icon: Building },
-              { name: "Emerald Maldives Resort & Spa", type: "RESORT", date: "6/20/2026", icon: Building },
-              { name: "Emerald Faarufushi Resort & Spa", type: "RESORT", date: "5/20/2026", icon: Building },
-              { name: "Rebalance & Restore: Your 6-Day Ayurvedic Wellness Journey", type: "TOUR", date: "4/17/2026", icon: Map },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                  item.type === 'RESORT' ? 'bg-purple-50 text-purple-500' : 'bg-blue-50 text-blue-500'
-                }`}>
-                  <item.icon size={20} />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#0A1128]">{item.name}</h4>
-                  <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mt-0.5">
-                    {item.type} • {item.date}
-                  </p>
-                </div>
+            {loading ? (
+              <div className="flex justify-center items-center py-12 text-gray-400">
+                <Loader2 className="w-8 h-8 animate-spin" />
               </div>
-            ))}
+            ) : recent.length > 0 ? (
+              recent.map((item, i) => {
+                const Icon = item.type === "RESORT" ? Building : item.type === "TOUR" ? Map : ImageIcon;
+                const colors = item.type === "RESORT" 
+                  ? "bg-purple-50 text-purple-500" 
+                  : item.type === "TOUR" ? "bg-blue-50 text-blue-500" : "bg-emerald-50 text-emerald-500";
+                
+                return (
+                  <div key={i} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${colors}`}>
+                      <Icon size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-[#0A1128]">{item.name}</h4>
+                      <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase mt-0.5">
+                        {item.type} • {new Date(item.date).toLocaleDateString()} {item.status ? `• ${item.status}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-center text-sm text-gray-500 py-6">No recent items found.</p>
+            )}
           </div>
         </motion.div>
 
@@ -163,14 +187,15 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-2 gap-4">
             {[
-              { title: "Add Tour Package", icon: Plus, color: "text-blue-500", bg: "bg-blue-50" },
-              { title: "Add Resort", icon: Building, color: "text-purple-500", bg: "bg-purple-50" },
-              { title: "Manage Experiences", icon: ImageIcon, color: "text-emerald-500", bg: "bg-emerald-50" },
-              { title: "Manage Users", icon: Users, color: "text-orange-500", bg: "bg-orange-50" },
+              { title: "Add Tour Package", icon: Plus, color: "text-blue-500", bg: "bg-blue-50", href: "/admin-dashboard/tours" },
+              { title: "Add Resort", icon: Building, color: "text-purple-500", bg: "bg-purple-50", href: "/admin-dashboard/resorts" },
+              { title: "Manage Experiences", icon: ImageIcon, color: "text-emerald-500", bg: "bg-emerald-50", href: "/admin-dashboard/experiences" },
+              { title: "Manage Users", icon: Users, color: "text-orange-500", bg: "bg-orange-50", href: "/admin-dashboard/users" },
             ].map((action) => (
               <button 
                 key={action.title}
-                className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 transition-all text-center group"
+                onClick={() => router.push(action.href)}
+                className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 transition-all text-center group cursor-pointer"
               >
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${action.bg} ${action.color} group-hover:scale-110 transition-transform`}>
                   <action.icon size={20} />
