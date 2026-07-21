@@ -60,7 +60,7 @@ export default function AdminDashboard() {
         className="bg-[#030213] rounded-2xl p-8 text-white relative overflow-hidden flex items-center justify-between shadow-xl"
       >
         <div className="relative z-10">
-          <p className="text-[10px] font-bold tracking-[0.2em] text-gray-400 mb-2">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-gray-400 mb-2" suppressHydrationWarning>
             {today}
           </p>
           <h2 className="text-3xl font-bold mb-2">
