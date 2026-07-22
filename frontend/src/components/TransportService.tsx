@@ -36,6 +36,13 @@ const FEATURES = [
   },
 ];
 
+const FLEET = [
+  { class: "Premium Sedan",  capacity: "1–3 Guests",  pax: 3  },
+  { class: "Luxury SUV",     capacity: "1–4 Guests",  pax: 4  },
+  { class: "Executive Van",  capacity: "5–8 Guests",  pax: 8  },
+  { class: "Private Coach",  capacity: "9–24 Guests", pax: 24 },
+];
+
 const CLASS_OPTIONS = [
   { id: "sedan", label: "Premium Sedan", pax: "1-3 Guests" },
   { id: "suv", label: "Luxury SUV", pax: "1-4 Guests" },
