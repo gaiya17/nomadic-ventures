@@ -578,39 +578,61 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
         )}
       </AnimatePresence>
 
-      {/* FAB */}
-      <motion.button
-        id="chatbot-fab"
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
-        onClick={() => open ? setOpen(false) : handleOpen()}
-        className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
-        style={{
-          background: open ? "linear-gradient(135deg, #1a150b, #0d0a04)" : "#121212",
-          border: "1px solid rgba(212,175,55,0.3)",
-          boxShadow: "0 8px 30px rgba(212,175,55,0.35)",
-        }}
-        title="Chat with Nova"
-      >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <X className="w-6 h-6 text-[#d4af37]" />
-            </motion.span>
-          ) : (
-            <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <img src="/nova-icon.png" alt="Chat" className="w-full h-full object-cover rounded-full p-1" />
-            </motion.span>
+      {/* FAB & Popup Wrapper */}
+      <div className="relative flex items-center justify-end">
+        <AnimatePresence>
+          {!open && (
+            <motion.div
+              initial={{ opacity: 0, x: 10, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 10, scale: 0.9 }}
+              transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+              className="absolute right-[68px] top-1/2 -translate-y-1/2 px-4 py-2.5 rounded-2xl shadow-2xl flex items-center whitespace-nowrap cursor-pointer origin-right z-10"
+              style={{
+                background: "linear-gradient(135deg, #121212 0%, #080808 100%)",
+                border: "1px solid rgba(212,175,55,0.3)",
+              }}
+              onClick={() => handleOpen()}
+            >
+              <span className="text-sm font-semibold tracking-wide" style={{ color: "#d4af37", fontFamily: "'Clash Display', sans-serif" }}>Plan Your Trip ✨</span>
+              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rotate-45" style={{ background: "#0c0c0c", borderTop: "1px solid rgba(212,175,55,0.3)", borderRight: "1px solid rgba(212,175,55,0.3)" }} />
+            </motion.div>
           )}
         </AnimatePresence>
-        {showPulse && !open && (
-          <>
-            <motion.span className="absolute inset-0 rounded-full" style={{ border: "2px solid rgba(212,175,55,0.5)" }}
-              animate={{ scale: [1, 1.5], opacity: [0.8, 0] }} transition={{ duration: 1.5, repeat: Infinity }} />
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-white" style={{ background: "#ef4444", fontSize: 9 }}>1</span>
-          </>
-        )}
-      </motion.button>
+
+        <motion.button
+          id="chatbot-fab"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
+          onClick={() => open ? setOpen(false) : handleOpen()}
+          className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
+          style={{
+            background: open ? "linear-gradient(135deg, #1a150b, #0d0a04)" : "#121212",
+            border: "1px solid rgba(212,175,55,0.3)",
+            boxShadow: "0 8px 30px rgba(212,175,55,0.35)",
+          }}
+          title="Chat with Nova"
+        >
+          <AnimatePresence mode="wait">
+            {open ? (
+              <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <X className="w-6 h-6 text-[#d4af37]" />
+              </motion.span>
+            ) : (
+              <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <img src="/nova-icon.png" alt="Chat" className="w-full h-full object-cover rounded-full p-1" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+          {showPulse && !open && (
+            <>
+              <motion.span className="absolute inset-0 rounded-full" style={{ border: "2px solid rgba(212,175,55,0.5)" }}
+                animate={{ scale: [1, 1.5], opacity: [0.8, 0] }} transition={{ duration: 1.5, repeat: Infinity }} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-white" style={{ background: "#ef4444", fontSize: 9 }}>1</span>
+            </>
+          )}
+        </motion.button>
+      </div>
     </>
   );
 }
