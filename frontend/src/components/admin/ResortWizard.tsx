@@ -119,6 +119,22 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
     }));
   };
 
+  const canContinue = () => {
+    if (currentStep === 0) {
+      const b = formData.basic;
+      return Boolean(b.name.trim() && b.description.trim() && b.location.trim() && b.transferMethod.trim() && b.duration && b.price);
+    }
+    if (currentStep === 1) {
+      return Boolean(formData.ratings.stars > 0);
+    }
+    if (currentStep === 3) {
+      if (formData.villas.length > 0) {
+        return formData.villas.every((v: any) => v.title.trim() && v.description.trim() && v.bedType.trim() && v.roomSize && (v.capacities?.length > 0) && (v.features?.length > 0));
+      }
+    }
+    return true;
+  };
+
   const handleNext = () => {
     if (currentStep < STEPS.length - 1) setCurrentStep(currentStep + 1);
   };
@@ -306,15 +322,16 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
           {currentStep < STEPS.length - 1 ? (
             <button
               onClick={handleNext}
-              className="px-8 py-2.5 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+              disabled={!canContinue()}
+              className="px-8 py-2.5 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition shadow-[0_4px_12px_rgba(0,0,0,0.1)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
             </button>
           ) : (
             <button
               onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="px-8 py-2.5 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition shadow-[0_4px_12px_rgba(34,197,94,0.3)] disabled:opacity-50"
+              disabled={isSubmitting || !canContinue()}
+              className="px-8 py-2.5 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition shadow-[0_4px_12px_rgba(34,197,94,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Saving Package..." : "Publish Resort"}
             </button>
@@ -734,11 +751,22 @@ function StepVillas({ villas, setVillas }) {
           <div className="grid grid-cols-2 gap-5 mb-5">
             <div>
               <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Room Size</label>
-              <input type="text" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-[#030213] outline-none focus:border-black transition" placeholder="e.g. 380 m²" value={villa.roomSize} onChange={(e) => updateVilla(idx, "roomSize", e.target.value)} />
+              <div className="relative">
+                <input type="number" min="0" className="w-full bg-white border border-gray-200 rounded-xl pl-4 pr-12 py-2.5 text-sm text-[#030213] outline-none focus:border-black transition" placeholder="e.g. 380" value={villa.roomSize} onChange={(e) => updateVilla(idx, "roomSize", e.target.value)} />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium pointer-events-none">sqm</span>
+              </div>
             </div>
             <div>
-              <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Capacity</label>
-              <input type="text" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-[#030213] outline-none focus:border-black transition" placeholder="e.g. 4 Adults + 2 Children" value={(villa.capacities && villa.capacities.length > 0) ? villa.capacities[0] : ""} onChange={(e) => updateVilla(idx, "capacities", e.target.value ? [e.target.value] : [])} />
+              <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Capacities</label>
+              <CreatableSelect
+                isMulti
+                placeholder="Type and press enter..."
+                value={(villa.capacities || []).map((c: any) => ({ label: c, value: c }))}
+                onChange={(selected) => updateVilla(idx, "capacities", selected.map((s: any) => s.value))}
+                styles={{
+                  control: (base) => ({ ...base, borderRadius: "0.75rem", padding: "2px", borderColor: "#E5E7EB", boxShadow: "none", "&:hover": { borderColor: "#000" } }),
+                }}
+              />
             </div>
           </div>
           
@@ -748,8 +776,16 @@ function StepVillas({ villas, setVillas }) {
           </div>
 
           <div className="mb-5">
-            <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Features (Comma separated)</label>
-            <input type="text" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-[#030213] outline-none focus:border-black transition" placeholder="e.g. Private Pool, Ocean View, Butler" value={(villa.features || []).join(", ")} onChange={(e) => updateVilla(idx, "features", e.target.value.split(",").map(s => s.trim()))} />
+            <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Features</label>
+            <CreatableSelect
+              isMulti
+              placeholder="Type and press enter to add features..."
+              value={(villa.features || []).map((f: any) => ({ label: f, value: f }))}
+              onChange={(selected) => updateVilla(idx, "features", selected.map((s: any) => s.value))}
+              styles={{
+                control: (base) => ({ ...base, borderRadius: "0.75rem", padding: "2px", borderColor: "#E5E7EB", boxShadow: "none", "&:hover": { borderColor: "#000" } }),
+              }}
+            />
           </div>
 
           <div>
