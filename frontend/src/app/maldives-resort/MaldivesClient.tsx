@@ -381,7 +381,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
 
     const defaultHero = categoryResorts.length > 0 ? categoryResorts[0].image : "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800";
     
-    let gallery = [...STATIC_COLLECTIONS[i]?.gallery || []];
+    let gallery = [...STATIC_COLLECTIONS[idx]?.gallery || []];
 
     return {
       id: cat.slug,
