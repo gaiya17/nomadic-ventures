@@ -52,7 +52,15 @@ const REVIEWS = [
   },
 ];
 
-export function Testimonials() {
+export function Testimonials({
+  featuredReview,
+  standardReviews,
+}: {
+  featuredReview?: { quote: string; name: string; trip: string; avatar: string; source: string; rating: number } | null;
+  standardReviews?: { id?: string; quote: string; name: string; trip: string; avatar: string; source: string; rating: number }[];
+}) {
+  const displayFeatured = featuredReview || FEATURED;
+  const displayReviews = standardReviews && standardReviews.length > 0 ? standardReviews : REVIEWS;
   return (
     <section
       className="relative w-full py-36 px-6 lg:px-20 overflow-hidden"
@@ -260,77 +268,71 @@ export function Testimonials() {
               </div>
 
               <p
-                className="text-white/95 mb-10"
+                className="text-white relative z-10"
                 style={{
                   fontFamily: "'Clash Display', sans-serif",
-                  fontSize: "clamp(22px, 2vw, 28px)",
-                  lineHeight: 1.35,
+                  fontSize: "clamp(22px, 2.5vw, 28px)",
+                  lineHeight: 1.4,
                   letterSpacing: "-0.01em",
-                  fontWeight: 400,
                 }}
               >
-                "{FEATURED.quote}"
+                "{displayFeatured.quote}"
               </p>
 
-              <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                <div className="relative">
+              <div
+                className="w-12 h-px my-8 opacity-20"
+                style={{ background: "#F4B942" }}
+              />
+
+              <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center gap-4">
                   <ImageWithFallback
-                    src={FEATURED.avatar}
-                    alt={FEATURED.name}
-                    className="w-12 h-12 rounded-full object-cover border-2"
-                    style={{ borderColor: "rgba(244,185,66,0.4)" }}
+                    src={displayFeatured.avatar}
+                    alt={displayFeatured.name}
+                    className="w-14 h-14 rounded-full object-cover"
+                    style={{ border: "2px solid rgba(244,185,66,0.2)" }}
                   />
-                  <div
-                    className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center"
-                    style={{ background: "#0B8D6B" }}
-                  >
-                    <BadgeCheck className="w-3 h-3 text-white" />
+                  <div>
+                    <div
+                      className="text-white font-medium"
+                      style={{ fontSize: 16, letterSpacing: "0.02em" }}
+                    >
+                      {displayFeatured.name}
+                    </div>
+                    <div
+                      className="text-white/40"
+                      style={{ fontSize: 12, letterSpacing: "0.05em" }}
+                    >
+                      {displayFeatured.trip}
+                    </div>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div
-                    className="text-white"
-                    style={{
-                      fontFamily: "'Clash Display', sans-serif",
-                      fontSize: 16,
-                    }}
-                  >
-                    {FEATURED.name}
-                  </div>
-                  <div
-                    className="text-white/55"
-                    style={{ fontSize: 12, letterSpacing: "0.03em" }}
-                  >
-                    {FEATURED.trip}
-                  </div>
-                </div>
-                <span
-                  className="px-3 py-1.5 rounded-full border"
+                <div
+                  className="px-4 py-1.5 rounded-full"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    borderColor: "rgba(255,255,255,0.15)",
-                    color: "#F4B942",
+                    border: "1px solid rgba(255,255,255,0.15)",
                     fontSize: 10,
                     letterSpacing: "0.15em",
+                    color: "#F4B942",
                   }}
                 >
-                  {FEATURED.source.toUpperCase()}
-                </span>
+                  {displayFeatured.source.toUpperCase()} REVIEW
+                </div>
               </div>
             </motion.div>
           </div>
 
           {/* RIGHT — Review grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {REVIEWS.map((r, i) => (
-              <motion.article
-                key={r.name}
+          <div className="lg:col-span-7 grid md:grid-cols-2 gap-6 mt-6 lg:mt-0">
+            {displayReviews.slice(0, 4).map((review, idx) => (
+              <motion.div
+                key={review.id || idx}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{
                   duration: 0.7,
-                  delay: i * 0.1,
+                  delay: idx * 0.1,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 whileHover={{ y: -6 }}
@@ -356,7 +358,7 @@ export function Testimonials() {
                     className="text-white/40"
                     style={{ fontSize: 10, letterSpacing: "0.15em" }}
                   >
-                    {r.source.toUpperCase()}
+                    {review.source.toUpperCase()}
                   </span>
                 </div>
 
@@ -364,14 +366,14 @@ export function Testimonials() {
                   className="text-white/85 flex-1 mb-6"
                   style={{ fontSize: 14, lineHeight: 1.65 }}
                 >
-                  "{r.quote}"
+                  "{review.quote}"
                 </p>
 
                 <div className="flex items-center gap-3 pt-5 border-t border-white/8">
                   <div className="relative">
                     <ImageWithFallback
-                      src={r.avatar}
-                      alt={r.name}
+                      src={review.avatar}
+                      alt={review.name}
                       className="w-10 h-10 rounded-full object-cover"
                     />
                     <div
@@ -389,13 +391,13 @@ export function Testimonials() {
                         fontSize: 14,
                       }}
                     >
-                      {r.name}
+                      {review.name}
                     </div>
                     <div
                       className="text-white/50 truncate"
                       style={{ fontSize: 11, letterSpacing: "0.03em" }}
                     >
-                      {r.trip}
+                      {review.trip}
                     </div>
                   </div>
                   <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-[#F4B942] transition-colors" />

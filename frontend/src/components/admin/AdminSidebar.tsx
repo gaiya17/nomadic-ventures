@@ -12,7 +12,8 @@ import {
   Users, 
   LogOut,
   Settings,
-  Tags
+  Tags,
+  MessageSquareQuote
 } from "lucide-react";
 
 export function AdminSidebar() {
@@ -26,6 +27,7 @@ export function AdminSidebar() {
     { name: "Tours", href: "/admin-dashboard/tours", icon: Map },
     { name: "Maldives Resorts", href: "/admin-dashboard/resorts", icon: Palmtree },
     { name: "Experiences", href: "/admin-dashboard/experiences", icon: Compass },
+    { name: "Reviews", href: "/admin-dashboard/reviews", icon: MessageSquareQuote },
     { name: "User Management", href: "/admin-dashboard/users", icon: Users },
   ];
 

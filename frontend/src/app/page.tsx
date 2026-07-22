@@ -48,6 +48,21 @@ export default async function Page() {
   const homepageHeroImage = settings.find(s => s.key === "homepage_hero_image")?.value || "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
   const transportHeroImage = settings.find(s => s.key === "transport_hero_image")?.value || "https://images.unsplash.com/photo-1549424883-93666b3b05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
 
+  const dbReviews = await prisma.review.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  let featuredReview = null;
+  const standardReviews = [];
+
+  for (const r of dbReviews) {
+    if (r.isFeatured && !featuredReview) {
+      featuredReview = r;
+    } else {
+      standardReviews.push(r);
+    }
+  }
+
   return (
     <>
       <Navbar accent="#F4B942" glow="rgba(244,185,66,0.35)" />
@@ -57,7 +72,7 @@ export default async function Page() {
       <JourneyCTA />
       <MaldivesSection />
       <TransportService transportImage={transportHeroImage} />
-      <Testimonials />
+      <Testimonials featuredReview={featuredReview} standardReviews={standardReviews} />
       <Footer />
     </>
   );
