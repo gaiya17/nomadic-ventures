@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 import { X, Check, UploadCloud, Plus, Trash2 } from "lucide-react";
 import CreatableSelect from "react-select/creatable";
 import { useDropzone } from "react-dropzone";
@@ -206,6 +207,10 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
       // Prepare Payload
       const payload = {
         ...formData,
+        basic: {
+          ...formData.basic,
+          stars: formData.ratings.stars
+        },
         villas: processedVillas,
         restaurants: processedRestaurants,
         media: {
@@ -224,11 +229,12 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
       
       const response = await axios[method](endpoint, payload);
       if (response.data.success) {
+        toast.success("Resort package saved successfully!");
         onSave();
       }
     } catch (error) {
       console.error("Submission failed", error);
-      alert("Failed to save resort package.");
+      toast.error("Failed to save resort package. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
