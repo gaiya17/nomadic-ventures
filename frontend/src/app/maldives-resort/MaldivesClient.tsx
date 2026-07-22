@@ -331,8 +331,8 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
   // Fix hydration mismatch for random particles
   const [particles, setParticles] = useState<any[]>([]);
   
-  // Dynamic categories
-  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  // Dynamic categories initialized with static data to avoid FOUC and enable SSR
+  const [dbCategories, setDbCategories] = useState<any[]>(STATIC_COLLECTIONS);
 
   useEffect(() => {
     // Generate particles
@@ -368,7 +368,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     .map((cat, idx) => {
     const num = (idx + 1).toString().padStart(2, '0');
     const categoryResorts = cat.resorts ? cat.resorts.map((mapping: any) => {
-      const resort = mapping.resort;
+      const resort = mapping.resort || mapping;
       const displayMedia = resort.media?.find((m: any) => m.type === "card") || resort.media?.find((m: any) => m.type === "hero") || resort.media?.find((m: any) => m.type === "gallery") || resort.media?.[0];
       return {
         name: resort.name,
@@ -400,10 +400,8 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     };
   });
 
-  if (dbCategories.length === 0) {
-    return <PageLoader />;
-  }
-
+  // Render the page without conditionally returning PageLoader to prevent FOUC
+  // The layout will hydrate with static data and update smoothly once DB data loads.
   const allResorts = dbCategories.flatMap(c => c.resorts?.map((r: any) => r.resort) || []);
   const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id, r])).values());
   const totalResortsCount = uniqueResorts.length;
