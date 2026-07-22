@@ -363,8 +363,10 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     fetchCats();
   }, []);
 
-  const COLLECTIONS = dbCategories.map((cat, i) => {
-    const num = (i + 1).toString().padStart(2, '0');
+  const COLLECTIONS = dbCategories
+    .filter(cat => cat.resorts && cat.resorts.length > 0)
+    .map((cat, idx) => {
+    const num = (idx + 1).toString().padStart(2, '0');
     const categoryResorts = cat.resorts ? cat.resorts.map((mapping: any) => {
       const resort = mapping.resort;
       const displayMedia = resort.media?.find((m: any) => m.type === "card") || resort.media?.find((m: any) => m.type === "hero") || resort.media?.find((m: any) => m.type === "gallery") || resort.media?.[0];
@@ -850,24 +852,64 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                       </div>
                     </div>
 
-                    {/* Two stacked small images */}
-                    {c.gallery.slice(0, 2).map((img, i) => (
-                      <div
-                        key={i}
-                        className="col-span-4 relative rounded-[24px] overflow-hidden border group"
-                        style={{
-                          borderColor: "rgba(137,243,255,0.15)",
-                          boxShadow: "0 20px 60px rgba(0,15,40,0.5)",
-                        }}
-                      >
-                        <ImageWithFallback
-                          src={img}
-                          alt=""
-                          className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#021830]/70 via-transparent to-transparent" />
-                      </div>
-                    ))}
+                    {/* Two stacked small images - Show next available resorts in the category */}
+                    {[1, 2].map((idx) => {
+                      const resort = c.resorts?.[idx];
+                      if (resort) {
+                        return (
+                          <div
+                            key={resort.name}
+                            onClick={() => navigate(`/maldives-resort/${slugify(resort.name)}`)}
+                            className="col-span-4 relative rounded-[24px] overflow-hidden border group cursor-pointer"
+                            style={{
+                              borderColor: "rgba(137,243,255,0.15)",
+                              boxShadow: "0 20px 60px rgba(0,15,40,0.5)",
+                            }}
+                          >
+                            <ImageWithFallback
+                              src={resort.image}
+                              alt={resort.name}
+                              className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#021830]/90 via-[#021830]/20 to-transparent" />
+                            
+                            {/* Featured resort info */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 z-10 flex justify-between items-end">
+                              <div className="flex-1 min-w-0 pr-3">
+                                <div className="text-white truncate" style={{ fontFamily: "'Clash Display', sans-serif", fontSize: "clamp(18px, 1.5vw, 24px)", lineHeight: 1.1 }}>
+                                  {resort.name}
+                                </div>
+                                <div className="text-[#89F3FF]/80 mt-1.5" style={{ fontSize: 10, letterSpacing: "0.15em" }}>
+                                  {resort.atoll?.toUpperCase()}
+                                </div>
+                              </div>
+                              <div className="w-8 h-8 rounded-full border border-white/20 bg-white/5 flex items-center justify-center backdrop-blur-md group-hover:bg-[#89F3FF] group-hover:border-[#89F3FF] transition-all duration-300 shrink-0">
+                                <ArrowUpRight className="w-4 h-4 text-white group-hover:text-[#021830]" />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      } else {
+                        const fallbackImg = c.gallery[idx - 1] || "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900";
+                        return (
+                          <div
+                            key={`fallback-${idx}`}
+                            className="col-span-4 relative rounded-[24px] overflow-hidden border group"
+                            style={{
+                              borderColor: "rgba(137,243,255,0.15)",
+                              boxShadow: "0 20px 60px rgba(0,15,40,0.5)",
+                            }}
+                          >
+                            <ImageWithFallback
+                              src={fallbackImg}
+                              alt=""
+                              className="w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#021830]/70 via-transparent to-transparent" />
+                          </div>
+                        );
+                      }
+                    })}
                   </motion.div>
                 </div>
 

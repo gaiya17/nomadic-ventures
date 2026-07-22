@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../globals.css';
 import { GlobalLoader } from '@/components/GlobalLoader';
+import { RouteAwareWidgets } from '@/components/RouteAwareWidgets';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -22,7 +23,10 @@ export default function RootLayout({
       <body className="antialiased" suppressHydrationWarning>
         <GlobalLoader />
         {children}
+        <RouteAwareWidgets />
       </body>
     </html>
   );
 }
+
+
