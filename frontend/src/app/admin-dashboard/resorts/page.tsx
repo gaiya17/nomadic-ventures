@@ -15,15 +15,17 @@ export default function ResortsManager() {
 
   // Filter state
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = [
+  const dynamicCategories = [
     "All",
-    "All Inclusive Resorts",
-    "Best for Snorkeling & Diving",
-    "Honeymoon & Romantic",
-    "Family Friendly",
-    "Adults Only",
-    "Luxury Villas",
+    ...Array.from(
+      new Set(
+        resorts
+          .flatMap((r) => r.categories.map((c: any) => c.category?.name))
+          .filter(Boolean)
+      )
+    ),
   ];
 
   const fetchResorts = async () => {
@@ -63,10 +65,13 @@ export default function ResortsManager() {
   };
 
   const filteredResorts = resorts.filter((resort: any) => {
-    if (activeCategory === "All") return true;
-    return resort.categories.some(
+    const matchesCategory = activeCategory === "All" || resort.categories.some(
       (c: any) => c.category.name === activeCategory
     );
+    const matchesSearch = resort.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (resort.location && resort.location.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    return matchesCategory && matchesSearch;
   });
 
   return (
@@ -91,7 +96,7 @@ export default function ResortsManager() {
 
       <div className="flex items-center justify-between mb-6 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
         <div className="flex items-center overflow-x-auto hide-scrollbar gap-2 px-2">
-          {categories.map((cat) => (
+          {dynamicCategories.map((cat: any) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -114,6 +119,8 @@ export default function ResortsManager() {
             <input
               type="text"
               placeholder="Search resorts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm outline-none focus:border-black transition-colors w-[220px]"
             />
           </div>
