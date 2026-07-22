@@ -3,54 +3,6 @@ import { motion } from "motion/react";
 import { Star, Quote, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-const FEATURED = {
-  quote:
-    "The team at Normadic Ventures crafted a private Sri Lanka journey beyond anything we imagined — from the Sigiriya sunrise to a lantern-lit dinner in Galle. Every guide, every transfer, every stay felt designed for us alone.",
-  name: "Arjun Duggal",
-  trip: "Essence of Sri Lanka · 7 Days",
-  avatar:
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face&q=80",
-  source: "Google Review",
-};
-
-const REVIEWS = [
-  {
-    name: "Borja Alvarez",
-    quote:
-      "Samanti, our guide, treated us like family. Every detail of the trip was thoughtful, warm and impossibly smooth.",
-    trip: "Cultural Triangle",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face&q=80",
-    source: "Google",
-  },
-  {
-    name: "Albina Kunz",
-    quote:
-      "My father visited Sri Lanka for the first time and was speechless. Hospitality, drivers, safaris — everything world-class.",
-    trip: "Wildlife Discovery",
-    avatar:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face&q=80",
-    source: "Google",
-  },
-  {
-    name: "Kunz Rafael",
-    quote:
-      "Super, super. Danke, danke. The honeymoon of our dreams — Maldives via Bentota and we never wanted it to end.",
-    trip: "Maldives + Sri Lanka",
-    avatar:
-      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&h=200&fit=crop&crop=face&q=80",
-    source: "TripAdvisor",
-  },
-  {
-    name: "Maya Chen",
-    quote:
-      "Tea trails, train rides, and overwater villas in two perfectly stitched weeks. We barely lifted a finger.",
-    trip: "Ultimate Sri Lanka + Maldives",
-    avatar:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face&q=80",
-    source: "Google",
-  },
-];
 
 interface TestimonialProps {
   featuredReview?: { quote: string; name: string; trip: string | null; avatar: string | null; source: string; rating: number } | null;
@@ -59,10 +11,13 @@ interface TestimonialProps {
 
 export function Testimonials({
   featuredReview,
-  standardReviews,
+  standardReviews = [],
 }: TestimonialProps) {
-  const displayFeatured = featuredReview || FEATURED;
-  const displayReviews = standardReviews?.length ? standardReviews : REVIEWS;
+  const displayFeatured = featuredReview || (standardReviews.length > 0 ? standardReviews[0] : null);
+  const displayReviews = featuredReview ? standardReviews : standardReviews.slice(1);
+
+  if (!displayFeatured) return null;
+
   return (
     <section
       className="relative w-full py-36 px-6 lg:px-20 overflow-hidden"
