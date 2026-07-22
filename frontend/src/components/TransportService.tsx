@@ -36,15 +36,16 @@ const FEATURES = [
   },
 ];
 
-const FLEET = [
-  { class: "Premium Sedan",  capacity: "1–3 Guests",  pax: 3  },
-  { class: "Luxury SUV",     capacity: "1–4 Guests",  pax: 4  },
-  { class: "Executive Van",  capacity: "5–8 Guests",  pax: 8  },
-  { class: "Private Coach",  capacity: "9–24 Guests", pax: 24 },
+const CLASS_OPTIONS = [
+  { id: "sedan", label: "Premium Sedan", pax: "1-3 Guests" },
+  { id: "suv", label: "Luxury SUV", pax: "1-4 Guests" },
+  { id: "van", label: "Executive Van", pax: "5-8 Guests" },
+  { id: "coach", label: "Private Coach", pax: "9-24 Guests" },
 ];
 
-export function TransportService() {
+export function TransportService({ transportImage = "https://images.unsplash.com/photo-1549424883-93666b3b05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800" }: { transportImage?: string }) {
   const router = useRouter();
+  const [selectedClass, setSelectedClass] = useState("sedan");
   const navigate = (path: string) => router.push(path);
   const [selectedFleet, setSelectedFleet] = useState(0);
 
@@ -133,7 +134,7 @@ export function TransportService() {
             }}
           >
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1763929480977-2fb47588a37e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800"
+              src={transportImage}
               alt="Luxury transport"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1600ms] group-hover:scale-105"
             />

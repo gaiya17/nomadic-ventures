@@ -89,6 +89,7 @@ export default function HomepageManager() {
 
   // Settings State
   const [homepageHero, setHomepageHero] = useState("");
+  const [transportHero, setTransportHero] = useState("");
   
   const [maldivesHero, setMaldivesHero] = useState("");
 
@@ -106,6 +107,7 @@ export default function HomepageManager() {
       const config = res.data;
       
       if (config.homepage_hero_image) setHomepageHero(config.homepage_hero_image);
+      if (config.transport_hero_image) setTransportHero(config.transport_hero_image);
       if (config.maldives_hero_image) {
         setMaldivesHero(config.maldives_hero_image);
       }
@@ -123,6 +125,7 @@ export default function HomepageManager() {
     try {
       const payload = {
         homepage_hero_image: homepageHero,
+        transport_hero_image: transportHero,
         maldives_hero_image: maldivesHero,
         travel_in_comfort_hero_image: travelComfortHero,
         why_nomadic_images: JSON.stringify(whyNomadic),
@@ -189,12 +192,19 @@ export default function HomepageManager() {
         {/* Content */}
         {activeTab === "homepage" && (
           <div className="space-y-6">
-            <h2 className="text-lg font-bold text-[#030213]">Homepage Hero Image</h2>
-            <div className="max-w-xl">
+            <h2 className="text-lg font-bold text-[#030213]">Homepage Media</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ImageUploader 
                 label="Main Hero Background" 
                 value={homepageHero} 
                 onChange={setHomepageHero} 
+                folder="homepage" 
+              />
+              <ImageUploader 
+                label="Transport Section Image" 
+                value={transportHero} 
+                onChange={setTransportHero} 
                 folder="homepage" 
               />
             </div>

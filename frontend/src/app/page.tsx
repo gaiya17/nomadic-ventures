@@ -41,8 +41,12 @@ export default async function Page() {
     tags: c.destinations ? c.destinations.split(',').map((d: string) => d.trim()).slice(0, 3) : [],
   }));
 
-  const settings = await prisma.siteSettings.findUnique({ where: { key: "homepage_hero_image" } });
-  const homepageHeroImage = settings?.value || "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
+  const settings = await prisma.siteSettings.findMany({
+    where: { key: { in: ["homepage_hero_image", "transport_hero_image"] } }
+  });
+  
+  const homepageHeroImage = settings.find(s => s.key === "homepage_hero_image")?.value || "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
+  const transportHeroImage = settings.find(s => s.key === "transport_hero_image")?.value || "https://images.unsplash.com/photo-1549424883-93666b3b05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
 
   return (
     <>
@@ -52,7 +56,7 @@ export default async function Page() {
       <SriLankaPackages tours={featuredTours} />
       <JourneyCTA />
       <MaldivesSection />
-      <TransportService />
+      <TransportService transportImage={transportHeroImage} />
       <Testimonials />
       <Footer />
     </>
