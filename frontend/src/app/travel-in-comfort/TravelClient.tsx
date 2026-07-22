@@ -168,7 +168,7 @@ function PaxDots({ count, accent }: { count: number; accent: string }) {
 }
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
-export function TravelClient({ travelComfortHeroImage }: { travelComfortHeroImage?: string }) {
+export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelComfortHeroImage?: string; fleetImages?: string[] }) {
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
 
@@ -574,7 +574,7 @@ export function TravelClient({ travelComfortHeroImage }: { travelComfortHeroImag
                 {/* image */}
                 <div className="relative h-60 overflow-hidden">
                   <ImageWithFallback
-                    src={vehicle.image}
+                    src={fleetImages?.[i] || vehicle.image}
                     alt={`${vehicle.brand} ${vehicle.model}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

@@ -94,6 +94,7 @@ export default function HomepageManager() {
   const [maldivesHero, setMaldivesHero] = useState("");
 
   const [travelComfortHero, setTravelComfortHero] = useState("");
+  const [travelFleetImages, setTravelFleetImages] = useState(["", "", "", ""]);
 
   const [whyNomadic, setWhyNomadic] = useState(["", "", ""]);
 
@@ -112,6 +113,7 @@ export default function HomepageManager() {
         setMaldivesHero(config.maldives_hero_image);
       }
       if (config.travel_in_comfort_hero_image) setTravelComfortHero(config.travel_in_comfort_hero_image);
+      if (config.travel_in_comfort_fleet_images) setTravelFleetImages(JSON.parse(config.travel_in_comfort_fleet_images));
       if (config.why_nomadic_images) setWhyNomadic(JSON.parse(config.why_nomadic_images));
     } catch (e) {
       console.error(e);
@@ -128,6 +130,7 @@ export default function HomepageManager() {
         transport_hero_image: transportHero,
         maldives_hero_image: maldivesHero,
         travel_in_comfort_hero_image: travelComfortHero,
+        travel_in_comfort_fleet_images: JSON.stringify(travelFleetImages),
         why_nomadic_images: JSON.stringify(whyNomadic),
       };
       await axios.put("/api/admin/settings", payload);
@@ -227,14 +230,37 @@ export default function HomepageManager() {
 
         {activeTab === "travel" && (
           <div className="space-y-6">
-            <h2 className="text-lg font-bold text-[#030213]">Travel in Comfort Hero Image</h2>
-            <div className="max-w-xl">
+            <h2 className="text-lg font-bold text-[#030213]">Travel in Comfort Media</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <ImageUploader 
                 label="Main Hero Background" 
                 value={travelComfortHero} 
                 onChange={setTravelComfortHero} 
                 folder="travel" 
               />
+            </div>
+
+            <h2 className="text-lg font-bold text-[#030213] pt-4 border-t border-gray-100">Luxury Fleet Display Images</h2>
+            <p className="text-sm text-gray-500 mb-4">Manage the 4 vehicle images displayed in the Premium Selection section.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: "Luxury Van (Vito)", idx: 0 },
+                { label: "Luxury Sedan", idx: 1 },
+                { label: "Premium SUV", idx: 2 },
+                { label: "Luxury MPV", idx: 3 },
+              ].map((item) => (
+                <ImageUploader 
+                  key={item.idx}
+                  label={item.label} 
+                  value={travelFleetImages[item.idx]} 
+                  onChange={(url) => {
+                    const n = [...travelFleetImages];
+                    n[item.idx] = url;
+                    setTravelFleetImages(n);
+                  }} 
+                  folder="travel" 
+                />
+              ))}
             </div>
           </div>
         )}
