@@ -52,15 +52,17 @@ const REVIEWS = [
   },
 ];
 
+interface TestimonialProps {
+  featuredReview?: { quote: string; name: string; trip: string | null; avatar: string | null; source: string; rating: number } | null;
+  standardReviews?: { id?: string; quote: string; name: string; trip: string | null; avatar: string | null; source: string; rating: number }[];
+}
+
 export function Testimonials({
   featuredReview,
   standardReviews,
-}: {
-  featuredReview?: { quote: string; name: string; trip: string; avatar: string; source: string; rating: number } | null;
-  standardReviews?: { id?: string; quote: string; name: string; trip: string; avatar: string; source: string; rating: number }[];
-}) {
+}: TestimonialProps) {
   const displayFeatured = featuredReview || FEATURED;
-  const displayReviews = standardReviews && standardReviews.length > 0 ? standardReviews : REVIEWS;
+  const displayReviews = standardReviews?.length ? standardReviews : REVIEWS;
   return (
     <section
       className="relative w-full py-36 px-6 lg:px-20 overflow-hidden"
@@ -287,7 +289,7 @@ export function Testimonials({
               <div className="flex items-center justify-between mt-auto">
                 <div className="flex items-center gap-4">
                   <ImageWithFallback
-                    src={displayFeatured.avatar}
+                    src={displayFeatured.avatar || ""}
                     alt={displayFeatured.name}
                     className="w-14 h-14 rounded-full object-cover"
                     style={{ border: "2px solid rgba(244,185,66,0.2)" }}
@@ -372,7 +374,7 @@ export function Testimonials({
                 <div className="flex items-center gap-3 pt-5 border-t border-white/8">
                   <div className="relative">
                     <ImageWithFallback
-                      src={review.avatar}
+                      src={review.avatar || ""}
                       alt={review.name}
                       className="w-10 h-10 rounded-full object-cover"
                     />
@@ -402,7 +404,7 @@ export function Testimonials({
                   </div>
                   <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-[#F4B942] transition-colors" />
                 </div>
-              </motion.article>
+              </motion.div>
             ))}
           </div>
         </div>
