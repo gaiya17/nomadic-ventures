@@ -90,7 +90,7 @@ function PersistentFooter() {
       <a
         href={`mailto:${EMAIL}`}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all hover:opacity-80 flex-1 justify-center"
-        style={{ background: "rgba(137,243,255,0.12)", color: "#89F3FF", border: "1px solid rgba(137,243,255,0.25)", fontSize: 11 }}
+        style={{ background: "rgba(212,175,55,0.12)", color: "#d4af37", border: "1px solid rgba(212,175,55,0.25)", fontSize: 11 }}
       >
         <Mail className="w-3.5 h-3.5" /> Email Us
       </a>
@@ -107,7 +107,7 @@ function CardChip({ item, onNavigate }: { item: CardItem; onNavigate: () => void
       whileTap={{ scale: 0.97 }}
       onClick={() => { item.action(); onNavigate(); }}
       className="w-full flex items-center gap-3 p-3 rounded-xl text-left group transition-all"
-      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(137,243,255,0.12)" }}
+      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(212,175,55,0.12)" }}
     >
       <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
         <img
@@ -121,7 +121,7 @@ function CardChip({ item, onNavigate }: { item: CardItem; onNavigate: () => void
         <div className="text-white text-sm font-medium truncate" style={{ fontFamily: "'Clash Display', sans-serif" }}>{item.name}</div>
         <div className="text-white/50 text-xs mt-0.5 truncate">{item.sub}</div>
       </div>
-      <ExternalLink className="w-3.5 h-3.5 text-white/30 group-hover:text-[#89F3FF] transition-colors flex-shrink-0" />
+      <ExternalLink className="w-3.5 h-3.5 text-white/30 group-hover:text-[#d4af37] transition-colors flex-shrink-0" />
     </motion.button>
   );
 }
@@ -143,8 +143,8 @@ function BotMessage({ message }: { message: Message }) {
   if (content.type === "text") {
     return (
       <div className="flex gap-2">
-        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(137,243,255,0.15)" }}>
-          <Sparkles className="w-3.5 h-3.5" style={{ color: "#89F3FF" }} />
+        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(212,175,55,0.15)" }}>
+          <Sparkles className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
         </div>
         <div className="max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed" style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.88)", border: "1px solid rgba(255,255,255,0.08)", borderBottomLeftRadius: 6 }}>
           {renderText(content.text)}
@@ -156,8 +156,8 @@ function BotMessage({ message }: { message: Message }) {
   if (content.type === "menu") {
     return (
       <div className="flex gap-2">
-        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(137,243,255,0.15)" }}>
-          <Sparkles className="w-3.5 h-3.5" style={{ color: "#89F3FF" }} />
+        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(212,175,55,0.15)" }}>
+          <Sparkles className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
         </div>
         <div className="flex flex-col gap-1.5 max-w-[85%]">
           {content.items.map((item, i) => (
@@ -170,11 +170,11 @@ function BotMessage({ message }: { message: Message }) {
               whileTap={{ scale: 0.97 }}
               onClick={item.action}
               className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-left transition-all group"
-              style={{ background: "rgba(137,243,255,0.07)", border: "1px solid rgba(137,243,255,0.18)", color: "rgba(255,255,255,0.85)" }}
+              style={{ background: "rgba(212,175,55,0.07)", border: "1px solid rgba(212,175,55,0.18)", color: "rgba(255,255,255,0.85)" }}
             >
               <span className="text-base">{item.icon}</span>
               <span className="text-sm flex-1">{item.label}</span>
-              <ChevronLeft className="w-3.5 h-3.5 text-white/30 group-hover:text-[#89F3FF] rotate-180 transition-colors" />
+              <ChevronLeft className="w-3.5 h-3.5 text-white/30 group-hover:text-[#d4af37] rotate-180 transition-colors" />
             </motion.button>
           ))}
         </div>
@@ -185,8 +185,8 @@ function BotMessage({ message }: { message: Message }) {
   if (content.type === "card-list") {
     return (
       <div className="flex gap-2 w-full">
-        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(137,243,255,0.15)" }}>
-          <Sparkles className="w-3.5 h-3.5" style={{ color: "#89F3FF" }} />
+        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(212,175,55,0.15)" }}>
+          <Sparkles className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
         </div>
         <div className="flex flex-col gap-2 flex-1">
           {content.items.map((item, i) => (
@@ -202,10 +202,10 @@ function BotMessage({ message }: { message: Message }) {
   if (content.type === "contact") {
     return (
       <div className="flex gap-2">
-        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(137,243,255,0.15)" }}>
-          <Sparkles className="w-3.5 h-3.5" style={{ color: "#89F3FF" }} />
+        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(212,175,55,0.15)" }}>
+          <Sparkles className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
         </div>
-        <div className="rounded-2xl p-4 flex-1 space-y-3" style={{ background: "rgba(137,243,255,0.07)", border: "1px solid rgba(137,243,255,0.2)" }}>
+        <div className="rounded-2xl p-4 flex-1 space-y-3" style={{ background: "rgba(212,175,55,0.07)", border: "1px solid rgba(212,175,55,0.2)" }}>
           <div className="text-white font-semibold text-sm mb-3" style={{ fontFamily: "'Clash Display', sans-serif" }}>Get In Touch</div>
           {[
             { icon: <MapPin className="w-3.5 h-3.5" />, label: ADDRESS },
@@ -214,7 +214,7 @@ function BotMessage({ message }: { message: Message }) {
             { icon: <Clock className="w-3.5 h-3.5" />, label: HOURS },
           ].map((row, i) => (
             <div key={i} className="flex items-center gap-2.5 text-xs text-white/75">
-              <span style={{ color: "#89F3FF" }}>{row.icon}</span>
+              <span style={{ color: "#d4af37" }}>{row.icon}</span>
               {row.label}
             </div>
           ))}
@@ -226,10 +226,10 @@ function BotMessage({ message }: { message: Message }) {
   if (content.type === "about") {
     return (
       <div className="flex gap-2">
-        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(137,243,255,0.15)" }}>
-          <Sparkles className="w-3.5 h-3.5" style={{ color: "#89F3FF" }} />
+        <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 mt-1" style={{ background: "rgba(212,175,55,0.15)" }}>
+          <Sparkles className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
         </div>
-        <div className="rounded-2xl p-4 flex-1" style={{ background: "rgba(137,243,255,0.07)", border: "1px solid rgba(137,243,255,0.2)" }}>
+        <div className="rounded-2xl p-4 flex-1" style={{ background: "rgba(212,175,55,0.07)", border: "1px solid rgba(212,175,55,0.2)" }}>
           <div className="text-white font-semibold text-sm mb-2" style={{ fontFamily: "'Clash Display', sans-serif" }}>About Us</div>
           <p className="text-white/70 text-xs leading-relaxed">{ABOUT_BLURB}</p>
         </div>
@@ -244,7 +244,7 @@ function BotMessage({ message }: { message: Message }) {
 function UserMessage({ text }: { text: string }) {
   return (
     <div className="flex justify-end">
-      <div className="max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed font-medium" style={{ background: "linear-gradient(135deg, #89F3FF 0%, #4db8cc 100%)", color: "#021830", borderBottomRightRadius: 6 }}>
+      <div className="max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed font-medium" style={{ background: "linear-gradient(135deg, #d4af37 0%, #caa052 100%)", color: "#021830", borderBottomRightRadius: 6 }}>
         {text}
       </div>
     </div>
@@ -257,7 +257,7 @@ function SkeletonLoader() {
     <div className="space-y-3 px-4">
       {[80, 60, 90].map((w, i) => (
         <div key={i} className="flex gap-2">
-          <div className="w-7 h-7 rounded-xl flex-shrink-0" style={{ background: "rgba(137,243,255,0.1)" }} />
+          <div className="w-7 h-7 rounded-xl flex-shrink-0" style={{ background: "rgba(212,175,55,0.1)" }} />
           <div className="h-9 rounded-xl animate-pulse" style={{ width: `${w}%`, background: "rgba(255,255,255,0.06)" }} />
         </div>
       ))}
@@ -516,17 +516,17 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
             style={{
               width: 360,
               height: 560,
-              background: "linear-gradient(145deg, #0d1b2a 0%, #0a1628 100%)",
-              border: "1px solid rgba(137,243,255,0.18)",
-              boxShadow: "0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(137,243,255,0.08)",
+              background: "linear-gradient(145deg, #121212 0%, #080808 100%)",
+              border: "1px solid rgba(212,175,55,0.18)",
+              boxShadow: "0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(212,175,55,0.08)",
             }}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-5 py-4 flex-shrink-0"
-              style={{ background: "linear-gradient(135deg, #1a3a5c 0%, #0d2640 100%)", borderBottom: "1px solid rgba(137,243,255,0.12)" }}>
+              style={{ background: "linear-gradient(135deg, #1a150b 0%, #0d0a04 100%)", borderBottom: "1px solid rgba(212,175,55,0.12)" }}>
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #89F3FF 0%, #4db8cc 100%)", boxShadow: "0 4px 15px rgba(137,243,255,0.35)" }}>
-                <Bot className="w-5 h-5 text-[#021830]" />
+                style={{ background: "transparent", border: "1px solid rgba(212,175,55,0.4)", boxShadow: "0 4px 15px rgba(212,175,55,0.15)" }}>
+                <img src="/nova-icon.png" alt="Nova" className="w-full h-full object-cover rounded-full" />
               </div>
               <div className="flex-1">
                 <div className="text-white font-semibold" style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 15 }}>Nova</div>
@@ -543,7 +543,7 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
                   transition={{ duration: 0.35 }}
                   onClick={() => resetChat(chatData)}
                   title="Start Over"
-                  className="w-8 h-8 rounded-xl flex items-center justify-center text-white/40 hover:text-[#89F3FF] hover:bg-white/10 transition-colors mr-1"
+                  className="w-8 h-8 rounded-xl flex items-center justify-center text-white/40 hover:text-[#d4af37] hover:bg-white/10 transition-colors mr-1"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </motion.button>
@@ -571,7 +571,7 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
             </div>
 
             {/* Persistent Footer — WhatsApp + Email always visible */}
-            <div className="flex-shrink-0" style={{ borderTop: "1px solid rgba(137,243,255,0.08)" }}>
+            <div className="flex-shrink-0" style={{ borderTop: "1px solid rgba(212,175,55,0.08)" }}>
               <PersistentFooter />
             </div>
           </motion.div>
@@ -586,26 +586,26 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
         onClick={() => open ? setOpen(false) : handleOpen()}
         className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
         style={{
-          background: open ? "linear-gradient(135deg, #1a3a5c, #0d2640)" : "linear-gradient(135deg, #89F3FF 0%, #4db8cc 100%)",
-          border: "1px solid rgba(137,243,255,0.3)",
-          boxShadow: "0 8px 30px rgba(137,243,255,0.35)",
+          background: open ? "linear-gradient(135deg, #1a150b, #0d0a04)" : "#121212",
+          border: "1px solid rgba(212,175,55,0.3)",
+          boxShadow: "0 8px 30px rgba(212,175,55,0.35)",
         }}
         title="Chat with Nova"
       >
         <AnimatePresence mode="wait">
           {open ? (
             <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <X className="w-6 h-6 text-[#89F3FF]" />
+              <X className="w-6 h-6 text-[#d4af37]" />
             </motion.span>
           ) : (
             <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-              <MessageCircle className="w-6 h-6 text-[#021830]" />
+              <img src="/nova-icon.png" alt="Chat" className="w-full h-full object-cover rounded-full p-1" />
             </motion.span>
           )}
         </AnimatePresence>
         {showPulse && !open && (
           <>
-            <motion.span className="absolute inset-0 rounded-full" style={{ border: "2px solid rgba(137,243,255,0.5)" }}
+            <motion.span className="absolute inset-0 rounded-full" style={{ border: "2px solid rgba(212,175,55,0.5)" }}
               animate={{ scale: [1, 1.5], opacity: [0.8, 0] }} transition={{ duration: 1.5, repeat: Infinity }} />
             <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-white" style={{ background: "#ef4444", fontSize: 9 }}>1</span>
           </>
@@ -675,3 +675,4 @@ export function FloatingWidgets() {
     </div>
   );
 }
+
