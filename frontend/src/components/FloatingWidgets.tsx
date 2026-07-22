@@ -583,11 +583,11 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
         <AnimatePresence>
           {!open && (
             <motion.div
-              initial={{ opacity: 0, x: 10, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 10, scale: 0.9 }}
+              initial={{ opacity: 0, y: 10, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.9 }}
               transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
-              className="absolute right-[68px] top-1/2 -translate-y-1/2 px-4 py-2.5 rounded-2xl shadow-2xl flex items-center whitespace-nowrap cursor-pointer origin-right z-10"
+              className="absolute bottom-[70px] right-0 px-4 py-2.5 rounded-2xl shadow-2xl flex items-center whitespace-nowrap cursor-pointer origin-bottom z-10"
               style={{
                 background: "linear-gradient(135deg, #121212 0%, #080808 100%)",
                 border: "1px solid rgba(212,175,55,0.3)",
@@ -595,7 +595,7 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
               onClick={() => handleOpen()}
             >
               <span className="text-sm font-semibold tracking-wide" style={{ color: "#d4af37", fontFamily: "'Clash Display', sans-serif" }}>Plan Your Trip ✨</span>
-              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rotate-45" style={{ background: "#0c0c0c", borderTop: "1px solid rgba(212,175,55,0.3)", borderRight: "1px solid rgba(212,175,55,0.3)" }} />
+              <div className="absolute bottom-[-6.5px] right-[22px] w-3 h-3 rotate-45" style={{ background: "#0c0c0c", borderBottom: "1px solid rgba(212,175,55,0.3)", borderRight: "1px solid rgba(212,175,55,0.3)" }} />
             </motion.div>
           )}
         </AnimatePresence>
