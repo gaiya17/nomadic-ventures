@@ -402,8 +402,8 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
 
   // Render the page without conditionally returning PageLoader to prevent FOUC
   // The layout will hydrate with static data and update smoothly once DB data loads.
-  const allResorts = dbCategories.flatMap(c => c.resorts?.map((r: any) => r.resort) || []);
-  const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id, r])).values());
+  const allResorts = dbCategories.flatMap(c => c.resorts?.map((r: any) => r.resort || r) || []);
+  const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id || r.name, r])).values());
   const totalResortsCount = uniqueResorts.length;
   const avgRating = totalResortsCount > 0 
     ? (uniqueResorts.reduce((acc, r) => acc + (r.stars || 5), 0) / totalResortsCount).toFixed(2) 
