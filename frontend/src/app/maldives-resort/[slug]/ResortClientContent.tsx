@@ -287,7 +287,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="max-w-2xl"
+                className="w-full pr-4 xl:pr-12"
                 style={{
                   fontSize: 15,
                   lineHeight: 1.75,
