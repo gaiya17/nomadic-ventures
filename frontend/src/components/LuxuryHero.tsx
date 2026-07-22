@@ -57,10 +57,17 @@ export function LuxuryHero({ heroImage }: { heroImage?: string }) {
 
       {/* ── Social icons ── */}
       <div className="hidden md:flex flex-col gap-3 fixed right-6 top-1/2 -translate-y-1/2 z-40">
-        {[Instagram, Facebook, Music2, Linkedin].map((Icon, i) => (
+        {[
+          { Icon: Facebook, link: "https://www.facebook.com/NomadicVenturesSriLanka/" },
+          { Icon: Instagram, link: "https://www.instagram.com/nomadic_ventures_srilanka/" },
+          { Icon: Music2, link: "#" },
+          { Icon: Linkedin, link: "#" },
+        ].map(({ Icon, link }, i) => (
           <motion.a
             key={i}
-            href="#"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.15, boxShadow: `0 0 24px ${SL.glow}` }}
             className="w-10 h-10 rounded-full flex items-center justify-center border text-white/80 hover:text-white"
             style={{

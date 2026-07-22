@@ -13,10 +13,10 @@ import {
 import { Logo } from "./Logo";
 
 const SOCIALS = [
-  { Icon: Instagram, label: "Instagram" },
-  { Icon: Facebook, label: "Facebook" },
-  { Icon: Music2, label: "TikTok" },
-  { Icon: Linkedin, label: "LinkedIn" },
+  { Icon: Facebook, label: "Facebook", link: "https://www.facebook.com/NomadicVenturesSriLanka/" },
+  { Icon: Instagram, label: "Instagram", link: "https://www.instagram.com/nomadic_ventures_srilanka/" },
+  { Icon: Music2, label: "TikTok", link: "#" },
+  { Icon: Linkedin, label: "LinkedIn", link: "#" },
 ];
 
 export function FooterClient({
@@ -86,10 +86,12 @@ export function FooterClient({
 
             {/* Socials */}
             <div className="flex items-center gap-2">
-              {SOCIALS.map(({ Icon, label }) => (
+              {SOCIALS.map(({ Icon, label, link }) => (
                 <motion.a
                   key={label}
-                  href="#"
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   whileHover={{
                     y: -3,
