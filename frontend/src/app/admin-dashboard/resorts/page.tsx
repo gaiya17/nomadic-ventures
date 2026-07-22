@@ -7,6 +7,7 @@ import ResortWizard from "@/components/admin/ResortWizard";
 
 export default function ResortsManager() {
   const [resorts, setResorts] = useState<any[]>([]);
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,25 +18,22 @@ export default function ResortsManager() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const dynamicCategories = [
-    "All",
-    ...Array.from(
-      new Set(
-        resorts
-          .flatMap((r) => r.categories.map((c: any) => c.category?.name))
-          .filter(Boolean)
-      )
-    ),
-  ];
+  const dynamicCategories = ["All", ...dbCategories.map((c: any) => c.name)];
 
   const fetchResorts = async () => {
     try {
-      const res = await axios.get("/api/admin/resorts");
-      if (res.data.success) {
-        setResorts(res.data.resorts);
+      const [resortsRes, categoriesRes] = await Promise.all([
+        axios.get("/api/admin/resorts"),
+        axios.get("/api/admin/resorts/categories"),
+      ]);
+      if (resortsRes.data.success) {
+        setResorts(resortsRes.data.resorts);
+      }
+      if (categoriesRes.data.success) {
+        setDbCategories(categoriesRes.data.categories);
       }
     } catch (error) {
-      console.error("Failed to fetch resorts", error);
+      console.error("Failed to fetch data", error);
     } finally {
       setIsLoading(false);
     }
