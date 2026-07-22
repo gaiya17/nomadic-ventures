@@ -25,8 +25,56 @@ import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { AnimatePresence } from "motion/react";
 
+const COUNTRIES = [
+  { name: "Australia", code: "+61" },
+  { name: "Canada", code: "+1" },
+  { name: "France", code: "+33" },
+  { name: "Germany", code: "+49" },
+  { name: "India", code: "+91" },
+  { name: "Maldives", code: "+960" },
+  { name: "Singapore", code: "+65" },
+  { name: "Sri Lanka", code: "+94" },
+  { name: "United Arab Emirates", code: "+971" },
+  { name: "United Kingdom", code: "+44" },
+  { name: "United States", code: "+1" },
+  { name: "Other", code: "" }
+];
+
 export function TourClientContent({ tour }: { tour: any }) {
   const [activeDay, setActiveDay] = useState(0);
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    mobileNo: "",
+    adults: "2",
+    children: "0",
+    infants: "0",
+    package: tour ? tour.name : "",
+    travelDate: "",
+    noOfNights: "7",
+    description: "",
+  });
+
+  const handleCountryChange = (countryName: string) => {
+    const country = COUNTRIES.find((c) => c.name === countryName);
+    let newMobile = form.mobileNo;
+    if (country && country.code) {
+      if (!form.mobileNo) {
+        newMobile = country.code + " ";
+      } else {
+        const oldCountry = COUNTRIES.find((c) => c.name === form.country);
+        if (oldCountry && oldCountry.code && form.mobileNo.startsWith(oldCountry.code)) {
+          newMobile = form.mobileNo.replace(oldCountry.code, country.code);
+        } else if (!form.mobileNo.startsWith("+")) {
+          newMobile = country.code + " " + form.mobileNo;
+        }
+      }
+    }
+    setForm((prev) => ({ ...prev, country: countryName, mobileNo: newMobile }));
+  };
 
   if (!tour) {
     return (
@@ -275,49 +323,152 @@ export function TourClientContent({ tour }: { tour: any }) {
                 </span>
               </div>
 
-              <div className="space-y-3 mb-6">
-                <FloatRow
-                  icon={Calendar}
-                  label="Travel month"
-                  value="Nov 2026"
-                />
-                <FloatRow icon={Users} label="Travellers" value="2 adults" />
-                <FloatRow
-                  icon={Compass}
-                  label="Departure"
-                  value="Colombo (CMB)"
-                />
-              </div>
+              <form onSubmit={(e) => e.preventDefault()} className="space-y-4 mb-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <Field
+                    label="First name"
+                    value={form.firstName}
+                    onChange={(v) => setForm({ ...form, firstName: v })}
+                    placeholder="Anjali"
+                    minLength={2}
+                  />
+                  <Field
+                    label="Last name"
+                    value={form.lastName}
+                    onChange={(v) => setForm({ ...form, lastName: v })}
+                    placeholder="Perera"
+                    minLength={2}
+                  />
+                </div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center justify-center gap-3 py-3.5 rounded-full"
-                style={{
-                  background: "linear-gradient(135deg, #F4B942, #E8A923)",
-                  color: "#07120E",
-                  fontSize: 13,
-                  letterSpacing: "0.18em",
-                  boxShadow: "0 18px 50px rgba(244,185,66,0.35)",
-                }}
-              >
-                CUSTOMISE THIS TRIP
-                <ArrowUpRight className="w-4 h-4" />
-              </motion.button>
+                <Field
+                  label="Email address"
+                  type="email"
+                  value={form.email}
+                  onChange={(v) => setForm({ ...form, email: v })}
+                  placeholder="anjali@email.com"
+                />
 
-              <Link
-                href="/plan-trip"
-                className="mt-3 w-full flex items-center justify-center gap-3 py-3 rounded-full border transition-colors hover:bg-white/5"
-                style={{
-                  borderColor: "rgba(255,255,255,0.18)",
-                  color: "white",
-                  fontSize: 12,
-                  letterSpacing: "0.18em",
-                }}
-              >
-                <Headphones className="w-4 h-4" style={{ color: "#89F3FF" }} />
-                TALK TO A DESIGNER
-              </Link>
+                <div className="grid grid-cols-2 gap-4">
+                  <SelectField
+                    label="Country"
+                    value={form.country}
+                    onChange={handleCountryChange}
+                    options={[
+                      { label: "Select Country", value: "" },
+                      ...COUNTRIES.map((c) => ({ label: c.name, value: c.name })),
+                    ]}
+                  />
+                  <Field
+                    label="Mobile No"
+                    type="tel"
+                    value={form.mobileNo}
+                    onChange={(v) => setForm({ ...form, mobileNo: v })}
+                    placeholder="+94 77 123 4567"
+                    pattern="^[+0-9 ]+$"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <SelectField
+                    label="Adults"
+                    value={form.adults}
+                    onChange={(v) => setForm({ ...form, adults: v })}
+                    options={Array.from({ length: 15 }, (_, i) => ({
+                      label: String(i + 1),
+                      value: String(i + 1),
+                    }))}
+                  />
+                  <SelectField
+                    label="Children"
+                    value={form.children}
+                    onChange={(v) => setForm({ ...form, children: v })}
+                    options={Array.from({ length: 11 }, (_, i) => ({
+                      label: String(i),
+                      value: String(i),
+                    }))}
+                  />
+                  <SelectField
+                    label="Infants"
+                    value={form.infants}
+                    onChange={(v) => setForm({ ...form, infants: v })}
+                    options={Array.from({ length: 11 }, (_, i) => ({
+                      label: String(i),
+                      value: String(i),
+                    }))}
+                  />
+                </div>
+
+                <Field
+                  label="Package"
+                  value={form.package}
+                  onChange={(v) => {}}
+                  readOnly={true}
+                  placeholder="Tour Name"
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Field
+                    label="Travel date"
+                    type="date"
+                    icon={Calendar}
+                    value={form.travelDate}
+                    onChange={(v) => setForm({ ...form, travelDate: v })}
+                    min={new Date().toISOString().split("T")[0]}
+                  />
+                  <SelectField
+                    label="No of nights"
+                    value={form.noOfNights}
+                    onChange={(v) => setForm({ ...form, noOfNights: v })}
+                    options={Array.from({ length: 30 }, (_, i) => ({
+                      label: String(i + 1) + " Nights",
+                      value: String(i + 1),
+                    }))}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className="block mb-1.5"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.2em",
+                      color: "rgba(255,255,255,0.5)",
+                    }}
+                  >
+                    DESCRIPTIONS
+                  </label>
+                  <textarea
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    placeholder="Tell us what you're dreaming of..."
+                    rows={3}
+                    className="w-full bg-transparent outline-none px-3 py-2.5 rounded-[12px] border placeholder:text-white/35 text-white resize-none"
+                    style={{
+                      fontSize: 13,
+                      background: "rgba(7,18,14,0.5)",
+                      borderColor: "rgba(244,185,66,0.14)",
+                    }}
+                  />
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 rounded-full"
+                  style={{
+                    background: "linear-gradient(135deg, #F4B942, #E8A923)",
+                    color: "#07120E",
+                    fontSize: 13,
+                    letterSpacing: "0.18em",
+                    boxShadow: "0 18px 50px rgba(244,185,66,0.35)",
+                  }}
+                >
+                  INQUIRE NOW
+                  <ArrowUpRight className="w-4 h-4" />
+                </motion.button>
+              </form>
 
               <div
                 className="mt-5 pt-5 border-t flex items-center justify-between"
@@ -823,30 +974,133 @@ export function TourClientContent({ tour }: { tour: any }) {
   );
 }
 
-function FloatRow({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: any;
-  label: string;
-  value: string;
-}) {
+function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="flex items-center justify-between px-4 py-3 rounded-[14px] border"
+    <label
+      className="block mb-1.5"
       style={{
-        background: "rgba(7,18,14,0.5)",
-        borderColor: "rgba(255,255,255,0.10)",
+        fontSize: 10,
+        letterSpacing: "0.2em",
+        color: "rgba(255,255,255,0.5)",
       }}
     >
-      <div className="flex items-center gap-3">
-        <Icon className="w-4 h-4" style={{ color: "rgba(255,255,255,0.55)" }} />
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>
-          {label}
-        </span>
+      {children?.toString().toUpperCase()}
+    </label>
+  );
+}
+
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  icon: Icon,
+  className,
+  readOnly,
+  required = true,
+  min,
+  minLength,
+  pattern,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  type?: string;
+  icon?: any;
+  className?: string;
+  readOnly?: boolean;
+  required?: boolean;
+  min?: string;
+  minLength?: number;
+  pattern?: string;
+}) {
+  return (
+    <div className={className}>
+      <FieldLabel>{label}</FieldLabel>
+      <div
+        className="flex items-center gap-2 px-3 py-2.5 rounded-[12px] border"
+        style={{
+          background: "rgba(7,18,14,0.5)",
+          borderColor: "rgba(244,185,66,0.14)",
+        }}
+      >
+        {Icon && (
+          <Icon
+            className="w-3.5 h-3.5 shrink-0"
+            style={{ color: "rgba(244,185,66,0.5)" }}
+          />
+        )}
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          required={required}
+          min={min}
+          minLength={minLength}
+          pattern={pattern}
+          className={`bg-transparent outline-none flex-1 placeholder:text-white/35 text-white [color-scheme:dark] min-w-0 ${readOnly ? "opacity-60 cursor-not-allowed" : ""}`}
+          style={{ fontSize: 13 }}
+        />
       </div>
-      <span style={{ fontSize: 13, color: "white" }}>{value}</span>
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+  icon: Icon,
+  className,
+  required = true,
+}: {
+  label?: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: (string | { label: string; value: string })[];
+  icon?: any;
+  className?: string;
+  required?: boolean;
+}) {
+  return (
+    <div className={className}>
+      {label && <FieldLabel>{label}</FieldLabel>}
+      <div
+        className="flex items-center gap-2 px-3 py-2.5 rounded-[12px] border"
+        style={{
+          background: "rgba(7,18,14,0.5)",
+          borderColor: "rgba(244,185,66,0.14)",
+        }}
+      >
+        {Icon && (
+          <Icon
+            className="w-3.5 h-3.5 shrink-0"
+            style={{ color: "rgba(244,185,66,0.5)" }}
+          />
+        )}
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+          className="bg-transparent outline-none flex-1 text-white appearance-none cursor-pointer min-w-0"
+          style={{ fontSize: 13 }}
+        >
+          {options.map((opt) => {
+            const val = typeof opt === "string" ? opt : opt.value;
+            const lbl = typeof opt === "string" ? opt : opt.label;
+            return (
+              <option key={val} value={val} style={{ background: "#07120E" }}>
+                {lbl}
+              </option>
+            );
+          })}
+        </select>
+      </div>
     </div>
   );
 }
