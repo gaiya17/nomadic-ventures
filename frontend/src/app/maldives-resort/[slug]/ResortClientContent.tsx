@@ -505,8 +505,8 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
         >
           {[
             { label: "Location", value: resort.atoll },
-            { label: "Transfer Method", value: "Seaplane / Speedboat" },
-            { label: "Duration", value: resort.duration }
+            { label: "Transfer Method", value: resort.transferMethod || "Seaplane / Speedboat" },
+            { label: "Duration", value: resort.duration?.toString().toLowerCase().includes("min") ? resort.duration : `${resort.duration} Mins` }
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-4">
               <div
@@ -756,7 +756,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
               <div className="grid grid-cols-3 gap-4 pt-6 border-t" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
                 <div>
                   <div className="text-[10px] tracking-widest text-[#F4B942] uppercase font-bold mb-1">Room Size</div>
-                  <div className="text-white text-sm font-medium">{resort.villaTypes[activeVilla].size}</div>
+                  <div className="text-white text-sm font-medium">{resort.villaTypes[activeVilla].size?.toString().toLowerCase().includes("m") || resort.villaTypes[activeVilla].size?.toString().toLowerCase().includes("sq") ? resort.villaTypes[activeVilla].size : `${resort.villaTypes[activeVilla].size} m²`}</div>
                 </div>
                 <div>
                   <div className="text-[10px] tracking-widest text-[#F4B942] uppercase font-bold mb-1">Capacity</div>
