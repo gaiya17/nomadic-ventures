@@ -384,18 +384,18 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     let gallery = [...STATIC_COLLECTIONS[idx]?.gallery || []];
 
     return {
-      id: cat.slug,
+      id: cat.slug || cat.id,
       num,
       name: cat.name,
       short: cat.name,
-      blurb: cat.description || "",
+      blurb: cat.description || cat.blurb || "",
       hero: defaultHero,
       gallery: gallery,
       count: `${categoryResorts.length} Resort${categoryResorts.length !== 1 ? 's' : ''}`,
       from: categoryResorts.length > 0 ? `$${categoryResorts[0].price}` : "On Request",
       duration: "Flexible",
       vibe: "Collection",
-      highlights: cat.whatDefines ? cat.whatDefines.split(",").map((d: string) => d.trim()).filter((d: string) => d) : [],
+      highlights: cat.whatDefines ? cat.whatDefines.split(",").map((d: string) => d.trim()).filter((d: string) => d) : (cat.highlights || []),
       resorts: categoryResorts
     };
   });
