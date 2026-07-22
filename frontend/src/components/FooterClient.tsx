@@ -51,7 +51,7 @@ export function FooterClient({
 
             <p
               className="text-white/60 mb-8 max-w-[360px]"
-              style={{ fontSize: 14, lineHeight: 1.7 }}
+              style={{ fontSize: 15.5, lineHeight: 1.7 }}
             >
               Nomadic Ventures designs personal, unforgettable journeys across Sri Lanka and
               the Maldives — from cultural pilgrimages to overwater retreats,
@@ -60,23 +60,23 @@ export function FooterClient({
 
             {/* Contact */}
             <div className="space-y-4 mb-8">
-              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 13, lineHeight: 1.6 }}>
+              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 14.5, lineHeight: 1.6 }}>
                 <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.25)", color: "#d4af37" }}>
                   <MapPin className="w-3 h-3" />
                 </div>
                 <span>No 6 /12, 3rd Lane, Nawala Road,<br/>Rajagiriya, Sri Lanka</span>
               </div>
-              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 13, lineHeight: 1.6 }}>
+              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 14.5, lineHeight: 1.6 }}>
                 <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.25)", color: "#d4af37" }}>
                   <Phone className="w-3 h-3" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <span>0094 112 474 472</span>
-                  <span>0094 77 17 66 134 <span className="text-white/40 ml-1">(Call / WhatsApp)</span></span>
-                  <span>0094 77 11 56 646 <span className="text-white/40 ml-1">(WhatsApp)</span></span>
+                  <span>+94 112 474 472</span>
+                  <span>+94 77 17 66 134 <span className="text-white/40 ml-1">(Call / WhatsApp)</span></span>
+                  <span>+94 77 11 56 646 <span className="text-white/40 ml-1">(WhatsApp)</span></span>
                 </div>
               </div>
-              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 13, lineHeight: 1.6 }}>
+              <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 14.5, lineHeight: 1.6 }}>
                 <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.25)", color: "#d4af37" }}>
                   <Mail className="w-3 h-3" />
                 </div>
@@ -114,7 +114,7 @@ export function FooterClient({
             
             {/* SRI LANKA */}
             <div>
-              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 11, letterSpacing: "0.25em" }}>
+              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 12.5, letterSpacing: "0.25em" }}>
                 SRI LANKA
               </div>
               <ul className="space-y-4">
@@ -123,7 +123,7 @@ export function FooterClient({
                     <a
                       href={`/journeys?category=${cat.slug}`}
                       className="text-white/60 hover:text-[#d4af37] transition-colors flex items-center gap-2 group"
-                      style={{ fontSize: 13.5 }}
+                      style={{ fontSize: 15 }}
                     >
                       {cat.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -135,7 +135,7 @@ export function FooterClient({
 
             {/* MALDIVES */}
             <div>
-              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 11, letterSpacing: "0.25em" }}>
+              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 12.5, letterSpacing: "0.25em" }}>
                 MALDIVES
               </div>
               <ul className="space-y-4">
@@ -144,7 +144,7 @@ export function FooterClient({
                     <a
                       href={`/maldives-resort?category=${cat.slug}`}
                       className="text-white/60 hover:text-[#d4af37] transition-colors flex items-center gap-2 group"
-                      style={{ fontSize: 13.5 }}
+                      style={{ fontSize: 15 }}
                     >
                       {cat.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -156,7 +156,7 @@ export function FooterClient({
 
             {/* COMPANY */}
             <div>
-              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 11, letterSpacing: "0.25em" }}>
+              <div className="text-[#d4af37] mb-6 font-semibold" style={{ fontSize: 12.5, letterSpacing: "0.25em" }}>
                 COMPANY
               </div>
               <ul className="space-y-4">
@@ -169,7 +169,7 @@ export function FooterClient({
                     <a
                       href={item.link}
                       className="text-white/60 hover:text-[#d4af37] transition-colors flex items-center gap-2 group"
-                      style={{ fontSize: 13.5 }}
+                      style={{ fontSize: 15 }}
                     >
                       {item.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -189,7 +189,7 @@ export function FooterClient({
         >
           <div
             className="text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1 justify-center md:justify-start"
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 13.5 }}
           >
             <span>© {new Date().getFullYear()} Nomadic Ventures.</span>
             <span className="text-[#d4af37]/40">·</span>
@@ -198,7 +198,7 @@ export function FooterClient({
 
           <div
             className="flex items-center gap-6 text-white/50"
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 13.5 }}
           >
             <a href="#" className="hover:text-[#d4af37] transition-colors">Privacy</a>
             <a href="#" className="hover:text-[#d4af37] transition-colors">Terms</a>
@@ -208,7 +208,7 @@ export function FooterClient({
 
           <div
             className="flex items-center gap-2 text-[#d4af37]/70"
-            style={{ fontSize: 11, letterSpacing: "0.05em" }}
+            style={{ fontSize: 12.5, letterSpacing: "0.05em" }}
           >
             <span
               className="w-1.5 h-1.5 rounded-full"
