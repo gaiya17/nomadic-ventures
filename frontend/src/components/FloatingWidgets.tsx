@@ -583,7 +583,7 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
         id="chatbot-fab"
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        onClick={handleOpen}
+        onClick={() => open ? setOpen(false) : handleOpen()}
         className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
         style={{
           background: open ? "linear-gradient(135deg, #1a3a5c, #0d2640)" : "linear-gradient(135deg, #89F3FF 0%, #4db8cc 100%)",
