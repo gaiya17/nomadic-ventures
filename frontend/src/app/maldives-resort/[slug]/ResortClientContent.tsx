@@ -287,7 +287,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="max-w-xl"
+                className="max-w-2xl"
                 style={{
                   fontSize: 15,
                   lineHeight: 1.75,
@@ -568,47 +568,31 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            className="flex flex-wrap gap-4"
           >
             {resort.facilities.map((f: string, i: number) => (
               <div
                 key={i}
-                className="group relative overflow-hidden rounded-[24px] border p-6 flex flex-col justify-between"
+                className="group relative overflow-hidden rounded-full border px-7 py-4 flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(137,243,255,0.15)] cursor-default"
                 style={{
-                  background:
-                    "linear-gradient(145deg, rgba(2,24,48,0.4) 0%, rgba(137,243,255,0.03) 100%)",
-                  borderColor: "rgba(137,243,255,0.1)",
+                  background: "linear-gradient(145deg, rgba(2,24,48,0.4) 0%, rgba(137,243,255,0.03) 100%)",
+                  borderColor: "rgba(137,243,255,0.15)",
                   backdropFilter: "blur(20px)",
-                  minHeight: "160px",
                 }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110"
+                  className="w-2.5 h-2.5 rounded-full transition-all duration-300 group-hover:scale-150"
                   style={{
-                    background: "rgba(137,243,255,0.08)",
-                    border: "1px solid rgba(137,243,255,0.25)",
-                    fontFamily: "'Clash Display', sans-serif",
-                    color: "#89F3FF",
-                    fontSize: 15,
-                    letterSpacing: "0.05em",
-                    boxShadow: "0 4px 20px rgba(137,243,255,0.15) inset",
+                    background: "#89F3FF",
+                    boxShadow: "0 0 12px rgba(137,243,255,0.8)",
                   }}
-                >
-                  {(i + 1).toString().padStart(2, "0")}
-                </div>
+                />
                 <h3
-                  className="text-white text-[15px] leading-tight font-medium"
+                  className="text-white text-[15px] leading-none font-medium whitespace-nowrap pt-[2px]"
                   style={{ letterSpacing: "0.02em" }}
                 >
                   {f}
                 </h3>
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 80% 20%, rgba(137,243,255,0.15) 0%, transparent 60%)",
-                  }}
-                />
               </div>
             ))}
           </motion.div>
