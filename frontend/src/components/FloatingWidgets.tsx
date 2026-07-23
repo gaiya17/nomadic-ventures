@@ -17,7 +17,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const WA_NUMBER = "919876543210"; // ← Replace with your real number
+const WA_NUMBER = "94715233845"; // ← Replace with your real number
 const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
 const EMAIL = "hello@nomadicventures.com"; // ← Replace
 const PHONE = "+94 XXX XXX XXX"; // ← Replace
