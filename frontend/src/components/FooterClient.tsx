@@ -72,7 +72,7 @@ export function FooterClient({
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <span>+94 112 474 472 <span className="text-white/40 ml-1">(Call)</span></span>
-                  <span>+94 71 523 3845 <span className="text-white/40 ml-1">(WhatsApp)</span></span>
+                  <span>{process.env.NEXT_PUBLIC_WHATSAPP_DISPLAY || "0715233845"} <span className="text-white/40 ml-1">(WhatsApp)</span></span>
                 </div>
               </div>
               <div className="flex items-start gap-3 text-white/70" style={{ fontSize: 14.5, lineHeight: 1.6 }}>

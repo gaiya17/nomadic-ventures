@@ -21,7 +21,7 @@ const CHANNELS = [
   {
     icon: MessageCircle,
     label: "WhatsApp",
-    value: "+94 71 523 3845",
+    value: process.env.NEXT_PUBLIC_WHATSAPP_DISPLAY || "0715233845",
     note: "Fastest · 24/7 concierge",
     accent: "#25D366",
   },
