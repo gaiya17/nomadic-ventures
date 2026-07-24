@@ -177,32 +177,30 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
       const galleryUrls = await uploadMultiple(formData.media.gallery);
       
       // Upload Villas Media
-      const processedVillas = await Promise.all(
-        formData.villas.map(async (villa) => {
-          let uploadedImages = [];
-          if (villa.images && villa.images.length > 0) {
-            uploadedImages = await uploadMultiple(villa.images);
-          }
-          return {
-            ...villa,
-            images: uploadedImages
-          };
-        })
-      );
+      const processedVillas = [];
+      for (const villa of formData.villas) {
+        let uploadedImages = [];
+        if (villa.images && villa.images.length > 0) {
+          uploadedImages = await uploadMultiple(villa.images);
+        }
+        processedVillas.push({
+          ...villa,
+          images: uploadedImages
+        });
+      }
       
       // Upload Restaurants Media
-      const processedRestaurants = await Promise.all(
-        formData.restaurants.map(async (rest) => {
-          let uploadedImage = null;
-          if (rest.image && rest.image instanceof File) {
-            uploadedImage = await uploadFile(rest.image);
-          }
-          return {
-            ...rest,
-            image: uploadedImage
-          };
-        })
-      );
+      const processedRestaurants = [];
+      for (const rest of formData.restaurants) {
+        let uploadedImage = rest.image; // Preserve existing URL if it's a string
+        if (rest.image && rest.image instanceof File) {
+          uploadedImage = await uploadFile(rest.image);
+        }
+        processedRestaurants.push({
+          ...rest,
+          image: uploadedImage
+        });
+      }
       
       // Prepare Payload
       const payload = {

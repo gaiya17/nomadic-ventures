@@ -20,6 +20,7 @@ export async function uploadToCloudinary(buffer: Buffer, folder: string): Promis
       {
         folder: `nomadic-ventures/${safeFolder}`,
         resource_type: 'image',
+        timeout: 120000,
       },
       (error, result) => {
         if (error) return reject(error);
