@@ -83,16 +83,24 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     await prisma.resortFacility.deleteMany({ where: { resortId: id } });
 
     // Generate safe URL slug on edit
-    let generatedSlug = data.basic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    if (generatedSlug.endsWith('-')) generatedSlug = generatedSlug.slice(0, -1);
-    if (generatedSlug.startsWith('-')) generatedSlug = generatedSlug.slice(1);
+    let expectedSlug = data.basic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (expectedSlug.endsWith('-')) expectedSlug = expectedSlug.slice(0, -1);
+    if (expectedSlug.startsWith('-')) expectedSlug = expectedSlug.slice(1);
 
-    // Check if slug changed and if it exists
-    if (oldResort && oldResort.name !== data.basic.name) {
+    // Advanced Slug Logic: Auto-heal outdated slugs while preserving collision suffixes
+    let needsSlugUpdate = false;
+    if (oldResort) {
+      if (oldResort.name !== data.basic.name) needsSlugUpdate = true;
+      if (!oldResort.slug.startsWith(expectedSlug)) needsSlugUpdate = true;
+    }
+
+    let generatedSlug = oldResort?.slug || expectedSlug;
+    if (needsSlugUpdate) {
+      generatedSlug = expectedSlug;
       const existing = await prisma.resort.findUnique({ where: { slug: generatedSlug } });
-      if (existing && existing.id !== id) generatedSlug += '-' + Date.now().toString().slice(-4);
-    } else if (oldResort) {
-      generatedSlug = oldResort.slug; // Keep old slug if name didn't change
+      if (existing && existing.id !== id) {
+        generatedSlug += '-' + Date.now().toString().slice(-4);
+      }
     }
 
     const resort = await prisma.resort.update({
