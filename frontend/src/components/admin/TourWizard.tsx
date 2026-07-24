@@ -673,7 +673,7 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Saving...
                 </>
-              ) : "Publish Tour"}
+              ) : (initialData ? "Save Changes" : "Publish Tour")}
             </button>
           ) : (
             <button

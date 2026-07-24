@@ -46,10 +46,24 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     await prisma.tourMedia.deleteMany({ where: { tourId: id } });
     await prisma.tourItinerary.deleteMany({ where: { tourId: id } });
 
+    // Generate safe URL slug on edit
+    let generatedSlug = data.basic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (generatedSlug.endsWith('-')) generatedSlug = generatedSlug.slice(0, -1);
+    if (generatedSlug.startsWith('-')) generatedSlug = generatedSlug.slice(1);
+
+    const oldTour = await prisma.tour.findUnique({ where: { id } });
+    if (oldTour && oldTour.name !== data.basic.name) {
+      const existing = await prisma.tour.findUnique({ where: { slug: generatedSlug } });
+      if (existing && existing.id !== id) generatedSlug += '-' + Date.now().toString().slice(-4);
+    } else if (oldTour) {
+      generatedSlug = oldTour.slug;
+    }
+
     const tour = await prisma.tour.update({
       where: { id },
       data: {
         name: data.basic.name,
+        slug: generatedSlug,
         description: data.basic.description,
         guests: data.basic.guests,
         days: data.basic.days,

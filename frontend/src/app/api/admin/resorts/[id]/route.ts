@@ -82,10 +82,24 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     await prisma.resortRestaurant.deleteMany({ where: { resortId: id } });
     await prisma.resortFacility.deleteMany({ where: { resortId: id } });
 
+    // Generate safe URL slug on edit
+    let generatedSlug = data.basic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (generatedSlug.endsWith('-')) generatedSlug = generatedSlug.slice(0, -1);
+    if (generatedSlug.startsWith('-')) generatedSlug = generatedSlug.slice(1);
+
+    // Check if slug changed and if it exists
+    if (oldResort && oldResort.name !== data.basic.name) {
+      const existing = await prisma.resort.findUnique({ where: { slug: generatedSlug } });
+      if (existing && existing.id !== id) generatedSlug += '-' + Date.now().toString().slice(-4);
+    } else if (oldResort) {
+      generatedSlug = oldResort.slug; // Keep old slug if name didn't change
+    }
+
     const resort = await prisma.resort.update({
       where: { id },
       data: {
         name: data.basic.name,
+        slug: generatedSlug,
         description: data.basic.description,
         location: data.basic.location,
         transferMethod: data.basic.transferMethod,
