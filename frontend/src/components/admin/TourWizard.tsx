@@ -125,23 +125,38 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
     try {
       const uploadFile = async (file: any) => {
         if (!file || !(file instanceof File)) return file;
+        const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "tours" });
+        const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
         const fd = new FormData();
-        fd.append("images", file);
-        const res = await axios.post("/api/admin/upload?folder=tours", fd);
-        return res.data.urls[0];
+        fd.append("file", file);
+        fd.append("signature", signature);
+        fd.append("timestamp", timestamp);
+        fd.append("folder", folder);
+        fd.append("api_key", apiKey);
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
+        return res.data.secure_url;
       };
 
       const uploadMultiple = async (files: any[]) => {
         const validFiles = files.filter(f => f instanceof File);
         const existingUrls = files.filter(f => typeof f === 'string');
-        
         if (validFiles.length === 0) return existingUrls;
         
-        const fd = new FormData();
-        validFiles.forEach(f => fd.append("images", f));
-        const res = await axios.post("/api/admin/upload?folder=tours", fd);
+        const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "tours" });
+        const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
         
-        return [...existingUrls, ...res.data.urls];
+        const newUrls = await Promise.all(validFiles.map(async (f) => {
+          const fd = new FormData();
+          fd.append("file", f);
+          fd.append("signature", signature);
+          fd.append("timestamp", timestamp);
+          fd.append("folder", folder);
+          fd.append("api_key", apiKey);
+          const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
+          return res.data.secure_url;
+        }));
+        
+        return [...existingUrls, ...newUrls];
       };
 
       const heroUrl = await uploadFile(formData.media.heroImage);

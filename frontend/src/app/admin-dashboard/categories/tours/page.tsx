@@ -103,10 +103,18 @@ export default function TourCategoriesPage() {
       // 1. Upload Image
       let imageUrl = editingCategoryId ? categories.find((c: any) => c.id === editingCategoryId)?.image : null;
       if (formData.image) {
+        const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "categories" });
+        const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
+
         const fd = new FormData();
-        fd.append("images", formData.image);
-        const upRes = await axios.post("/api/admin/upload?folder=categories", fd);
-        imageUrl = upRes.data.urls[0];
+        fd.append("file", formData.image);
+        fd.append("signature", signature);
+        fd.append("timestamp", timestamp);
+        fd.append("folder", folder);
+        fd.append("api_key", apiKey);
+
+        const upRes = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
+        imageUrl = upRes.data.secure_url;
       }
 
       // 2. Save Category

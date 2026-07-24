@@ -88,13 +88,22 @@ export default function ExperienceWizard({ onClose, onSave, initialData }: any) 
   const handleUploadGallery = async (files: File[]) => {
     setIsUploading(true);
     try {
-      const data = new FormData();
-      files.forEach((f) => data.append("images", f));
-      const res = await axios.post("/api/admin/upload?folder=experiences", data, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      if (res.data.success && res.data.urls) {
-        setFormData((p: any) => ({ ...p, gallery: [...p.gallery, ...res.data.urls].slice(0, 4) }));
+      const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "experiences" });
+      const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
+      
+      const newUrls = await Promise.all(files.map(async (f) => {
+        const fd = new FormData();
+        fd.append("file", f);
+        fd.append("signature", signature);
+        fd.append("timestamp", timestamp);
+        fd.append("folder", folder);
+        fd.append("api_key", apiKey);
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
+        return res.data.secure_url;
+      }));
+      
+      if (newUrls.length > 0) {
+        setFormData((p: any) => ({ ...p, gallery: [...p.gallery, ...newUrls].slice(0, 4) }));
       }
     } catch (e) {
       console.error("Upload failed", e);

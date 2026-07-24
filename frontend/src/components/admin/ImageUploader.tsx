@@ -22,13 +22,19 @@ export function ImageUploader({
     if (!files.length) return;
     setIsUploading(true);
     try {
+      const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: folder || "general" });
+      const { signature, timestamp, folder: sigFolder, apiKey, cloudName } = signRes.data;
+
       const fd = new FormData();
-      fd.append("images", files[0]);
-      const res = await axios.post(`/api/admin/upload?folder=${folder}`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      if (res.data.success && res.data.urls?.length) {
-        onChange(res.data.urls[0]);
+      fd.append("file", files[0]);
+      fd.append("signature", signature);
+      fd.append("timestamp", timestamp);
+      fd.append("folder", sigFolder);
+      fd.append("api_key", apiKey);
+
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
+      if (res.data.secure_url) {
+        onChange(res.data.secure_url);
       }
     } catch (e) {
       console.error(e);
