@@ -58,6 +58,9 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
 
   const fillRelated = relatedResorts;
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(false);
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -74,6 +77,21 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
     description: "",
   });
 
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formEl = e.currentTarget as HTMLFormElement;
+    if (formEl.checkValidity()) {
+      setIsSubmitting(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setFormSuccess(true);
+        setTimeout(() => setFormSuccess(false), 5000);
+      }, 1500);
+    } else {
+      formEl.reportValidity();
+    }
+  };
 
   const handleCountryChange = (countryName: string) => {
     const country = COUNTRIES.find((c) => c.name === countryName);
@@ -338,7 +356,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 </span>
               </div>
 
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Field
                     label="First name"
@@ -378,7 +396,10 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                     label="Mobile No"
                     type="tel"
                     value={form.mobileNo}
-                    onChange={(v) => setForm({ ...form, mobileNo: v })}
+                    onChange={(v) => {
+                      const numericValue = v.replace(/[^0-9+\s-]/g, "");
+                      setForm({ ...form, mobileNo: numericValue });
+                    }}
                     placeholder="+94 77 123 4567"
                     pattern="^[+0-9 ]+$"
                   />
@@ -481,20 +502,32 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={!isSubmitting && !formSuccess ? { scale: 1.02 } : {}}
+                  whileTap={!isSubmitting && !formSuccess ? { scale: 0.98 } : {}}
                   type="submit"
-                  className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 rounded-full"
+                  disabled={isSubmitting || formSuccess}
+                  className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 rounded-full disabled:opacity-80"
                   style={{
-                    background: "linear-gradient(135deg, #89F3FF, #5BD4E5)",
-                    color: "#021830",
+                    background: formSuccess ? "#22c55e" : "linear-gradient(135deg, #89F3FF, #5BD4E5)",
+                    color: formSuccess ? "#fff" : "#021830",
                     fontSize: 13,
                     letterSpacing: "0.18em",
-                    boxShadow: "0 18px 50px rgba(137,243,255,0.35)",
+                    boxShadow: formSuccess ? "0 18px 50px rgba(34,197,94,0.35)" : "0 18px 50px rgba(137,243,255,0.35)",
                   }}
                 >
-                  INQUIRE NOW
-                  <ArrowUpRight className="w-4 h-4" />
+                  {isSubmitting ? (
+                    <div className="w-4 h-4 border-2 border-[#021830]/30 border-t-[#021830] rounded-full animate-spin" />
+                  ) : formSuccess ? (
+                    <>
+                      SENT SUCCESSFULLY
+                      <Check className="w-4 h-4" />
+                    </>
+                  ) : (
+                    <>
+                      INQUIRE NOW
+                      <ArrowUpRight className="w-4 h-4" />
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>
