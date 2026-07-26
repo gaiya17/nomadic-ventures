@@ -552,7 +552,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
         >
           {[
             { label: "Location", value: resort.atoll },
-            { label: "Transfer Method", value: resort.transferMethod || "Seaplane / Speedboat" },
+            { label: "Transfer Method", value: resort.transfer || "Seaplane / Speedboat" },
             { label: "Duration", value: resort.duration?.toString().toLowerCase().includes("min") ? resort.duration : `${resort.duration} Mins` }
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-4">
