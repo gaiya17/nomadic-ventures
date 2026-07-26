@@ -130,7 +130,7 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
     }
     if (currentStep === 3) {
       if (formData.villas.length > 0) {
-        return formData.villas.every((v: any) => v.title.trim() && v.description.trim() && v.bedType.trim() && v.roomSize && (v.capacities?.length > 0) && (v.features?.length > 0));
+        return formData.villas.every((v: any) => v.title.trim() && v.description.trim() && v.bedType.trim() && v.roomSize && (v.capacities?.length > 0));
       }
     }
     return true;
