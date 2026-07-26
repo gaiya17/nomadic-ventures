@@ -68,6 +68,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
     children: "0",
     infants: "0",
     package: resort ? resort.name : "",
+    villaType: "",
     travelDate: "",
     noOfNights: "7",
     description: "",
@@ -419,6 +420,19 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                   onChange={(v) => {}}
                   readOnly={true}
                   placeholder="Resort Name"
+                />
+
+                <SelectField
+                  label="Villa Type"
+                  value={form.villaType}
+                  onChange={(v) => setForm({ ...form, villaType: v })}
+                  options={[
+                    { label: "Any Villa Type", value: "Any Villa Type" },
+                    ...(resort.villaTypes?.map((v: any) => ({
+                      label: v.name,
+                      value: v.name,
+                    })) || []),
+                  ]}
                 />
 
                 <div className="grid grid-cols-2 gap-4">
