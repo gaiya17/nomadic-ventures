@@ -172,7 +172,8 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
         const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "resorts" });
         const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
         
-        const newUrls = await Promise.all(validFiles.map(async (f) => {
+        const newUrls = [];
+        for (const f of validFiles) {
           const fd = new FormData();
           fd.append("file", f);
           fd.append("signature", signature);
@@ -180,8 +181,8 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
           fd.append("folder", folder);
           fd.append("api_key", apiKey);
           const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
-          return res.data.secure_url;
-        }));
+          newUrls.push(res.data.secure_url);
+        }
         
         return [...existingUrls, ...newUrls];
       };
