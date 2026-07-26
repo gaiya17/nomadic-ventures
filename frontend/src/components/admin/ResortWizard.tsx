@@ -794,18 +794,7 @@ function StepVillas({ villas, setVillas }) {
             <textarea className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-[#030213] outline-none focus:border-black transition" placeholder="Details..." value={villa.description} onChange={(e) => updateVilla(idx, "description", e.target.value)} />
           </div>
 
-          <div className="mb-5">
-            <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Features</label>
-            <CreatableSelect
-              isMulti
-              placeholder="Type and press enter to add features..."
-              value={(villa.features || []).map((f: any) => ({ label: f, value: f }))}
-              onChange={(selected) => updateVilla(idx, "features", selected.map((s: any) => s.value))}
-              styles={{
-                control: (base) => ({ ...base, borderRadius: "0.75rem", padding: "2px", borderColor: "#E5E7EB", boxShadow: "none", "&:hover": { borderColor: "#000" } }),
-              }}
-            />
-          </div>
+
 
           <div>
             <label className="block text-xs font-bold tracking-wider text-gray-500 uppercase mb-2">Villa Images (Max 5)</label>
