@@ -590,61 +590,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
         </motion.div>
       </section>
 
-      {/* FACILITIES */}
-      {resort.facilities && resort.facilities.length > 0 && (
-        <section className="max-w-[1400px] mx-auto px-8 relative z-10 pb-24">
-          <div
-            className="flex items-center gap-3 mb-10"
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.4em",
-              color: "#89F3FF",
-            }}
-          >
-            <div
-              style={{
-                width: 40,
-                height: 1,
-                background: "linear-gradient(90deg, transparent, #89F3FF)",
-              }}
-            />
-            RESORT FACILITIES
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-wrap gap-4"
-          >
-            {resort.facilities.map((f: string, i: number) => (
-              <div
-                key={i}
-                className="group relative overflow-hidden rounded-full border px-7 py-4 flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(137,243,255,0.15)] cursor-default"
-                style={{
-                  background: "linear-gradient(145deg, rgba(2,24,48,0.4) 0%, rgba(137,243,255,0.03) 100%)",
-                  borderColor: "rgba(137,243,255,0.15)",
-                  backdropFilter: "blur(20px)",
-                }}
-              >
-                <div
-                  className="w-2.5 h-2.5 rounded-full transition-all duration-300 group-hover:scale-150"
-                  style={{
-                    background: "#89F3FF",
-                    boxShadow: "0 0 12px rgba(137,243,255,0.8)",
-                  }}
-                />
-                <h3
-                  className="text-white text-[15px] leading-none font-medium whitespace-nowrap pt-[2px]"
-                  style={{ letterSpacing: "0.02em" }}
-                >
-                  {f}
-                </h3>
-              </div>
-            ))}
-          </motion.div>
-        </section>
-      )}
+
 
 
       {/* VILLA TYPES */}
