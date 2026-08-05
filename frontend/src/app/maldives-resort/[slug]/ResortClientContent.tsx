@@ -44,26 +44,8 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
   const router = useRouter();
   const [activeExp, setActiveExp] = useState(0);
   const [activeVilla, setActiveVilla] = useState(0);
-
-  if (!resort) {
-    return (
-      <div className="min-h-screen bg-[#07120E] flex flex-col items-center justify-center font-['Inter'] text-white">
-        <h1 className="text-4xl mb-4 font-['Clash_Display']">Resort not found</h1>
-        <p className="text-white/60 mb-8">This resort might have been removed or moved.</p>
-        <button onClick={() => router.push("/maldives-resort")} className="px-6 py-3 bg-[#F4B942] text-black font-semibold rounded-full hover:bg-white transition-colors">
-          BACK TO RESORTS
-        </button>
-      </div>
-    );
-  }
-
-  const fillRelated = relatedResorts;
-  const discountedPrice = computeDiscountedPrice(resort.price, resort.offer);
-  const packageSavings = computePackageSavings(resort.price, resort.offer);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
-
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -79,40 +61,6 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
     noOfNights: "7",
     description: "",
   });
-
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formEl = e.currentTarget as HTMLFormElement;
-    if (formEl.checkValidity()) {
-      setIsSubmitting(true);
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setFormSuccess(true);
-        setTimeout(() => setFormSuccess(false), 5000);
-      }, 1500);
-    } else {
-      formEl.reportValidity();
-    }
-  };
-
-  const handleCountryChange = (countryName: string) => {
-    const country = COUNTRIES.find((c) => c.name === countryName);
-    let newMobile = form.mobileNo;
-    if (country && country.code) {
-      if (!form.mobileNo) {
-        newMobile = country.code + " ";
-      } else {
-        const oldCountry = COUNTRIES.find((c) => c.name === form.country);
-        if (oldCountry && oldCountry.code && form.mobileNo.startsWith(oldCountry.code)) {
-          newMobile = form.mobileNo.replace(oldCountry.code, country.code);
-        } else if (!form.mobileNo.startsWith("+")) {
-          newMobile = country.code + " " + form.mobileNo;
-        }
-      }
-    }
-    setForm((prev) => ({ ...prev, country: countryName, mobileNo: newMobile }));
-  };
 
   if (!resort) {
     return (
@@ -158,7 +106,42 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
     );
   }
 
-// Dynamic related resorts populated via state
+  const fillRelated = relatedResorts;
+  const discountedPrice = computeDiscountedPrice(resort.price, resort.offer);
+  const packageSavings = computePackageSavings(resort.price, resort.offer);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formEl = e.currentTarget as HTMLFormElement;
+    if (formEl.checkValidity()) {
+      setIsSubmitting(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setFormSuccess(true);
+        setTimeout(() => setFormSuccess(false), 5000);
+      }, 1500);
+    } else {
+      formEl.reportValidity();
+    }
+  };
+
+  const handleCountryChange = (countryName: string) => {
+    const country = COUNTRIES.find((c) => c.name === countryName);
+    let newMobile = form.mobileNo;
+    if (country && country.code) {
+      if (!form.mobileNo) {
+        newMobile = country.code + " ";
+      } else {
+        const oldCountry = COUNTRIES.find((c) => c.name === form.country);
+        if (oldCountry && oldCountry.code && form.mobileNo.startsWith(oldCountry.code)) {
+          newMobile = form.mobileNo.replace(oldCountry.code, country.code);
+        } else if (!form.mobileNo.startsWith("+")) {
+          newMobile = country.code + " " + form.mobileNo;
+        }
+      }
+    }
+    setForm((prev) => ({ ...prev, country: countryName, mobileNo: newMobile }));
+  };
 
   return (
     <div

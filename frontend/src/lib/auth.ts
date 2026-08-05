@@ -21,8 +21,10 @@ export function verifyToken(request: NextRequest): AdminTokenPayload | null {
   }
 
   try {
-    const secret = process.env.JWT_SECRET || 'nv_secret_jwt_key_super_secure_2026_xyz_abc_123';
-    const decoded = jwt.verify(token, secret) as AdminTokenPayload;
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as AdminTokenPayload;
     return decoded;
   } catch {
     return null;

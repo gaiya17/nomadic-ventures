@@ -29,7 +29,10 @@ export async function POST(request: Request) {
     const tokenPayload = { id: admin.id, email: admin.email, name: admin.name, role: admin.role };
     
     // Sign JWT using jose for Edge compatibility
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'nv_secret_jwt_key_super_secure_2026_xyz_abc_123');
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const token = await new SignJWT(tokenPayload)
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('7d')

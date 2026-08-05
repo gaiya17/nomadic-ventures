@@ -60,7 +60,7 @@ export default function TourCategoriesPage() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple: false });
 
   const handleEdit = (cat: any) => {
-    let dests = ["", "", ""];
+    const dests = ["", "", ""];
     if (cat.destinations) {
       const parts = cat.destinations.split(",").map((s: string) => s.trim());
       for (let i = 0; i < 3 && i < parts.length; i++) {

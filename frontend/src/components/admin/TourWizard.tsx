@@ -145,7 +145,8 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
         const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "tours" });
         const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
         
-        const newUrls = await Promise.all(validFiles.map(async (f) => {
+        const newUrls: string[] = [];
+        for (const f of validFiles) {
           const fd = new FormData();
           fd.append("file", f);
           fd.append("signature", signature);
@@ -153,9 +154,9 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
           fd.append("folder", folder);
           fd.append("api_key", apiKey);
           const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, fd);
-          return res.data.secure_url;
-        }));
-        
+          newUrls.push(res.data.secure_url);
+        }
+
         return [...existingUrls, ...newUrls];
       };
 
