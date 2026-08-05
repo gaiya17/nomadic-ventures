@@ -27,7 +27,6 @@ type Collection = {
   short: string;
   blurb: string;
   hero: string;
-  gallery: string[];
   count: string;
   from: string;
   duration: string;
@@ -35,291 +34,6 @@ type Collection = {
   highlights: string[];
   resorts: { name: string; atoll: string; image: string; price: string; offer?: OfferLike | null }[];
 };
-
-const STATIC_COLLECTIONS: Collection[] = [
-  {
-    id: "overwater",
-    num: "01",
-    name: "Overwater Villas",
-    short: "Overwater",
-    blurb:
-      "Iconic stays suspended above turquoise lagoons — direct ocean access, infinity decks, glass-floor bedrooms and absolute privacy.",
-    hero: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1595184979141-090792f6b578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "24 Resorts",
-    from: "$1,499",
-    duration: "5 – 10 Nights",
-    vibe: "Iconic & Cinematic",
-    highlights: [
-      "Private infinity pools cantilevered over the lagoon",
-      "Slide access straight into the reef",
-      "Sunrise breakfasts floated to your deck",
-      "Glass-floor lounges above coral gardens",
-    ],
-    resorts: [
-      {
-        name: "Soneva Jani",
-        atoll: "Noonu Atoll",
-        image:
-          "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,899",
-      },
-      {
-        name: "Conrad Rangali",
-        atoll: "South Ari",
-        image:
-          "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,599",
-      },
-      {
-        name: "Gili Lankanfushi",
-        atoll: "North Malé",
-        image:
-          "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "2,199",
-      },
-    ],
-  },
-  {
-    id: "honeymoon",
-    num: "02",
-    name: "Honeymoon Escapes",
-    short: "Honeymoon",
-    blurb:
-      "Romantic sanctuaries crafted for two — candlelit sandbank dinners, couples spa journeys and a butler who anticipates everything you forgot to ask for.",
-    hero: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1675657144361-98ae33e6b6f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1526786220381-1d21eedf92bf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "18 Resorts",
-    from: "$1,799",
-    duration: "7 – 14 Nights",
-    vibe: "Intimate & Romantic",
-    highlights: [
-      "Sandbank dinner for two under lanterns",
-      "Couples' spa pavilion on the reef",
-      "Sunset dhoni cruise with champagne",
-      "Private chef-curated tasting menus",
-    ],
-    resorts: [
-      {
-        name: "Baros Maldives",
-        atoll: "North Malé",
-        image:
-          "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,499",
-      },
-      {
-        name: "COMO Cocoa",
-        atoll: "South Malé",
-        image:
-          "https://images.unsplash.com/photo-1675657144361-98ae33e6b6f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,799",
-      },
-      {
-        name: "Velaa Private",
-        atoll: "Noonu Atoll",
-        image:
-          "https://images.unsplash.com/photo-1526786220381-1d21eedf92bf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "2,499",
-      },
-    ],
-  },
-  {
-    id: "private",
-    num: "03",
-    name: "Private Island Reserves",
-    short: "Private Island",
-    blurb:
-      "Take the whole atoll. Exclusive-use islands, private chefs, watercraft fleets, and a personal team across every sunrise and sunset.",
-    hero: "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1595184979141-090792f6b578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "9 Reserves",
-    from: "$8,500",
-    duration: "5 – 10 Nights",
-    vibe: "Exclusive & Bespoke",
-    highlights: [
-      "Buy-out of an entire island reserve",
-      "Dedicated team of 60+ staff",
-      "Yacht, seaplane and helicopter on call",
-      "Custom menus by a Michelin-trained chef",
-    ],
-    resorts: [
-      {
-        name: "Velaa Private Island",
-        atoll: "Noonu Atoll",
-        image:
-          "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "8,500",
-      },
-      {
-        name: "Coco Privé Kuda Hithi",
-        atoll: "North Malé",
-        image:
-          "https://images.unsplash.com/photo-1595184979141-090792f6b578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "12,400",
-      },
-      {
-        name: "Soneva Secret",
-        atoll: "Haa Dhaalu",
-        image:
-          "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "9,200",
-      },
-    ],
-  },
-  {
-    id: "diving",
-    num: "04",
-    name: "Diving & Marine",
-    short: "Diving",
-    blurb:
-      "World-class atolls teeming with reef sharks, manta gatherings and whale-shark encounters — guided by PADI master instructors and marine biologists.",
-    hero: "https://images.unsplash.com/photo-1535507568891-fd46651fe8c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1593665840592-8c662655fb65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1535507568891-fd46651fe8c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "12 Resorts",
-    from: "$1,199",
-    duration: "6 – 9 Nights",
-    vibe: "Adventurous & Active",
-    highlights: [
-      "Hanifaru Bay manta gatherings (Jun–Nov)",
-      "Live-aboard yacht charters",
-      "Reef rehabilitation programmes",
-      "PADI-certified dive academies on site",
-    ],
-    resorts: [
-      {
-        name: "Six Senses Laamu",
-        atoll: "Laamu Atoll",
-        image:
-          "https://images.unsplash.com/photo-1535507568891-fd46651fe8c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,499",
-      },
-      {
-        name: "Anantara Kihavah",
-        atoll: "Baa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1593665840592-8c662655fb65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,799",
-      },
-      {
-        name: "Vakkaru Maldives",
-        atoll: "Baa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,299",
-      },
-    ],
-  },
-  {
-    id: "family",
-    num: "05",
-    name: "Family Sanctuaries",
-    short: "Family",
-    blurb:
-      "Resorts designed around families — adjoining villas, dedicated kids' lagoons, marine biology classes, and parents-only spa hours when you need them.",
-    hero: "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1595184979141-090792f6b578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "16 Resorts",
-    from: "$1,099",
-    duration: "5 – 8 Nights",
-    vibe: "Playful & Effortless",
-    highlights: [
-      "Two-bedroom beach pool villas",
-      "Junior PADI and marine biology camps",
-      "Babysitters, butlers and night nannies",
-      "Family-only chef tasting evenings",
-    ],
-    resorts: [
-      {
-        name: "OZEN Reserve Bolifushi",
-        atoll: "South Malé",
-        image:
-          "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "2,099",
-      },
-      {
-        name: "Four Seasons Landaa",
-        atoll: "Baa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1595184979141-090792f6b578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,899",
-      },
-      {
-        name: "Niyama Private Islands",
-        atoll: "Dhaalu Atoll",
-        image:
-          "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,599",
-      },
-    ],
-  },
-  {
-    id: "wellness",
-    num: "06",
-    name: "Wellness & Spa",
-    short: "Wellness",
-    blurb:
-      "Restorative retreats above and below water — Ayurveda, sound bathing, marine-led rituals, and longevity programmes designed by clinicians.",
-    hero: "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800",
-    gallery: [
-      "https://images.unsplash.com/photo-1675657144361-98ae33e6b6f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1526786220381-1d21eedf92bf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-      "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900",
-    ],
-    count: "15 Resorts",
-    from: "$1,399",
-    duration: "7 – 14 Nights",
-    vibe: "Healing & Restorative",
-    highlights: [
-      "Clinician-led longevity programmes",
-      "Underwater meditation pavilions",
-      "Ayurvedic doctors on residence",
-      "Plant-based culinary curriculum",
-    ],
-    resorts: [
-      {
-        name: "Joali Being",
-        atoll: "Raa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1596746698204-d69844da956d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "2,199",
-      },
-      {
-        name: "Como Maalifushi",
-        atoll: "Thaa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1675657144361-98ae33e6b6f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,699",
-      },
-{
-        name: "Amilla Maldives",
-        atoll: "Baa Atoll",
-        image:
-          "https://images.unsplash.com/photo-1526786220381-1d21eedf92bf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
-        price: "1,399",
-      }
-    ],
-  },
-];
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: string }) {
@@ -332,8 +46,9 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
   // Fix hydration mismatch for random particles
   const [particles, setParticles] = useState<any[]>([]);
   
-  // Dynamic categories initialized with static data to avoid FOUC and enable SSR
-  const [dbCategories, setDbCategories] = useState<any[]>(STATIC_COLLECTIONS);
+  // Real categories only — no hardcoded fallback content. See isLoadingCategories below.
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   useEffect(() => {
     // Generate particles
@@ -359,6 +74,8 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
         }
       } catch (err) {
         console.error("Failed to load dynamic categories:", err);
+      } finally {
+        setIsLoadingCategories(false);
       }
     };
     fetchCats();
@@ -382,8 +99,6 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     }) : [];
 
     const defaultHero = categoryResorts.length > 0 ? categoryResorts[0].image : "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800";
-    
-    let gallery = [...STATIC_COLLECTIONS[idx]?.gallery || []];
 
     return {
       id: cat.slug || cat.id,
@@ -392,7 +107,6 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
       short: cat.name,
       blurb: cat.description || cat.blurb || "",
       hero: defaultHero,
-      gallery: gallery,
       count: `${categoryResorts.length} Resort${categoryResorts.length !== 1 ? 's' : ''}`,
       from: categoryResorts.length > 0 ? `$${categoryResorts[0].price}` : "On Request",
       duration: "Flexible",
@@ -402,18 +116,38 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
     };
   });
 
-  // Render the page without conditionally returning PageLoader to prevent FOUC
-  // The layout will hydrate with static data and update smoothly once DB data loads.
   const allResorts = dbCategories.flatMap(c => c.resorts?.map((r: any) => r.resort || r) || []);
   const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id || r.name, r])).values());
   const totalResortsCount = uniqueResorts.length;
-  const avgRating = totalResortsCount > 0 
-    ? (uniqueResorts.reduce((acc, r) => acc + (r.stars || 5), 0) / totalResortsCount).toFixed(2) 
+  const avgRating = totalResortsCount > 0
+    ? (uniqueResorts.reduce((acc, r) => acc + (r.stars || 5), 0) / totalResortsCount).toFixed(2)
     : "5.00";
 
   const heroCol =
     COLLECTIONS.find((c) => c.id === heroId) || COLLECTIONS[0];
 
+  // Show the real loading state instead of seeding the page with hardcoded fallback content.
+  if (isLoadingCategories) {
+    return <PageLoader />;
+  }
+
+  // Genuinely no categories with resorts yet — avoid crashing on an undefined heroCol.
+  if (!heroCol) {
+    return (
+      <div className="size-full min-h-screen flex flex-col" style={{ background: "#021830" }}>
+        <Navbar accent="#89F3FF" glow="rgba(137,243,255,0.35)" />
+        <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
+          <p style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 28, color: "white", marginBottom: 12 }}>
+            No resort collections available yet
+          </p>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)" }}>
+            Please check back soon.
+          </p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="size-full" style={{ background: "#021830" }}>
@@ -890,7 +624,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                           </div>
                         );
                       } else {
-                        const fallbackImg = c.gallery[idx - 1] || "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900";
+                        const fallbackImg = "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900";
                         return (
                           <div
                             key={`fallback-${idx}`}
