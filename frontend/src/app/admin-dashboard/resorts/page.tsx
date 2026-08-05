@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Plus, Search, Filter, Edit2, Trash2 } from "lucide-react";
+import { Plus, Search, Filter, Edit2, Trash2, BadgePercent } from "lucide-react";
 import ResortWizard from "@/components/admin/ResortWizard";
+import { resolveLiveOffer, getOfferBadgeLabel } from "@/lib/offers";
 
 export default function ResortsManager() {
   const [resorts, setResorts] = useState<any[]>([]);
@@ -142,6 +143,7 @@ export default function ResortsManager() {
 
             const primaryCategory =
               resort.categories[0]?.category?.name || "UNCLASSIFIED";
+            const liveOffer = resolveLiveOffer(resort.offers);
 
             return (
               <div
@@ -159,6 +161,13 @@ export default function ResortsManager() {
                       {primaryCategory}
                     </span>
                   </div>
+                  {liveOffer && (
+                    <div className="absolute top-4 right-4">
+                      <span className="flex items-center gap-1 px-3 py-1.5 bg-[#F4B942] text-black text-xs font-semibold rounded-full tracking-wide">
+                        <BadgePercent size={12} /> {getOfferBadgeLabel(liveOffer)}
+                      </span>
+                    </div>
+                  )}
                   <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
                     <span className="text-sm font-semibold">
                       ${resort.price || 0}

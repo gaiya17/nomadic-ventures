@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { resolveLiveOffer } from "@/lib/offers";
 import { LuxuryHero } from "@/components/LuxuryHero";
 import { SriLankaExperiences } from "@/components/SriLankaExperiences";
 import { SriLankaPackages } from "@/components/SriLankaPackages";
@@ -15,6 +16,7 @@ export default async function Page() {
     include: {
       categories: { include: { category: true } },
       media: true,
+      offers: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -26,6 +28,8 @@ export default async function Page() {
     places: Array.isArray(t.destinations) ? t.destinations.join(" · ") : (t.destinations || ""),
     image: t.media && t.media.length > 0 ? (t.media.find((m: any) => m.type === "hero")?.url || t.media[0].url) : "https://images.unsplash.com/photo-1586227740560-8cf2732c1531?auto=format&fit=crop&q=80",
     tag: t.categories?.[0]?.category?.name || "Featured",
+    price: t.price || null,
+    offer: resolveLiveOffer(t.offers),
   }));
 
   const dbCategories = await prisma.tourCategory.findMany({
@@ -52,8 +56,8 @@ export default async function Page() {
     orderBy: { createdAt: "desc" },
   });
 
-  let featuredReview = null;
-  const standardReviews = [];
+  let featuredReview: (typeof dbReviews)[number] | null = null;
+  const standardReviews: (typeof dbReviews)[number][] = [];
 
   for (const r of dbReviews) {
     if (r.isFeatured && !featuredReview) {

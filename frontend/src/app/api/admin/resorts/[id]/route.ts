@@ -15,6 +15,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
         villas: true,
         restaurants: true,
         facilities: true,
+        offers: true,
       },
     });
     if (!resort) return Response.json({ success: false, error: 'Resort not found' }, { status: 404 });

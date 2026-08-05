@@ -8,7 +8,7 @@ export async function GET() {
         tours: {
           include: {
             tour: {
-              include: { media: true }
+              include: { media: true, offers: true }
             }
           }
         }

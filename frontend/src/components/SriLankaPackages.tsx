@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Clock, MapPin } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { slugify } from "@/lib/utils";
+import { computeDiscountedPrice, getOfferBadgeLabel } from "@/lib/offers";
 
 export function SriLankaPackages({ tours }: { tours?: any[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -82,7 +83,9 @@ export function SriLankaPackages({ tours }: { tours?: any[] }) {
 
         {/* CLEAN 3-COL EDITORIAL GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-14">
-          {displayTours.map((pkg, i) => (
+          {displayTours.map((pkg, i) => {
+            const discounted = computeDiscountedPrice(pkg.price, pkg.offer);
+            return (
             <motion.article
               key={pkg.name}
               initial={{ opacity: 0, y: 40 }}
@@ -191,15 +194,34 @@ export function SriLankaPackages({ tours }: { tours?: any[] }) {
                   {pkg.name}
                 </h3>
                 <div className="flex items-center justify-between pt-4 mt-2 border-t border-white/10">
-                  <span
-                    style={{
-                      fontSize: 17,
-                      color: "#F4B942",
-                      fontFamily: "'Clash Display', sans-serif",
-                    }}
-                  >
-                    Rate/ On request
-                  </span>
+                  {pkg.offer && discounted !== null ? (
+                    <div className="flex flex-col gap-1">
+                      <span
+                        className="w-fit px-2 py-0.5 rounded-full"
+                        style={{ fontSize: 9.5, letterSpacing: "0.06em", background: "rgba(244,185,66,0.15)", border: "1px solid rgba(244,185,66,0.4)", color: "#F4B942" }}
+                      >
+                        {getOfferBadgeLabel(pkg.offer)}
+                      </span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", textDecoration: "line-through" }}>
+                          ${pkg.price}
+                        </span>
+                        <span style={{ fontSize: 17, color: "#F4B942", fontFamily: "'Clash Display', sans-serif" }}>
+                          ${discounted}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: 17,
+                        color: "#F4B942",
+                        fontFamily: "'Clash Display', sans-serif",
+                      }}
+                    >
+                      {pkg.price ? `From $${pkg.price}` : "Rate on request"}
+                    </span>
+                  )}
                   <span
                     className="text-[#F4B942] flex items-center gap-1 group-hover:gap-2 transition-all"
                     style={{ fontSize: 13, letterSpacing: "0.1em" }}
@@ -210,7 +232,8 @@ export function SriLankaPackages({ tours }: { tours?: any[] }) {
               </div>
               </Link>
             </motion.article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

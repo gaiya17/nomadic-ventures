@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { 
-  LayoutDashboard, 
-  Home, 
-  Map, 
-  Palmtree, 
-  Compass, 
-  Users, 
+import {
+  LayoutDashboard,
+  Home,
+  Map,
+  Palmtree,
+  Compass,
+  Users,
   LogOut,
   Settings,
   Tags,
-  MessageSquareQuote
+  MessageSquareQuote,
+  BadgePercent
 } from "lucide-react";
 
 export function AdminSidebar() {
@@ -26,6 +27,7 @@ export function AdminSidebar() {
     { name: "Categories", href: "/admin-dashboard/categories", icon: Tags },
     { name: "Tours", href: "/admin-dashboard/tours", icon: Map },
     { name: "Maldives Resorts", href: "/admin-dashboard/resorts", icon: Palmtree },
+    { name: "Offers", href: "/admin-dashboard/offers", icon: BadgePercent },
     { name: "Experiences", href: "/admin-dashboard/experiences", icon: Compass },
     { name: "Reviews", href: "/admin-dashboard/reviews", icon: MessageSquareQuote },
     { name: "User Management", href: "/admin-dashboard/users", icon: Users },

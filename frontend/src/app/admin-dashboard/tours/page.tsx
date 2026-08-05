@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Plus, Search, Filter, Edit2, Trash2, Map } from "lucide-react";
+import { Plus, Search, Filter, Edit2, Trash2, Map, BadgePercent } from "lucide-react";
 import TourWizard from "@/components/admin/TourWizard";
+import { resolveLiveOffer, getOfferBadgeLabel } from "@/lib/offers";
 
 export default function ToursManager() {
   const [tours, setTours] = useState<any[]>([]);
@@ -140,6 +141,7 @@ export default function ToursManager() {
 
             const primaryCategory =
               tour.categories[0]?.category?.name || "UNCLASSIFIED";
+            const liveOffer = resolveLiveOffer(tour.offers);
 
             return (
               <div
@@ -157,6 +159,13 @@ export default function ToursManager() {
                       {primaryCategory}
                     </span>
                   </div>
+                  {liveOffer && (
+                    <div className="absolute top-4 right-4">
+                      <span className="flex items-center gap-1 px-3 py-1.5 bg-[#F4B942] text-black text-xs font-semibold rounded-full tracking-wide">
+                        <BadgePercent size={12} /> {getOfferBadgeLabel(liveOffer)}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-5 flex-1 flex flex-col">

@@ -172,7 +172,7 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
         const signRes = await axios.post("/api/admin/cloudinary-sign", { folder: "resorts" });
         const { signature, timestamp, folder, apiKey, cloudName } = signRes.data;
         
-        const newUrls = [];
+        const newUrls: string[] = [];
         for (const f of validFiles) {
           const fd = new FormData();
           fd.append("file", f);
@@ -193,9 +193,9 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
       const galleryUrls = await uploadMultiple(formData.media.gallery);
       
       // Upload Villas Media
-      const processedVillas = [];
+      const processedVillas: any[] = [];
       for (const villa of formData.villas) {
-        let uploadedImages = [];
+        let uploadedImages: string[] = [];
         if (villa.images && villa.images.length > 0) {
           uploadedImages = await uploadMultiple(villa.images);
         }
@@ -206,7 +206,7 @@ export default function ResortWizard({ onClose, onSave, initialData }) {
       }
       
       // Upload Restaurants Media
-      const processedRestaurants = [];
+      const processedRestaurants: any[] = [];
       for (const rest of formData.restaurants) {
         let uploadedImage = rest.image; // Preserve existing URL if it's a string
         if (rest.image && rest.image instanceof File) {

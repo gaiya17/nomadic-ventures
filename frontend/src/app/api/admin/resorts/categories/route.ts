@@ -8,7 +8,7 @@ export async function GET() {
         resorts: {
           include: {
             resort: {
-              include: { media: true }
+              include: { media: true, offers: true }
             }
           }
         }

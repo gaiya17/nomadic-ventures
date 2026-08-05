@@ -23,6 +23,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { PageLoader } from "@/components/PageLoader";
+import { computeDiscountedPrice, computePackageSavings, getOfferBadgeLabel } from "@/lib/offers";
 
 const COUNTRIES = [
   { name: "Australia", code: "+61" },
@@ -57,6 +58,8 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
   }
 
   const fillRelated = relatedResorts;
+  const discountedPrice = computeDiscountedPrice(resort.price, resort.offer);
+  const packageSavings = computePackageSavings(resort.price, resort.offer);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
@@ -331,29 +334,82 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 boxShadow: "0 30px 80px rgba(0,15,40,0.5)",
               }}
             >
-              <div className="flex items-baseline gap-2 mb-6">
-                <span
-                  style={{
-                    fontSize: 11,
-                    color: "rgba(255,255,255,0.55)",
-                    letterSpacing: "0.2em",
-                  }}
-                >
-                  FROM
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Clash Display', sans-serif",
-                    fontSize: 44,
-                    lineHeight: 1,
-                    color: "white",
-                  }}
-                >
-                  ${resort.price}
-                </span>
-                <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>
-                  / night
-                </span>
+              <div className="mb-6">
+                {resort.offer && (
+                  <span
+                    className="inline-flex items-center px-2.5 py-1 rounded-full mb-3"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.08em",
+                      background: "rgba(244,185,66,0.15)",
+                      border: "1px solid rgba(244,185,66,0.4)",
+                      color: "#F4B942",
+                    }}
+                  >
+                    {getOfferBadgeLabel(resort.offer)}
+                  </span>
+                )}
+
+                {resort.offer?.type === "FIXED_PACKAGE" ? (
+                  <>
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        style={{
+                          fontFamily: "'Clash Display', sans-serif",
+                          fontSize: 44,
+                          lineHeight: 1,
+                          color: "white",
+                        }}
+                      >
+                        ${resort.offer.packagePrice?.toLocaleString()}
+                      </span>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>
+                        for {resort.offer.packageNights} Nights
+                      </span>
+                    </div>
+                    {packageSavings && (
+                      <p style={{ fontSize: 12, color: "#89F3FF", marginTop: 6 }}>
+                        You save ${packageSavings.savings.toLocaleString()} vs. the regular nightly rate
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <div className="flex items-baseline gap-2">
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "rgba(255,255,255,0.55)",
+                        letterSpacing: "0.2em",
+                      }}
+                    >
+                      FROM
+                    </span>
+                    {discountedPrice !== null && (
+                      <span
+                        style={{
+                          fontSize: 20,
+                          color: "rgba(255,255,255,0.4)",
+                          textDecoration: "line-through",
+                        }}
+                      >
+                        ${resort.price}
+                      </span>
+                    )}
+                    <span
+                      style={{
+                        fontFamily: "'Clash Display', sans-serif",
+                        fontSize: 44,
+                        lineHeight: 1,
+                        color: "white",
+                      }}
+                    >
+                      ${discountedPrice !== null ? discountedPrice : resort.price}
+                    </span>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>
+                      / night
+                    </span>
+                  </div>
+                )}
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -1091,7 +1147,9 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-5">
-          {fillRelated.map((r) => (
+          {fillRelated.map((r) => {
+            const rDiscounted = computeDiscountedPrice(r.price, r.offer);
+            return (
             <Link
               href={`/maldives-resort/${r.slug}`}
               key={r.slug}
@@ -1131,16 +1189,35 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                     {r.atoll.toUpperCase()}
                   </span>
                 </div>
+                {r.offer && (
+                  <div className="absolute top-4 right-4">
+                    <span
+                      className="px-2.5 py-1 rounded-full"
+                      style={{ fontSize: 10, fontWeight: 700, background: "#F4B942", color: "#07120E" }}
+                    >
+                      {getOfferBadgeLabel(r.offer)}
+                    </span>
+                  </div>
+                )}
                 <div className="absolute bottom-5 left-5 right-5">
                   <div
-                    className="mb-1"
+                    className="mb-1 flex items-baseline gap-1.5"
                     style={{
                       fontSize: 10,
                       letterSpacing: "0.3em",
                       color: "rgba(255,255,255,0.7)",
                     }}
                   >
-                    FROM ${r.price}/NIGHT
+                    {r.offer?.type === "FIXED_PACKAGE" ? (
+                      <span>{r.offer.packageNights}N · ${r.offer.packagePrice?.toLocaleString()}</span>
+                    ) : rDiscounted !== null ? (
+                      <>
+                        <span style={{ textDecoration: "line-through", opacity: 0.6 }}>${r.price}</span>
+                        <span>FROM ${rDiscounted}/NIGHT</span>
+                      </>
+                    ) : (
+                      <span>FROM ${r.price}/NIGHT</span>
+                    )}
                   </div>
                   <div
                     style={{
@@ -1155,7 +1232,8 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 

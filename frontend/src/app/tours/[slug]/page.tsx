@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { resolveLiveOffer } from '@/lib/offers';
 import { TourClientContent } from './TourClientContent';
 
 export default async function TourPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -13,6 +14,7 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
       categories: { include: { category: true } },
       media: true,
       itineraries: true,
+      offers: true,
     },
   });
 
@@ -34,6 +36,8 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
     itinerary: dbTour.itineraries ? dbTour.itineraries.map((it:any) => ({ day: `Day ${String(it.day).padStart(2, '0')}`, title: it.title, description: it.description })) : [],
     includes: dbTour.includes ? JSON.parse(dbTour.includes as string) : [],
     excludes: dbTour.excludes ? JSON.parse(dbTour.excludes as string) : [],
+    price: dbTour.price?.toString() || "On Request",
+    offer: resolveLiveOffer(dbTour.offers),
   };
 
   // 3. Pass formatted data to the interactive Client Component

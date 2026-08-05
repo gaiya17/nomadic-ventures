@@ -13,6 +13,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
         categories: { include: { category: true } },
         media: true,
         itineraries: true,
+        offers: true,
       },
     });
     if (!tour) return Response.json({ success: false, error: 'Tour not found' }, { status: 404 });

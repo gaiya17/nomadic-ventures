@@ -8,6 +8,7 @@ export async function GET() {
         categories: { include: { category: true } },
         media: true,
         itineraries: true,
+        offers: true,
       },
       orderBy: { createdAt: 'desc' },
     });

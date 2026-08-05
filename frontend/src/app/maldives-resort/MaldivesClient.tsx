@@ -18,6 +18,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { PageLoader } from "@/components/PageLoader";
+import { resolveLiveOffer, computeDiscountedPrice, getOfferBadgeLabel, type OfferLike } from "@/lib/offers";
 
 type Collection = {
   id: string;
@@ -32,7 +33,7 @@ type Collection = {
   duration: string;
   vibe: string;
   highlights: string[];
-  resorts: { name: string; atoll: string; image: string; price: string }[];
+  resorts: { name: string; atoll: string; image: string; price: string; offer?: OfferLike | null }[];
 };
 
 const STATIC_COLLECTIONS: Collection[] = [
@@ -376,6 +377,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
         atoll: resort.location || "Maldives",
         image: displayMedia ? `${displayMedia.url}` : "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
         price: resort.price || "On Request",
+        offer: resolveLiveOffer(resort.offers),
       }
     }) : [];
 
@@ -919,7 +921,9 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4"
                 >
-                  {c.resorts.map((r) => (
+                  {c.resorts.map((r) => {
+                    const discounted = computeDiscountedPrice(r.price, r.offer);
+                    return (
                     <div
                       key={r.name}
                       onClick={() => navigate(`/maldives-resort/${slugify(r.name)}`)}
@@ -931,13 +935,18 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                       }}
                     >
                       <div
-                        className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"
+                        className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 relative"
                       >
                         <ImageWithFallback
                           src={r.image}
                           alt={r.name}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
+                        {r.offer && (
+                          <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded-md" style={{ background: "#F4B942", fontSize: 8, fontWeight: 700, color: "#07120E" }}>
+                            {getOfferBadgeLabel(r.offer)}
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div
@@ -958,14 +967,26 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                           <span
                             className="w-0.5 h-0.5 rounded-full bg-white/30"
                           />
-                          <span style={{ color: "#89F3FF" }}>
-                            from ${r.price}
-                          </span>
+                          {r.offer?.type === "FIXED_PACKAGE" ? (
+                            <span style={{ color: "#89F3FF" }}>
+                              {r.offer.packageNights}N · ${r.offer.packagePrice?.toLocaleString()}
+                            </span>
+                          ) : discounted !== null ? (
+                            <span className="flex items-center gap-1">
+                              <span style={{ color: "rgba(255,255,255,0.4)", textDecoration: "line-through" }}>${r.price}</span>
+                              <span style={{ color: "#89F3FF" }}>${discounted}</span>
+                            </span>
+                          ) : (
+                            <span style={{ color: "#89F3FF" }}>
+                              from ${r.price}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-[#89F3FF] transition-colors" />
                     </div>
-                  ))}
+                    );
+                  })}
                 </motion.div>
               </div>
             </div>

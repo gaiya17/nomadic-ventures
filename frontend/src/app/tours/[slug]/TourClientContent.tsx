@@ -24,6 +24,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { AnimatePresence } from "motion/react";
+import { computeDiscountedPrice, getOfferBadgeLabel } from "@/lib/offers";
 
 const COUNTRIES = [
   { name: "Australia", code: "+61" },
@@ -136,6 +137,7 @@ export function TourClientContent({ tour }: { tour: any }) {
 
   const days = parseInt(tour.duration);
   const fillRelated: any[] = [];
+  const discountedPrice = computeDiscountedPrice(tour.price, tour.offer);
 
   return (
     <div
@@ -309,36 +311,60 @@ export function TourClientContent({ tour }: { tour: any }) {
                 boxShadow: "0 30px 80px rgba(0,0,0,0.4)",
               }}
             >
-              <div
-                className="flex items-baseline gap-2 mb-6"
-                style={{ color: "white" }}
-              >
-                <span
-                  style={{
-                    fontSize: 11,
-                    color: "rgba(255,255,255,0.55)",
-                    letterSpacing: "0.2em",
-                  }}
-                >
-                  FROM
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Clash Display', sans-serif",
-                    fontSize: 44,
-                    lineHeight: 1,
-                  }}
-                >
-                  ${tour.price}
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(255,255,255,0.55)",
-                  }}
-                >
-                  / person
-                </span>
+              <div className="mb-6" style={{ color: "white" }}>
+                {tour.offer && (
+                  <span
+                    className="inline-flex items-center px-2.5 py-1 rounded-full mb-3"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.08em",
+                      background: "rgba(244,185,66,0.15)",
+                      border: "1px solid rgba(244,185,66,0.4)",
+                      color: "#F4B942",
+                    }}
+                  >
+                    {getOfferBadgeLabel(tour.offer)}
+                  </span>
+                )}
+                <div className="flex items-baseline gap-2">
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: "rgba(255,255,255,0.55)",
+                      letterSpacing: "0.2em",
+                    }}
+                  >
+                    FROM
+                  </span>
+                  {discountedPrice !== null && (
+                    <span
+                      style={{
+                        fontSize: 20,
+                        color: "rgba(255,255,255,0.4)",
+                        textDecoration: "line-through",
+                      }}
+                    >
+                      ${tour.price}
+                    </span>
+                  )}
+                  <span
+                    style={{
+                      fontFamily: "'Clash Display', sans-serif",
+                      fontSize: 44,
+                      lineHeight: 1,
+                    }}
+                  >
+                    ${discountedPrice !== null ? discountedPrice : tour.price}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: "rgba(255,255,255,0.55)",
+                    }}
+                  >
+                    / person
+                  </span>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4 mb-6">

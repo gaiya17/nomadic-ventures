@@ -46,20 +46,21 @@ model Resort {
   id             String                  @id @default(uuid())
   name           String
   slug           String                  @unique
-  description    String?                 
+  description    String?
   location       String?
   transferMethod String?
   duration       String?
   price          String?
   stars          Int                     @default(5)
   status         String                  @default("DRAFT")
-  
+
   categories     ResortCategoryMapping[]
   villas         ResortVilla[]
   restaurants    ResortRestaurant[]
   media          ResortMedia[]
   facilities     ResortFacility[]
-  
+  offers         Offer[]
+
   createdAt      DateTime                @default(now())
   updatedAt      DateTime                @updatedAt
 }
@@ -134,6 +135,7 @@ model Tour {
   categories   TourCategoryMapping[]
   media        TourMedia[]
   itineraries  TourItinerary[]
+  offers       Offer[]
 
   createdAt    DateTime              @default(now())
   updatedAt    DateTime              @updatedAt
@@ -203,4 +205,32 @@ model Review {
   isFeatured Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+enum OfferType {
+  PERCENTAGE
+  FIXED_PACKAGE
+}
+
+model Offer {
+  id              String    @id @default(uuid())
+  type            OfferType
+  title           String?
+  discountPercent Int?
+  packageNights   Int?
+  packagePrice    Float?
+  validFrom       DateTime?
+  validUntil      DateTime?
+  isActive        Boolean   @default(true)
+
+  resortId        String?
+  resort          Resort?   @relation(fields: [resortId], references: [id], onDelete: Cascade)
+  tourId          String?
+  tour            Tour?     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([resortId])
+  @@index([tourId])
 }

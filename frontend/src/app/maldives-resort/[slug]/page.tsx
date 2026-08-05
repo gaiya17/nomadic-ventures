@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { resolveLiveOffer } from '@/lib/offers';
 import { ResortClientContent } from './ResortClientContent';
 
 export default async function ResortPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -15,6 +16,7 @@ export default async function ResortPage({ params }: { params: Promise<{ slug: s
       villas: true,
       restaurants: true,
       facilities: true,
+      offers: true,
     },
   });
 
@@ -46,6 +48,7 @@ export default async function ResortPage({ params }: { params: Promise<{ slug: s
     excludes: ["International flights and visa fees", "Lunches, à la carte dinners and beverages", "Personal expenses and gratuities"],
     highlights: [],
     price: dbR.price?.toString() || "On Request",
+    offer: resolveLiveOffer(dbR.offers),
     experiences: [],
     restaurants: dbR.restaurants?.map((r:any) => {
       let timingStr = "Flexible";
@@ -81,7 +84,7 @@ export default async function ResortPage({ params }: { params: Promise<{ slug: s
   // 3. Fetch Related Resorts (Server-Side)
   const allResorts = await prisma.resort.findMany({
     where: { slug: { not: dbR.slug } },
-    include: { media: true },
+    include: { media: true, offers: true },
     take: 3,
   });
 
@@ -92,6 +95,7 @@ export default async function ResortPage({ params }: { params: Promise<{ slug: s
       slug: r.slug,
       atoll: r.location || "Maldives",
       price: r.price || "On Request",
+      offer: resolveLiveOffer(r.offers),
       image: displayMedia ? displayMedia.url : "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1000",
     }
   });

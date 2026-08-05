@@ -17,6 +17,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { PageLoader } from "@/components/PageLoader";
+import { resolveLiveOffer, computeDiscountedPrice, getOfferBadgeLabel, type OfferLike } from "@/lib/offers";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 interface DbTour {
@@ -28,6 +29,8 @@ interface DbTour {
   shortDescription: string;
   destinations: string;
   image: string;
+  price: string | null;
+  offer: OfferLike | null;
 }
 
 interface DbCategory {
@@ -137,6 +140,7 @@ function FilterDropdown({
 function TourCard({ tour, index }: { tour: DbTour; index: number }) {
   const router = useRouter();
   const accent = accentForSlug(tour.categorySlug);
+  const discounted = computeDiscountedPrice(tour.price, tour.offer);
 
   return (
     <motion.div
@@ -211,9 +215,30 @@ function TourCard({ tour, index }: { tour: DbTour; index: number }) {
           className="flex items-center justify-between pt-4 mt-auto"
           style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
         >
-          <p style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 15, color: accent, lineHeight: 1, letterSpacing: "0.02em" }}>
-            Rate on request
-          </p>
+          <div className="flex flex-col gap-1">
+            {tour.offer && discounted !== null ? (
+              <>
+                <span
+                  className="w-fit px-2 py-0.5 rounded-full"
+                  style={{ fontSize: 9.5, letterSpacing: "0.06em", background: "rgba(244,185,66,0.15)", border: "1px solid rgba(244,185,66,0.4)", color: "#F4B942" }}
+                >
+                  {getOfferBadgeLabel(tour.offer)}
+                </span>
+                <div className="flex items-baseline gap-1.5">
+                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", textDecoration: "line-through" }}>
+                    ${tour.price}
+                  </span>
+                  <span style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 15, color: accent, lineHeight: 1 }}>
+                    ${discounted}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <p style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 15, color: accent, lineHeight: 1, letterSpacing: "0.02em" }}>
+                {tour.price ? `From $${tour.price}` : "Rate on request"}
+              </p>
+            )}
+          </div>
           <motion.div
             whileHover={{ x: 2, y: -2 }}
             className="w-9 h-9 rounded-2xl flex items-center justify-center"
@@ -269,6 +294,8 @@ function PageContent() {
                 image: t.media && t.media.length > 0
                   ? `${t.media.find((m: any) => m.type === "hero")?.url || t.media[0].url}`
                   : "https://images.unsplash.com/photo-1586227740560-8cf2732c1531?auto=format&fit=crop&q=80",
+                price: t.price || null,
+                offer: resolveLiveOffer(t.offers),
               });
             });
           });

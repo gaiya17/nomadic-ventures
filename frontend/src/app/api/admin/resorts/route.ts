@@ -31,6 +31,7 @@ export async function GET() {
         villas: true,
         restaurants: true,
         facilities: true,
+        offers: true,
       },
       orderBy: { createdAt: 'desc' },
     });
