@@ -23,8 +23,13 @@ const CSP = [
   "frame-ancestors 'none'",
 ].join('; ');
 
+// next dev's Fast Refresh relies on eval() and blob: script loading internally —
+// neither exists in a real production build, so the strict CSP only makes sense
+// (and is only tested against) `next start`. Applying it in dev breaks hot-reload.
 const securityHeaders = [
-  { key: 'Content-Security-Policy', value: CSP },
+  ...(process.env.NODE_ENV === 'production'
+    ? [{ key: 'Content-Security-Policy', value: CSP }]
+    : []),
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
