@@ -390,7 +390,7 @@ function ChatbotWidget({ onClose }: { onClose?: () => void }) {
       items: cat.tours.map((t) => ({
         id: t.id,
         name: t.name,
-        sub: `${t.days ? t.days + " Days · " : ""}From ${t.price}`,
+        sub: `${t.days ? t.days + " Days · " : ""}${t.price ? `From $${t.price}` : "Rate on request"}`,
         image: t.heroImage,
         action: () => navigateTo(`/tours/${t.slug}`),
       })),

@@ -240,21 +240,23 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
         <div>
           <label className="block text-sm font-semibold text-gray-900 mb-2">Number of Guests</label>
           <input
-            type="text"
+            type="number"
+            min={1}
             value={formData.basic.guests}
             onChange={(e) => updateForm("basic", "guests", e.target.value)}
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-black outline-none text-gray-900"
-            placeholder="e.g. 1-8 guests"
+            placeholder="e.g. 8"
           />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">Days / Nights</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Days</label>
           <input
-            type="text"
+            type="number"
+            min={1}
             value={formData.basic.days}
             onChange={(e) => updateForm("basic", "days", e.target.value)}
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-black outline-none text-gray-900"
-            placeholder="e.g. 14 Days"
+            placeholder="e.g. 14"
           />
         </div>
         <div>
@@ -321,16 +323,6 @@ export default function TourWizard({ onClose, onSave, initialData }: any) {
                 color: '#111827'
               })
             }}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">Price (Optional)</label>
-          <input
-            type="text"
-            value={formData.basic.price}
-            onChange={(e) => updateForm("basic", "price", e.target.value)}
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-black outline-none text-gray-900"
-            placeholder="e.g. 2500"
           />
         </div>
       </div>
