@@ -5,6 +5,7 @@ import axios from "axios";
 import { Plus, Trash2, Edit, ArrowLeft, Loader2, X, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { toast, Toaster } from "sonner";
+import { parseDefinitionList } from "@/lib/utils";
 
 export default function ResortCategoriesPage() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -49,7 +50,7 @@ export default function ResortCategoriesPage() {
     setFormData({
       name: cat.name || "",
       description: cat.description || "",
-      whatDefines: cat.whatDefines ? cat.whatDefines.split(",").map((d: string) => d.trim()) : [""]
+      whatDefines: cat.whatDefines ? parseDefinitionList(cat.whatDefines) : [""]
     });
     setIsModalOpen(true);
   };
@@ -79,8 +80,8 @@ export default function ResortCategoriesPage() {
     setIsSubmitting(true);
     try {
       const slug = formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      const joinedDefines = formData.whatDefines.filter(d => d.trim() !== "").join(", ");
-      const payload = { ...formData, slug, whatDefines: joinedDefines };
+      const cleanedDefines = formData.whatDefines.filter(d => d.trim() !== "");
+      const payload = { ...formData, slug, whatDefines: JSON.stringify(cleanedDefines) };
       
       let res;
       if (editingId) {

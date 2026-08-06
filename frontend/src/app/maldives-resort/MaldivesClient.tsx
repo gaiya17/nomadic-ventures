@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { slugify } from "@/lib/utils";
+import { slugify, parseDefinitionList } from "@/lib/utils";
 import {
   ArrowUpRight,
   ChevronRight,
@@ -111,7 +111,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
       from: categoryResorts.length > 0 ? `$${categoryResorts[0].price}` : "On Request",
       duration: "Flexible",
       vibe: "Collection",
-      highlights: cat.whatDefines ? cat.whatDefines.split(",").map((d: string) => d.trim()).filter((d: string) => d) : (cat.highlights || []),
+      highlights: cat.whatDefines ? parseDefinitionList(cat.whatDefines) : (cat.highlights || []),
       resorts: categoryResorts
     };
   });
