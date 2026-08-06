@@ -55,15 +55,7 @@ const nextConfig = {
   },
   async headers() {
     return [
-      {
-        // Explicitly set correct MIME type for all Next.js static JS chunks
-        // This fixes Hostinger serving them as text/plain
-        source: '/_next/static/:path*',
-        headers: [
-          { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
+
       {
         source: '/(.*)',
         headers: securityHeaders,
