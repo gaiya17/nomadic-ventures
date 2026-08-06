@@ -8,7 +8,7 @@ const CSP = [
   // 'unsafe-inline' is required because Next.js hydrates with small inline
   // <script> blocks; a stricter nonce-based policy is possible but needs
   // per-request wiring in middleware and careful testing across every page.
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   // 'unsafe-inline' is required because this app uses React inline style={{}}
   // props extensively; the two remote hosts serve the @import'ed CSS for
   // Clash Display and Inter in globals.css.
@@ -55,6 +55,15 @@ const nextConfig = {
   },
   async headers() {
     return [
+      {
+        // Explicitly set correct MIME type for all Next.js static JS chunks
+        // This fixes Hostinger serving them as text/plain
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
       {
         source: '/(.*)',
         headers: securityHeaders,
