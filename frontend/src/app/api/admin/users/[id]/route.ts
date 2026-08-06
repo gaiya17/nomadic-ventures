@@ -23,6 +23,12 @@ export async function PUT(
 
     // Only update password if provided
     if (password && password.trim() !== "") {
+      if (password.length < 8) {
+        return NextResponse.json(
+          { success: false, error: "Password must be at least 8 characters" },
+          { status: 400 }
+        );
+      }
       const salt = await bcrypt.genSalt(10);
       dataToUpdate.password_hash = await bcrypt.hash(password, salt);
     }
