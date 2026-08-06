@@ -243,9 +243,9 @@ export function TourClientContent({ tour }: { tour: any }) {
                 transition={{ delay: 0.15, duration: 0.8 }}
                 style={{
                   fontFamily: "'Clash Display', sans-serif",
-                  fontSize: "clamp(52px, 7.5vw, 110px)",
-                  lineHeight: 0.95,
-                  letterSpacing: "-0.035em",
+                  fontSize: "clamp(36px, 4.5vw, 64px)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.025em",
                 }}
               >
                 {tour.name}

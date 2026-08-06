@@ -25,6 +25,7 @@ interface DbTour {
   name: string;
   categoryName: string;
   categorySlug: string;
+  categorySlugs: string[];
   days: number;
   shortDescription: string;
   destinations: string;
@@ -274,18 +275,31 @@ function PageContent() {
           }));
           setAllCategories(cats);
 
-          const seen = new Set<string>();
-          const tours: DbTour[] = [];
+          // A tour can belong to multiple categories, and the API groups tours
+          // BY category — so the same tour appears once per category it's in.
+          // We dedupe to one card per tour, but must keep every category it
+          // belongs to (not just the first one seen), or filtering by any
+          // category other than that first one silently hides the tour.
+          const tourMap = new Map<string, DbTour>();
           data.categories.forEach((cat: any) => {
             (cat.tours || []).forEach((tMapping: any) => {
               const t = tMapping.tour;
-              if (!t || seen.has(t.slug)) return;
-              seen.add(t.slug);
-              tours.push({
+              if (!t) return;
+
+              const existing = tourMap.get(t.slug);
+              if (existing) {
+                if (!existing.categorySlugs.includes(cat.slug)) {
+                  existing.categorySlugs.push(cat.slug);
+                }
+                return;
+              }
+
+              tourMap.set(t.slug, {
                 slug:         t.slug,
                 name:         t.name,
                 categoryName: cat.name,
                 categorySlug: cat.slug,
+                categorySlugs: [cat.slug],
                 days:         t.days || 1,
                 shortDescription: t.shortDescription || "",
                 destinations: Array.isArray(t.destinations)
@@ -299,7 +313,7 @@ function PageContent() {
               });
             });
           });
-          setAllTours(tours);
+          setAllTours(Array.from(tourMap.values()));
         }
         setLoading(false);
       })
@@ -342,7 +356,7 @@ function PageContent() {
     }
 
     if (categoryId !== "all") {
-      tours = tours.filter((t) => t.categorySlug === categoryId);
+      tours = tours.filter((t) => t.categorySlugs.includes(categoryId));
     }
 
     if (duration !== "all") {

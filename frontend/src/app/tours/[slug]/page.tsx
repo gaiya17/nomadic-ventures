@@ -27,6 +27,7 @@ export default async function TourPage({ params }: { params: Promise<{ slug: str
     id: dbTour.id,
     slug: dbTour.slug,
     name: dbTour.name,
+    dek: dbTour.description || null,
     tag: dbTour.categories[0]?.category?.name || "All",
     duration: String(dbTour.days).toLowerCase().includes('day') ? dbTour.days : `${dbTour.days || 1} Days`,
     guests: dbTour.guests || null,
