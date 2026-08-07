@@ -461,7 +461,15 @@ function PageContent() {
       </section>
 
       {/* ── Filters ── */}
-      <div className="sticky top-0 z-20 pb-6 pt-2">
+      <div 
+        className="sticky top-[72px] lg:top-[88px] z-30 pb-6 pt-4"
+        style={{ 
+          background: "rgba(7,18,14,0.88)", 
+          backdropFilter: "blur(16px)", 
+          WebkitBackdropFilter: "blur(16px)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)"
+        }}
+      >
         <div className="mx-auto px-6" style={{ maxWidth: 1320 }}>
 
           {/* Category pills — 100% from DB */}
