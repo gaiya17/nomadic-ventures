@@ -204,7 +204,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
           ))}
         </div>
 
-        <div className="relative max-w-[1400px] mx-auto px-8 pt-44 pb-16">
+        <div className="relative max-w-[1400px] mx-auto px-6 md:px-8 pt-32 md:pt-44 pb-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -292,7 +292,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="w-full pr-4 xl:pr-12"
+                className="hidden md:block w-full pr-4 xl:pr-12"
                 style={{
                   fontSize: 15,
                   lineHeight: 1.75,
@@ -308,7 +308,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="md:col-span-4 p-7 rounded-[28px] border"
+              className="md:col-span-4 p-5 md:p-7 rounded-[28px] border"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(137,243,255,0.10), rgba(2,24,48,0.7))",
@@ -396,7 +396,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field
                     label="First name"
                     value={form.firstName}
@@ -421,7 +421,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                   placeholder="anjali@email.com"
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <SelectField
                     label="Country"
                     value={form.country}
@@ -495,7 +495,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                   ]}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field
                     label="Travel date"
                     type="date"
