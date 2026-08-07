@@ -313,7 +313,7 @@ function PageContent() {
               });
             });
           });
-          setAllTours(Array.from(tourMap.values()));
+          setAllTours(Array.from(tourMap.values()).sort((a, b) => a.name.localeCompare(b.name)));
         }
         setLoading(false);
       })

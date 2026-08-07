@@ -383,7 +383,7 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
     const fetchExperiences = async () => {
       try {
         const res = await axios.get("/api/admin/experiences");
-        const exps = res.data;
+        const exps = res.data.sort((a: any, b: any) => a.title.localeCompare(b.title));
         setExperiences(exps);
         
         // Open modal if initialSlug is provided and matches an experience

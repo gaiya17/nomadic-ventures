@@ -96,7 +96,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
         price: resort.price || "On Request",
         offer: resolveLiveOffer(resort.offers),
       }
-    }) : [];
+    }).sort((a: any, b: any) => a.name.localeCompare(b.name)) : [];
 
     const defaultHero = categoryResorts.length > 0 ? categoryResorts[0].image : "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800";
 
@@ -117,7 +117,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
   });
 
   const allResorts = dbCategories.flatMap(c => c.resorts?.map((r: any) => r.resort || r) || []);
-  const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id || r.name, r])).values());
+  const uniqueResorts = Array.from(new Map(allResorts.map(r => [r.id || r.name, r])).values()).sort((a: any, b: any) => a.name.localeCompare(b.name));
   const totalResortsCount = uniqueResorts.length;
   const avgRating = totalResortsCount > 0
     ? (uniqueResorts.reduce((acc, r) => acc + (r.stars || 5), 0) / totalResortsCount).toFixed(2)
