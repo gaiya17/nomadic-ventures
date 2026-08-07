@@ -444,7 +444,7 @@ function PageContent() {
                 ? "Loading itineraries…"
                 : `${allTours.length} handcrafted itineraries — from ${minDays}-day coastal escapes to ${maxDays}-day island-wide adventures.`}
             </p>
-            <div className="flex gap-6 ml-auto">
+            <div className="flex gap-6 lg:ml-auto w-full lg:w-auto justify-between sm:justify-start lg:justify-end mt-4 lg:mt-0">
               {[
                 { v: loading ? "—" : `${allTours.length}`, l: "Tours" },
                 { v: loading ? "—" : `${allCategories.length}`, l: "Categories" },
@@ -519,7 +519,7 @@ function PageContent() {
             className="flex flex-wrap items-center gap-2"
           >
             <div
-              className="flex items-center gap-2 px-3 py-2 rounded-xl flex-1 max-w-[260px]"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl flex-1 min-w-full md:min-w-0 md:max-w-[260px]"
               style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
             >
               <Search size={13} color="rgba(255,255,255,0.35)" />
@@ -674,12 +674,12 @@ function PageContent() {
                 Every itinerary we've ever run started as a conversation. Tell us what you're dreaming of.
               </p>
             </div>
-            <div className="relative z-10 flex flex-col sm:flex-row gap-3 flex-shrink-0">
+            <div className="relative z-10 flex flex-col sm:flex-row gap-3 flex-shrink-0 w-full lg:w-auto">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/plan-trip")}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white"
+                className="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-8 py-4 rounded-full text-white"
                 style={{ background: "linear-gradient(135deg, #F4B942 0%, #22D3EE 100%)", fontSize: 12, letterSpacing: "0.12em", fontFamily: "'Clash Display', sans-serif" }}
               >
                 START A CONVERSATION
