@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowUpRight, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import Link from "next/link";
 
@@ -10,6 +10,14 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
   const [active, setActive] = useState(0);
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+  };
+  const scrollRight = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+  };
 
   const displayCategories = categories && categories.length > 0 ? categories : [];
   if (displayCategories.length === 0) return null;
@@ -86,7 +94,20 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
 
       {/* CAPSULE GALLERY */}
       <div className="relative max-w-[1400px] mx-auto">
-        <div className="flex gap-4 items-center overflow-x-auto snap-x snap-mandatory pb-8 lg:pb-0 lg:overflow-visible lg:snap-none lg:flex-nowrap lg:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+        {/* Navigation Arrows for Mobile */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 flex justify-between z-30 lg:hidden pointer-events-none">
+          <button onClick={scrollLeft} className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white pointer-events-auto active:scale-95 transition-all hover:bg-white/10">
+            <ChevronLeft size={24} />
+          </button>
+          <button onClick={scrollRight} className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white pointer-events-auto active:scale-95 transition-all hover:bg-white/10">
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        <div 
+          ref={scrollRef}
+          className="flex gap-4 items-center overflow-x-auto snap-x snap-mandatory pb-8 lg:pb-0 lg:overflow-visible lg:snap-none lg:flex-nowrap lg:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        >
           {displayCategories.map((cat, i) => {
             const isActive = active === i;
             return (
@@ -99,17 +120,21 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                 transition={{
                   opacity: { duration: 0.6, delay: i * 0.1 },
                   y: { duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
-                }}
-                className="relative overflow-hidden cursor-pointer group shrink-0 snap-center w-[85vw] sm:w-[340px] h-[480px] lg:h-[var(--desk-h)] lg:w-[var(--desk-w)] transition-all duration-700"
-                style={{
-                  '--desk-h': `${isActive ? 640 : 580}px`,
-                  '--desk-w': `${isActive ? 480 : 150}px`,
-                  borderRadius: 999,
-                  border: isActive
-                    ? "1px solid rgba(244,185,66,0.3)"
-                    : "1px solid rgba(255,255,255,0.1)",
-                  background: "#111",
+                  default: { type: "spring", stiffness: 220, damping: 25 },
                 } as any}
+                className="relative overflow-hidden cursor-pointer group shrink-0 snap-center w-[85vw] sm:w-[340px] h-[480px] lg:h-[var(--desk-h)] lg:w-[var(--desk-w)]"
+                animate={{
+                  '--desk-h': isActive ? "640px" : "580px",
+                  '--desk-w': isActive ? "480px" : "150px",
+                  borderColor: isActive
+                    ? "rgba(244,185,66,0.3)"
+                    : "rgba(255,255,255,0.1)",
+                } as any}
+                style={{
+                  borderRadius: 999,
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "#111",
+                }}
               >
                 <Link href={`/journeys?category=${cat.tourTag}`} className="absolute inset-0 z-0" />
                 {/* Background Image */}
@@ -119,7 +144,7 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                     scale: isActive ? 1.05 : 1,
                     opacity: isActive ? 1 : 0.6,
                   }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ type: "spring", stiffness: 220, damping: 25 }}
                 >
                   <ImageWithFallback
                     src={cat.image}
@@ -127,7 +152,7 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                     className="w-full h-full object-cover"
                   />
                   <div
-                    className="absolute inset-0 transition-colors duration-700"
+                    className="absolute inset-0"
                     style={{
                       background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
                     }}
