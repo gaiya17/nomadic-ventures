@@ -196,7 +196,7 @@ export default function Page() {
               "radial-gradient(900px 500px at 80% 20%, rgba(244,185,66,0.18), transparent 60%), radial-gradient(700px 450px at 10% 80%, rgba(137,243,255,0.14), transparent 60%)",
           }}
         />
-        <div className="relative max-w-[1400px] mx-auto px-8 pt-44 pb-20">
+        <div className="relative max-w-[1400px] mx-auto px-6 md:px-8 pt-32 pb-16 md:pt-44 md:pb-20">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -349,7 +349,7 @@ export default function Page() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
             onSubmit={(e) => e.preventDefault()}
-            className="md:col-span-7 p-10 md:p-12 rounded-[32px] border"
+            className="md:col-span-7 p-6 md:p-12 rounded-[32px] border"
             style={{
               background:
                 "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
@@ -696,15 +696,17 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
+        <div 
+          className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:grid-cols-3 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+        >
           {OFFICES.map((office, i) => (
             <motion.div
               key={office.city}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: i * 0.08 }}
-              className="group rounded-[24px] overflow-hidden border"
+              className="group rounded-[24px] overflow-hidden border flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 borderColor: "rgba(255,255,255,0.10)",

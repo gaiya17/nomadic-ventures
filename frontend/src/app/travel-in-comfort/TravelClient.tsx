@@ -201,8 +201,8 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
         </div>
 
         <div
-          className="relative z-10 mx-auto px-6"
-          style={{ maxWidth: 1320, paddingTop: 200, paddingBottom: 120 }}
+          className="relative z-10 mx-auto px-6 pt-32 pb-16 md:pt-[200px] md:pb-[120px]"
+          style={{ maxWidth: 1320 }}
         >
           {/* breadcrumb */}
           <motion.div
@@ -327,15 +327,17 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
           </div>
 
           {/* 7 feature cards: 3 + 3 + 1 */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div 
+            className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:grid-cols-2 lg:grid-cols-3 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
             {FEATURES.map((f, i) => (
               <motion.div
                 key={f.label}
                 initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className={`group relative p-7 rounded-[24px] overflow-hidden ${
+                className={`group relative p-7 rounded-[24px] overflow-hidden flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none ${
                   i === 6 ? "lg:col-span-1" : ""
                 }`}
                 style={{
@@ -385,10 +387,9 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
             {/* 7th card fills last slot — make it a CTA card on large screens */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="relative p-7 rounded-[24px] overflow-hidden flex flex-col justify-between cursor-pointer group"
+              className="relative p-7 rounded-[24px] overflow-hidden flex flex-col justify-between cursor-pointer group flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
               style={{
                 background: "linear-gradient(135deg, rgba(244,185,66,0.1) 0%, rgba(34,211,238,0.07) 100%)",
                 border: "1px solid rgba(244,185,66,0.22)",
@@ -451,15 +452,17 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div 
+            className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:grid-cols-2 lg:grid-cols-4 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
             {FLEET_CATS.map((cat, i) => (
               <motion.div
                 key={cat.type}
                 initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.65, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative rounded-[24px] overflow-hidden flex flex-col"
+                className="group relative rounded-[24px] overflow-hidden flex flex-col flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
                 style={{
                   background: "rgba(255,255,255,0.03)",
                   border: "1px solid rgba(255,255,255,0.08)",
@@ -557,15 +560,17 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div 
+            className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-6 md:grid-cols-2 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
             {LUXURY_FLEET.map((vehicle, i) => (
               <motion.div
                 key={`${vehicle.brand}-${vehicle.model}`}
                 initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.75, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative rounded-[28px] overflow-hidden"
+                className="group relative rounded-[28px] overflow-hidden flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
                 style={{
                   border: "1px solid rgba(255,255,255,0.09)",
                   boxShadow: "0 0 0 0 transparent",
@@ -687,7 +692,8 @@ export function TravelClient({ travelComfortHeroImage, fleetImages }: { travelCo
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative overflow-hidden rounded-[40px] p-14 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-10"
+            className="relative overflow-hidden rounded-[32px] md:rounded-[40px] p-8 md:p-14 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-10"
+
             style={{
               background: "linear-gradient(135deg, rgba(244,185,66,0.1) 0%, rgba(7,18,14,0.5) 50%, rgba(34,211,238,0.07) 100%)",
               border: "1px solid rgba(244,185,66,0.18)",

@@ -133,7 +133,7 @@ export function WhyNomadicClient({ whyNomadicImages }: { whyNomadicImages?: stri
           </svg>
         </div>
 
-        <div className="relative max-w-[1320px] mx-auto px-8 pt-44 pb-20">
+        <div className="relative max-w-[1320px] mx-auto px-6 md:px-8 pt-32 pb-16 md:pt-44 md:pb-20">
           {/* breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -546,8 +546,8 @@ export function WhyNomadicClient({ whyNomadicImages }: { whyNomadicImages?: stri
           className="border-t"
           style={{ borderColor: "rgba(255,255,255,0.06)" }}
         >
-          <div className="max-w-[1320px] mx-auto px-8 py-24">
-            <div className={`grid lg:grid-cols-12 gap-14 items-center ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
+          <div className="max-w-[1320px] mx-auto px-6 md:px-8 py-16 md:py-24">
+            <div className={`grid lg:grid-cols-12 gap-10 md:gap-14 items-center ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
               {/* image */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -714,15 +714,17 @@ export function WhyNomadicClient({ whyNomadicImages }: { whyNomadicImages?: stri
           </div>
 
           {/* 6 pillar cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div 
+            className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:grid-cols-2 lg:grid-cols-3 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
             {WHY_PILLARS.map((pillar, i) => (
               <motion.div
                 key={pillar.label}
                 initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative p-7 rounded-[24px] overflow-hidden"
+                className="group relative p-7 rounded-[24px] overflow-hidden flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
                 style={{
                   background: "rgba(255,255,255,0.03)",
                   border: "1px solid rgba(255,255,255,0.08)",
