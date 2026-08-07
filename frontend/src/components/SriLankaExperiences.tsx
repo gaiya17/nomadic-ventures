@@ -121,9 +121,8 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                   opacity: { duration: 0.6, delay: i * 0.1 },
                   y: { duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className="relative overflow-hidden cursor-pointer group shrink-0 snap-center w-[85vw] sm:w-[340px] h-[480px] lg:h-[var(--desk-h)] lg:w-[var(--desk-w)] transition-all duration-500 ease-linear"
+                className="relative overflow-hidden cursor-pointer group shrink-0 snap-center w-[85vw] sm:w-[340px] h-[480px] lg:h-[580px] lg:w-[var(--desk-w)] transition-all duration-500 ease-linear"
                 style={{
-                  '--desk-h': `${isActive ? 640 : 580}px`,
                   '--desk-w': `${isActive ? 480 : 150}px`,
                   borderRadius: 999,
                   border: isActive
