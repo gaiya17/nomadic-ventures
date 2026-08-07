@@ -320,6 +320,59 @@ function DestCard({
   );
 }
 
+// ─── Destination Card Mobile List ───────────────────────────────────────────────
+function DestCardMobileList({
+  dest,
+  index,
+  onOpen,
+}: {
+  dest: Experience;
+  index: number;
+  onOpen: () => void;
+}) {
+  let gallery: string[] = [];
+  try { gallery = JSON.parse(dest.gallery) || []; } catch(e) {}
+  const heroImage = gallery[0] || "https://images.unsplash.com/photo-1665849050332-8d5d7e59afb6?w=1400";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.25) }}
+      onClick={onOpen}
+      className="flex items-center gap-4 p-2.5 rounded-[20px] cursor-pointer w-full"
+      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className="w-[100px] h-[100px] rounded-[14px] flex-shrink-0 overflow-hidden relative">
+        <ImageWithFallback
+          src={heroImage}
+          alt={dest.title}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%)" }} />
+      </div>
+      <div className="flex-1 min-w-0 pr-2 py-1">
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <MapPin size={10} color="#F4B942" />
+          <span style={{ fontSize: 10, color: "#F4B942", letterSpacing: "0.08em" }} className="truncate">
+            {dest.locationPlace}
+          </span>
+        </div>
+        <h3
+          className="text-white truncate mb-1"
+          style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 18, lineHeight: 1.15 }}
+        >
+          {dest.title}
+        </h3>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.4 }} className="truncate">
+          {dest.tagline}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Page ──────────────────────────────────────────────────────────────
 export function PageContent({ initialSlug }: { initialSlug?: string }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -420,25 +473,19 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
           </div>
         ) : (
           <>
-            {/* ── Mobile: horizontal swipe carousel ── */}
-            <div
-              className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6 px-6 min-h-[350px] w-full"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-            >
+            {/* ── Mobile: premium list view ── */}
+            <div className="md:hidden flex flex-col gap-3 px-6 pb-8 w-full">
               {experiences.map((dest, i) => (
-                <div key={dest.id} className="flex-shrink-0 w-[82vw] snap-center">
-                  <DestCard
-                    dest={dest}
-                    index={i}
-                    onOpen={() => {
-                      setSelectedId(dest.id);
-                      window.history.pushState(null, "", `/experiences/${dest.slug}`);
-                    }}
-                  />
-                </div>
+                <DestCardMobileList
+                  key={dest.id}
+                  dest={dest}
+                  index={i}
+                  onOpen={() => {
+                    setSelectedId(dest.id);
+                    window.history.pushState(null, "", `/experiences/${dest.slug}`);
+                  }}
+                />
               ))}
-              {/* trailing spacer so last card isn't flush to edge */}
-              <div className="flex-shrink-0 w-4" />
             </div>
 
             {/* ── Desktop: animated grid ── */}
