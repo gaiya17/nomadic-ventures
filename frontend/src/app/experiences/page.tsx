@@ -129,7 +129,7 @@ function DestinationModal({
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-0 divide-x" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_280px] divide-y lg:divide-y-0 lg:divide-x" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
 
             {/* Left: description */}
             <div className="p-6 lg:p-8">
@@ -175,12 +175,12 @@ function DestinationModal({
               </div>
 
               {/* Grid gallery */}
-              <div className="mt-8 grid grid-cols-4 gap-3">
+              <div className="mt-8 grid grid-cols-4 gap-2 md:gap-3">
                 {gallery.slice(0, 4).map((img, i) => (
                   <div
                     key={i}
                     onClick={() => setActiveImg(i)}
-                    className="relative h-28 rounded-[14px] overflow-hidden cursor-pointer group"
+                    className="relative h-16 md:h-28 rounded-[10px] md:rounded-[14px] overflow-hidden cursor-pointer group"
                   >
                     <ImageWithFallback
                       src={img}
@@ -359,7 +359,7 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
       <Navbar accent="#F4B942" glow="rgba(244,185,66,0.35)" solid />
 
       {/* ── Hero ── */}
-      <section className="pt-40 pb-16 px-6" style={{ maxWidth: 1320, margin: "0 auto" }}>
+      <section className="pt-28 md:pt-40 pb-16 px-6 max-w-[1320px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -401,6 +401,7 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="hidden md:block"
             style={{
               fontSize: 15,
               color: "rgba(255,255,255,0.5)",
@@ -414,30 +415,54 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
       </section>
 
       {/* ── Destinations grid ── */}
-      <section className="py-12 pb-28 px-6" style={{ maxWidth: 1320, margin: "0 auto" }}>
+      <section className="py-12 pb-28 max-w-[1320px] mx-auto">
         {isLoading ? (
           <div className="flex justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F4B942]"></div>
           </div>
         ) : (
-          <AnimatePresence mode="popLayout">
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-              layout
+          <>
+            {/* ── Mobile: horizontal swipe carousel ── */}
+            <div
+              className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6 px-6"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
             >
               {experiences.map((dest, i) => (
-                <DestCard
-                  key={dest.id}
-                  dest={dest}
-                  index={i}
-                  onOpen={() => {
-                    setSelectedId(dest.id);
-                    window.history.pushState(null, "", `/experiences/${dest.slug}`);
-                  }}
-                />
+                <div key={dest.id} className="flex-shrink-0 w-[82vw] snap-center">
+                  <DestCard
+                    dest={dest}
+                    index={i}
+                    onOpen={() => {
+                      setSelectedId(dest.id);
+                      window.history.pushState(null, "", `/experiences/${dest.slug}`);
+                    }}
+                  />
+                </div>
               ))}
-            </motion.div>
-          </AnimatePresence>
+              {/* trailing spacer so last card isn't flush to edge */}
+              <div className="flex-shrink-0 w-4" />
+            </div>
+
+            {/* ── Desktop: animated grid ── */}
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 px-6"
+                layout
+              >
+                {experiences.map((dest, i) => (
+                  <DestCard
+                    key={dest.id}
+                    dest={dest}
+                    index={i}
+                    onOpen={() => {
+                      setSelectedId(dest.id);
+                      window.history.pushState(null, "", `/experiences/${dest.slug}`);
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </>
         )}
       </section>
 
