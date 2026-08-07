@@ -183,7 +183,7 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
 
                     {/* Active Content (Visible on Mobile always, Visible on Desktop when active) */}
                     <div
-                      className={`w-full transition-opacity duration-300 ${isActive ? 'relative opacity-100' : 'relative opacity-100 lg:absolute lg:opacity-0 lg:pointer-events-none'}`}
+                      className={`w-full lg:absolute lg:bottom-8 lg:left-0 lg:right-0 transition-opacity duration-300 ${isActive ? 'opacity-100 pointer-events-auto' : 'opacity-100 lg:opacity-0 lg:pointer-events-none'}`}
                     >
                       <div
                         className="flex items-center justify-center gap-2 mb-3 text-white/70"
