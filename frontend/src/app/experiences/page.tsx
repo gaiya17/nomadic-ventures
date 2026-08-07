@@ -257,14 +257,13 @@ function DestCard({
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.25), ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.25) }}
       onClick={onOpen}
-      className="group relative rounded-[22px] overflow-hidden cursor-pointer"
-      style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+      className="group relative rounded-[22px] overflow-hidden cursor-pointer w-full h-full"
+      style={{ border: "1px solid rgba(255,255,255,0.08)", minHeight: 300 }}
       whileHover={{ y: -5 }}
     >
       {/* image */}
@@ -424,8 +423,8 @@ export function PageContent({ initialSlug }: { initialSlug?: string }) {
           <>
             {/* ── Mobile: horizontal swipe carousel ── */}
             <div
-              className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6 px-6"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
+              className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6 px-6 min-h-[350px] w-full"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
             >
               {experiences.map((dest, i) => (
                 <div key={dest.id} className="flex-shrink-0 w-[82vw] snap-center">
