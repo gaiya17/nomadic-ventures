@@ -8,18 +8,25 @@ import Link from "next/link";
 
 export function SriLankaExperiences({ categories }: { categories?: any[] }) {
   const [active, setActive] = useState(0);
+  const [mobileIndex, setMobileIndex] = useState(0);
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scrollLeft = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: -340, behavior: 'smooth' });
-  };
-  const scrollRight = () => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: 340, behavior: 'smooth' });
-  };
-
   const displayCategories = categories && categories.length > 0 ? categories : [];
+
+  // Scrolls the exact next/previous capsule fully into view, rather than a
+  // fixed pixel guess that doesn't reliably match a capsule's real width
+  // across different phone screens.
+  const scrollToIndex = (index: number) => {
+    const clamped = Math.max(0, Math.min(displayCategories.length - 1, index));
+    setMobileIndex(clamped);
+    const el = scrollRef.current?.children[clamped] as HTMLElement | undefined;
+    el?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  };
+  const scrollLeft = () => scrollToIndex(mobileIndex - 1);
+  const scrollRight = () => scrollToIndex(mobileIndex + 1);
+
   if (displayCategories.length === 0) return null;
 
   return (
@@ -94,17 +101,7 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
 
       {/* CAPSULE GALLERY */}
       <div className="relative max-w-[1400px] mx-auto">
-        {/* Navigation Arrows for Mobile */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 flex justify-between z-30 lg:hidden pointer-events-none">
-          <button onClick={scrollLeft} className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white pointer-events-auto active:scale-95 transition-all hover:bg-white/10">
-            <ChevronLeft size={24} />
-          </button>
-          <button onClick={scrollRight} className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white pointer-events-auto active:scale-95 transition-all hover:bg-white/10">
-            <ChevronRight size={24} />
-          </button>
-        </div>
-
-        <div 
+        <div
           ref={scrollRef}
           className="flex gap-4 items-center overflow-x-auto snap-x snap-mandatory pb-8 lg:pb-0 lg:overflow-visible lg:snap-none lg:flex-nowrap lg:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
         >
@@ -181,8 +178,11 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                     </div>
 
                     {/* Active Content (Visible on Mobile always, Visible on Desktop when active) */}
+                    {/* Fade-in is delayed to start only after the capsule's 500ms width
+                        expansion has mostly settled, so the title doesn't visibly slide
+                        sideways while the capsule is still resizing underneath it. */}
                     <div
-                      className={`w-full lg:w-[416px] lg:absolute lg:bottom-8 lg:left-1/2 lg:-translate-x-1/2 transition-opacity duration-300 ${isActive ? 'opacity-100 pointer-events-auto' : 'opacity-100 lg:opacity-0 lg:pointer-events-none'}`}
+                      className={`w-full lg:w-[416px] lg:absolute lg:bottom-8 lg:left-1/2 lg:-translate-x-1/2 ${isActive ? 'opacity-100 pointer-events-auto transition-opacity duration-300 delay-300' : 'opacity-100 lg:opacity-0 lg:pointer-events-none transition-opacity duration-150'}`}
                     >
                       <div
                         className="flex items-center justify-center gap-2 mb-3 text-white/70"
@@ -247,6 +247,24 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
               </motion.div>
             );
           })}
+        </div>
+
+        {/* Navigation Arrows for Mobile — below the capsules */}
+        <div className="flex items-center justify-center gap-4 mt-6 lg:hidden">
+          <button
+            onClick={scrollLeft}
+            disabled={mobileIndex === 0}
+            className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            onClick={scrollRight}
+            disabled={mobileIndex === displayCategories.length - 1}
+            className="w-12 h-12 rounded-full bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-all hover:bg-white/10 disabled:opacity-30 disabled:pointer-events-none"
+          >
+            <ChevronRight size={24} />
+          </button>
         </div>
       </div>
     </section>
