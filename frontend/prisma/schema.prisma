@@ -95,6 +95,7 @@ model ResortVilla {
   features    String?  // JSON string
   images      String?  // JSON string
   resort      Resort   @relation(fields: [resortId], references: [id], onDelete: Cascade)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -107,6 +108,7 @@ model ResortRestaurant {
   image       String?
   timings     String?  // JSON string
   resort      Resort   @relation(fields: [resortId], references: [id], onDelete: Cascade)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

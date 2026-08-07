@@ -12,8 +12,8 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
       include: {
         categories: { include: { category: true } },
         media: true,
-        villas: true,
-        restaurants: true,
+        villas: { orderBy: { order: 'asc' } },
+        restaurants: { orderBy: { order: 'asc' } },
         facilities: true,
         offers: true,
       },
@@ -131,7 +131,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         },
 
         villas: {
-          create: (data.villas || []).map((v: any) => ({
+          create: (data.villas || []).map((v: any, index: number) => ({
+            order: index,
             title: v.title,
             bedType: v.bedType,
             description: v.description,
@@ -143,7 +144,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         },
 
         restaurants: {
-          create: (data.restaurants || []).map((r: any) => ({
+          create: (data.restaurants || []).map((r: any, index: number) => ({
+            order: index,
             name: r.name,
             description: r.description,
             image: r.image,

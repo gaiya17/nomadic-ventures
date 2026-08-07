@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { X, Check, UploadCloud, Plus, Trash2 } from "lucide-react";
+import { X, Check, UploadCloud, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import CreatableSelect from "react-select/creatable";
 import { useDropzone } from "react-dropzone";
 
@@ -672,6 +672,16 @@ function StepVillas({ villas, setVillas }) {
     setVillas(villas.filter((_, i) => i !== index));
   };
 
+  const moveVilla = (index, direction) => {
+    const newVillas = [...villas];
+    if (direction === 'up' && index > 0) {
+      [newVillas[index - 1], newVillas[index]] = [newVillas[index], newVillas[index - 1]];
+    } else if (direction === 'down' && index < newVillas.length - 1) {
+      [newVillas[index + 1], newVillas[index]] = [newVillas[index], newVillas[index + 1]];
+    }
+    setVillas(newVillas);
+  };
+
   const confirmAddBedType = (idx) => {
     if (newBedTypeInput.trim()) {
       const val = newBedTypeInput.trim();
@@ -710,9 +720,17 @@ function StepVillas({ villas, setVillas }) {
 
       {villas.map((villa, idx) => (
         <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 relative shadow-sm">
-          <button onClick={() => removeVilla(idx)} className="absolute top-4 right-4 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
-            <Trash2 size={16} />
-          </button>
+          <div className="absolute top-4 right-4 flex items-center gap-1">
+            <button type="button" onClick={() => moveVilla(idx, 'up')} disabled={idx === 0} className="p-2 text-gray-400 hover:text-black disabled:opacity-30 hover:bg-gray-100 rounded-full transition-colors">
+              <ArrowUp size={16} />
+            </button>
+            <button type="button" onClick={() => moveVilla(idx, 'down')} disabled={idx === villas.length - 1} className="p-2 text-gray-400 hover:text-black disabled:opacity-30 hover:bg-gray-100 rounded-full transition-colors">
+              <ArrowDown size={16} />
+            </button>
+            <button type="button" onClick={() => removeVilla(idx)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
+              <Trash2 size={16} />
+            </button>
+          </div>
           
           <h4 className="text-sm font-bold text-gray-900 mb-5 uppercase tracking-wide border-b border-gray-100 pb-2">Villa {idx + 1}</h4>
           
@@ -859,6 +877,16 @@ function StepRestaurants({ restaurants, setRestaurants }) {
     setRestaurants(restaurants.filter((_, i) => i !== index));
   };
 
+  const moveRestaurant = (index, direction) => {
+    const newRestaurants = [...restaurants];
+    if (direction === 'up' && index > 0) {
+      [newRestaurants[index - 1], newRestaurants[index]] = [newRestaurants[index], newRestaurants[index - 1]];
+    } else if (direction === 'down' && index < newRestaurants.length - 1) {
+      [newRestaurants[index + 1], newRestaurants[index]] = [newRestaurants[index], newRestaurants[index + 1]];
+    }
+    setRestaurants(newRestaurants);
+  };
+
   const addTiming = (idx) => {
     const existing = restaurants[idx].timings || [];
     updateRestaurant(idx, "timings", [...existing, { type: "Breakfast", startTime: "", endTime: "" }]);
@@ -898,9 +926,17 @@ function StepRestaurants({ restaurants, setRestaurants }) {
 
       {restaurants.map((rest, idx) => (
         <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 relative shadow-sm">
-          <button onClick={() => removeRestaurant(idx)} className="absolute top-4 right-4 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
-            <Trash2 size={16} />
-          </button>
+          <div className="absolute top-4 right-4 flex items-center gap-1">
+            <button type="button" onClick={() => moveRestaurant(idx, 'up')} disabled={idx === 0} className="p-2 text-gray-400 hover:text-black disabled:opacity-30 hover:bg-gray-100 rounded-full transition-colors">
+              <ArrowUp size={16} />
+            </button>
+            <button type="button" onClick={() => moveRestaurant(idx, 'down')} disabled={idx === restaurants.length - 1} className="p-2 text-gray-400 hover:text-black disabled:opacity-30 hover:bg-gray-100 rounded-full transition-colors">
+              <ArrowDown size={16} />
+            </button>
+            <button type="button" onClick={() => removeRestaurant(idx)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
+              <Trash2 size={16} />
+            </button>
+          </div>
           
           <h4 className="text-sm font-bold text-gray-900 mb-5 uppercase tracking-wide border-b border-gray-100 pb-2">Restaurant {idx + 1}</h4>
           
