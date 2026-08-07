@@ -172,7 +172,7 @@ export function TourClientContent({ tour }: { tour: any }) {
           />
         </div>
 
-        <div className="relative max-w-[1400px] mx-auto px-8 pt-44 pb-16">
+        <div className="relative max-w-[1400px] mx-auto px-6 md:px-8 pt-32 md:pt-44 pb-16">
           {/* breadcrumbs */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -255,7 +255,7 @@ export function TourClientContent({ tour }: { tour: any }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="mt-8 max-w-2xl"
+                className="hidden md:block mt-8 max-w-2xl"
                 style={{
                   fontSize: 17,
                   lineHeight: 1.7,
@@ -269,7 +269,7 @@ export function TourClientContent({ tour }: { tour: any }) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.7 }}
-                className="mt-10 flex items-center gap-8 flex-wrap"
+                className="mt-6 md:mt-10 flex items-center gap-4 md:gap-8 flex-wrap"
               >
                 {[
                   { icon: Clock, label: tour.duration },
@@ -300,7 +300,7 @@ export function TourClientContent({ tour }: { tour: any }) {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="md:col-span-4 p-7 rounded-[28px] border"
+              className="md:col-span-4 p-5 md:p-7 rounded-[28px] border"
               style={{
                 background:
                   "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(7,18,14,0.7))",
@@ -323,7 +323,7 @@ export function TourClientContent({ tour }: { tour: any }) {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field
                     label="First name"
                     value={form.firstName}
@@ -348,7 +348,7 @@ export function TourClientContent({ tour }: { tour: any }) {
                   placeholder="anjali@email.com"
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <SelectField
                     label="Country"
                     value={form.country}
@@ -409,7 +409,7 @@ export function TourClientContent({ tour }: { tour: any }) {
                   placeholder="Tour Name"
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field
                     label="Travel date"
                     type="date"
@@ -532,7 +532,7 @@ export function TourClientContent({ tour }: { tour: any }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="flex flex-wrap justify-evenly items-center gap-8 p-8 md:px-12 rounded-[32px] border"
+          className="flex flex-wrap justify-evenly items-center gap-8 p-6 md:p-8 md:px-12 rounded-[32px] border"
           style={{
             background:
               "linear-gradient(135deg, rgba(244,185,66,0.10) 0%, rgba(7,18,14,0.8) 50%, rgba(137,243,255,0.08) 100%)",
@@ -541,7 +541,7 @@ export function TourClientContent({ tour }: { tour: any }) {
           }}
         >
           {tour.highlights.slice(0, 4).map((h: string, i: number) => (
-            <div key={i} className="flex items-center gap-4 max-w-[280px]">
+            <div key={i} className="flex items-center gap-4 w-full md:max-w-[280px]">
               <div
                 className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
                 style={{
