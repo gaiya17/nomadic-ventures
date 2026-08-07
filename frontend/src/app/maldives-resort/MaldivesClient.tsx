@@ -204,7 +204,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
           ))}
         </div>
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-20 pt-40 pb-24">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-20 pt-28 md:pt-40 pb-16 md:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -262,7 +262,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                 </span>
               </h1>
               <p
-                className="text-white/75 max-w-[560px]"
+                className="hidden md:block text-white/75 max-w-[560px]"
                 style={{ fontSize: 17, lineHeight: 1.6 }}
               >
                 Six worlds across 1,192 islands — overwater icons, private
@@ -290,14 +290,14 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
               ].map((s) => (
                 <div
                   key={s.l}
-                  className="p-5"
+                  className="p-3 md:p-5"
                   style={{ background: "rgba(2,24,48,0.7)" }}
                 >
                   <div
                     className="text-white"
                     style={{
                       fontFamily: "'Clash Display', sans-serif",
-                      fontSize: 28,
+                      fontSize: "clamp(20px, 4vw, 28px)",
                       letterSpacing: "-0.01em",
                     }}
                   >
@@ -318,7 +318,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
 
       {/* ───────── STICKY COLLECTION RAIL ───────── */}
       <div
-        className="sticky top-0 z-30 backdrop-blur-md border-y"
+        className="sticky top-[72px] lg:top-[88px] z-30 backdrop-blur-md border-y"
         style={{
           background: "rgba(2,24,48,0.85)",
           borderColor: "rgba(137,243,255,0.1)",
@@ -375,7 +375,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
             <div
               key={c.id}
               id={`col-${c.id}`}
-              className="relative w-full py-28 px-6 lg:px-20 border-b"
+              className="relative w-full py-14 lg:py-28 px-6 lg:px-20 border-b"
               style={{ borderColor: "rgba(137,243,255,0.08)" }}
             >
               <div className="relative max-w-[1400px] mx-auto">
@@ -519,13 +519,74 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                     </motion.button>
                   </motion.div>
 
-                  {/* GALLERY COLLAGE */}
+                  {/* ── MOBILE GALLERY (lg:hidden) ── */}
+                  <div className="lg:hidden mt-10 flex flex-col gap-3">
+                    {/* Featured — full-width tall card */}
+                    <div
+                      onClick={() => { if (c.resorts?.[0]) navigate(`/maldives-resort/${slugify(c.resorts[0].name)}`) }}
+                      className="relative w-full rounded-[24px] overflow-hidden border group cursor-pointer"
+                      style={{ height: 280, borderColor: "rgba(137,243,255,0.18)", boxShadow: "0 20px 60px rgba(0,15,40,0.55)" }}
+                    >
+                      <ImageWithFallback
+                        src={c.hero}
+                        alt={c.name}
+                        className="w-full h-full object-cover transition-transform duration-[1600ms] group-active:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-[#021830]/80 via-transparent to-transparent" />
+                      <div className="absolute top-5 left-5">
+                        <span
+                          className="px-3 py-1.5 rounded-full text-white border flex items-center gap-1.5"
+                          style={{ background: "rgba(2,24,48,0.55)", borderColor: "rgba(255,255,255,0.18)", backdropFilter: "blur(14px)", fontSize: 11, letterSpacing: "0.15em" }}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#89F3FF" }} />
+                          FEATURED · {c.resorts?.[0]?.atoll?.toUpperCase() || "MALDIVES"}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <div className="text-white/65 mb-1" style={{ fontSize: 10, letterSpacing: "0.2em" }}>THE FLAGSHIP</div>
+                        <div className="text-white" style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 26, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                          {c.resorts?.[0]?.name || c.name}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Secondary resorts — 2-col row */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {[1, 2].map((idx) => {
+                        const resort = c.resorts?.[idx];
+                        const fallbackImg = "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=900";
+                        return (
+                          <div
+                            key={resort?.name || `fallback-mobile-${idx}`}
+                            onClick={() => resort && navigate(`/maldives-resort/${slugify(resort.name)}`)}
+                            className="relative rounded-[20px] overflow-hidden border group cursor-pointer"
+                            style={{ height: 160, borderColor: "rgba(137,243,255,0.15)", boxShadow: "0 10px 30px rgba(0,15,40,0.5)" }}
+                          >
+                            <ImageWithFallback
+                              src={resort?.image || fallbackImg}
+                              alt={resort?.name || ""}
+                              className="w-full h-full object-cover transition-transform duration-[1500ms] group-active:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#021830]/90 via-[#021830]/20 to-transparent" />
+                            {resort && (
+                              <div className="absolute bottom-0 left-0 right-0 p-4">
+                                <div className="text-white truncate" style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 14, lineHeight: 1.1 }}>{resort.name}</div>
+                                <div className="text-[#89F3FF]/80 mt-1" style={{ fontSize: 10, letterSpacing: "0.1em" }}>{resort.atoll?.toUpperCase()}</div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* ── DESKTOP GALLERY (hidden lg:grid) ── */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                    className="lg:col-span-7 grid grid-cols-12 gap-3 h-[560px]"
+                    className="hidden lg:grid lg:col-span-7 grid-cols-12 gap-3 h-[560px]"
                   >
                     {/* Big featured */}
                     <div
@@ -586,7 +647,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                       </div>
                     </div>
 
-                    {/* Two stacked small images - Show next available resorts in the category */}
+                    {/* Two stacked small images */}
                     {[1, 2].map((idx) => {
                       const resort = c.resorts?.[idx];
                       if (resort) {
@@ -645,6 +706,7 @@ export function MaldivesClient({ maldivesHeroImage }: { maldivesHeroImage?: stri
                       }
                     })}
                   </motion.div>
+
                 </div>
 
                 {/* RESORT MINI-LIST */}
