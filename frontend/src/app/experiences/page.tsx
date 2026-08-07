@@ -258,8 +258,7 @@ function DestCard({
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: Math.min(index * 0.05, 0.25) }}
       onClick={onOpen}
       className="group relative rounded-[22px] overflow-hidden cursor-pointer w-full h-full"
