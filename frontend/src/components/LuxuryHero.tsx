@@ -99,14 +99,13 @@ export function LuxuryHero({ heroImage }: { heroImage?: string }) {
               <span className="h-px w-10" style={{ background: SL.gold }} />
             </div>
 
-            {/* headline — single line */}
+            {/* headline */}
             <h1
-              className="mb-5 whitespace-nowrap"
+              className="mb-5 whitespace-normal md:whitespace-nowrap leading-tight md:leading-none"
               style={{
                 fontFamily: "'Clash Display', sans-serif",
                 fontWeight: 600,
-                fontSize: "clamp(44px, 7vw, 96px)",
-                lineHeight: 1,
+                fontSize: "clamp(40px, 9vw, 96px)",
                 letterSpacing: "-0.025em",
               }}
             >
@@ -123,12 +122,11 @@ export function LuxuryHero({ heroImage }: { heroImage?: string }) {
               </span>
             </h1>
 
-            {/* description — single line */}
+            {/* description */}
             <p
-              className="mb-9 whitespace-nowrap"
+              className="mb-9 whitespace-normal md:whitespace-nowrap leading-relaxed md:leading-none"
               style={{
                 fontSize: "clamp(13px, 1.3vw, 16px)",
-                lineHeight: 1,
                 color: "rgba(255,255,255,0.6)",
               }}
             >
@@ -157,12 +155,12 @@ export function LuxuryHero({ heroImage }: { heroImage?: string }) {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
               <motion.button
                 onClick={() => navigate("/journeys")}
                 whileHover={{ scale: 1.04, boxShadow: `0 0 40px ${SL.glow}` }}
                 whileTap={{ scale: 0.97 }}
-                className="px-8 py-4 rounded-2xl flex items-center gap-2 text-white"
+                className="w-full sm:w-auto justify-center px-8 py-4 rounded-2xl flex items-center gap-2 text-white"
                 style={{
                   background: `linear-gradient(120deg, ${SL.primary} 0%, ${SL.primary}cc 100%)`,
                   boxShadow: `0 10px 40px ${SL.glow}`,
@@ -178,7 +176,7 @@ export function LuxuryHero({ heroImage }: { heroImage?: string }) {
                 onClick={() => navigate("/plan-trip")}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-8 py-4 rounded-2xl flex items-center gap-2 border text-white"
+                className="w-full sm:w-auto justify-center px-8 py-4 rounded-2xl flex items-center gap-2 border text-white"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   borderColor: "rgba(255,255,255,0.22)",

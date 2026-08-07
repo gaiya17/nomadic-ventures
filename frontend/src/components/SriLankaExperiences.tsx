@@ -86,7 +86,7 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
 
       {/* CAPSULE GALLERY */}
       <div className="relative max-w-[1400px] mx-auto">
-        <div className="flex gap-4 justify-center items-center flex-wrap lg:flex-nowrap">
+        <div className="flex gap-4 items-center overflow-x-auto snap-x snap-mandatory pb-8 lg:pb-0 lg:overflow-visible lg:snap-none lg:flex-nowrap lg:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
           {displayCategories.map((cat, i) => {
             const isActive = active === i;
             return (
@@ -100,16 +100,16 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                   opacity: { duration: 0.6, delay: i * 0.1 },
                   y: { duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className="relative overflow-hidden cursor-pointer group"
+                className="relative overflow-hidden cursor-pointer group shrink-0 snap-center w-[85vw] sm:w-[340px] h-[480px] lg:h-[var(--desk-h)] lg:w-[var(--desk-w)] transition-all duration-700"
                 style={{
-                  height: isActive ? 640 : 580,
-                  width: isActive ? 480 : 150,
+                  '--desk-h': `${isActive ? 640 : 580}px`,
+                  '--desk-w': `${isActive ? 480 : 150}px`,
                   borderRadius: 999,
                   border: isActive
                     ? "1px solid rgba(244,185,66,0.3)"
                     : "1px solid rgba(255,255,255,0.1)",
                   background: "#111",
-                }}
+                } as any}
               >
                 <Link href={`/journeys?category=${cat.tourTag}`} className="absolute inset-0 z-0" />
                 {/* Background Image */}
@@ -127,11 +127,9 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                     className="w-full h-full object-cover"
                   />
                   <div
-                    className="absolute inset-0"
+                    className="absolute inset-0 transition-colors duration-700"
                     style={{
-                      background: isActive
-                        ? "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
-                        : "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.95) 100%)",
+                      background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)"
                     }}
                   />
                 </motion.div>
@@ -141,105 +139,89 @@ export function SriLankaExperiences({ categories }: { categories?: any[] }) {
                   {/* Number indicator */}
                   <motion.div
                     animate={{ y: isActive ? 0 : 20 }}
-                    className="absolute top-10 text-white/50"
+                    className="absolute top-10 text-white/50 hidden lg:block"
                     style={{ fontSize: 13, letterSpacing: "0.2em" }}
                   >
                     0{i + 1}
                   </motion.div>
 
-                  {/* Title (Vertical when inactive, horizontal when active) */}
-                  <div
-                    className="w-full"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      position: isActive ? "relative" : "static",
-                      zIndex: 10,
-                    }}
-                  >
-                    {!isActive ? (
+                  <div className="w-full relative z-10 flex flex-col items-center justify-end h-full">
+                    {/* Inactive Vertical Text (Desktop only) */}
+                    <div
+                      className={`absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap text-white group-hover:text-[#F4B942] hidden lg:block transition-opacity duration-300 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                      style={{
+                        writingMode: "vertical-rl",
+                        transform: "rotate(180deg)",
+                        fontFamily: "'Clash Display', sans-serif",
+                        fontSize: 24,
+                        letterSpacing: "0.1em",
+                      }}
+                    >
+                      {cat.name}
+                    </div>
+
+                    {/* Active Content (Visible on Mobile always, Visible on Desktop when active) */}
+                    <div
+                      className={`w-full transition-all duration-500 delay-75 ${isActive ? 'relative opacity-100 translate-y-0' : 'relative opacity-100 translate-y-0 lg:absolute lg:opacity-0 lg:translate-y-8 lg:pointer-events-none'}`}
+                    >
                       <div
-                        key="inactive-text"
-                        className="absolute bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-white group-hover:text-[#F4B942]"
+                        className="flex items-center justify-center gap-2 mb-3 text-white/70"
                         style={{
-                          writingMode: "vertical-rl",
-                          transform: "rotate(180deg)",
+                          fontSize: 11,
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        <MapPin size={12} className="text-[#F4B942]" />
+                        {cat.sub}
+                      </div>
+
+                      <h3
+                        className="text-white mb-6"
+                        style={{
                           fontFamily: "'Clash Display', sans-serif",
-                          fontSize: 24,
-                          letterSpacing: "0.1em",
+                          fontSize: "clamp(28px, 3vw, 36px)",
+                          lineHeight: 1.1,
                         }}
                       >
                         {cat.name}
-                      </div>
-                    ) : (
-                      <motion.div
-                        key="active-content"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, duration: 0.3 }}
-                        className="w-full"
-                      >
-                        <div
-                          className="flex items-center justify-center gap-2 mb-3 text-white/70"
-                          style={{
-                            fontSize: 11,
-                            letterSpacing: "0.2em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          <MapPin size={12} className="text-[#F4B942]" />
-                          {cat.sub}
+                      </h3>
+
+                      {/* Little feature tags */}
+                      {cat.tags && cat.tags.length > 0 && (
+                        <div className="flex flex-wrap justify-center gap-2 mb-8">
+                          {cat.tags.map((tag: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className="px-3 py-1.5 rounded-full border border-white/20 text-white/80"
+                              style={{
+                                fontSize: 12,
+                                background: "rgba(255,255,255,0.05)",
+                                backdropFilter: "blur(10px)",
+                              }}
+                            >
+                              {idx === 0 && <MapPin size={10} className="inline mr-1" />}
+                              {tag}
+                            </span>
+                          ))}
                         </div>
+                      )}
 
-                        <h3
-                          className="text-white mb-6"
+                      <Link href={`/journeys?category=${cat.tourTag}`} className="relative z-20">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#F4B942]/50 text-white transition-all hover:bg-[#F4B942]/10"
                           style={{
-                            fontFamily: "'Clash Display', sans-serif",
-                            fontSize: "clamp(28px, 3vw, 36px)",
-                            lineHeight: 1.1,
+                            fontSize: 13,
+                            letterSpacing: "0.1em",
+                            backdropFilter: "blur(4px)",
                           }}
                         >
-                          {cat.name}
-                        </h3>
-
-                        {/* Little feature tags */}
-                        {cat.tags && cat.tags.length > 0 && (
-                          <div className="flex flex-wrap justify-center gap-2 mb-8">
-                            {cat.tags.map((tag: string, idx: number) => (
-                              <span
-                                key={idx}
-                                className="px-3 py-1.5 rounded-full border border-white/20 text-white/80"
-                                style={{
-                                  fontSize: 12,
-                                  background: "rgba(255,255,255,0.05)",
-                                  backdropFilter: "blur(10px)",
-                                }}
-                              >
-                                {idx === 0 && <MapPin size={10} className="inline mr-1" />}
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        <Link href={`/journeys?category=${cat.tourTag}`} className="relative z-20">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#F4B942]/50 text-white transition-all hover:bg-[#F4B942]/10"
-                            style={{
-                              fontSize: 13,
-                              letterSpacing: "0.1em",
-                              backdropFilter: "blur(4px)",
-                            }}
-                          >
-                            Explore <ArrowUpRight className="w-4 h-4" />
-                          </motion.button>
-                        </Link>
-                      </motion.div>
-                    )}
+                          Explore <ArrowUpRight className="w-4 h-4" />
+                        </motion.button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </motion.div>
