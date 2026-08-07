@@ -734,7 +734,7 @@ export function ResortClientContent({ resort, relatedResorts }: { resort: any; r
                 letterSpacing: "-0.02em",
               }}
             >
-              {numberToWords(resort.villas?.length || 0)} villa{" "}
+              {numberToWords(resort.villaTypes?.length || 0)} villa{" "}
               <span
                 style={{
                   background:
