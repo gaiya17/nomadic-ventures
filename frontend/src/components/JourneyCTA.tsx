@@ -2,6 +2,10 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, Calendar, Users, Sparkles } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import Link from "next/link";
+
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94715233845";
+const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
 
 export function JourneyCTA() {
   return (
@@ -109,37 +113,45 @@ export function JourneyCTA() {
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4">
-                  <motion.button
-                    whileHover={{ scale: 1.04, boxShadow: "0 0 50px rgba(244,185,66,0.4)" }}
-                    whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 px-7 py-4 rounded-2xl"
-                    style={{
-                      background:
-                        "linear-gradient(120deg, #F4B942 0%, #ffd06b 100%)",
-                      color: "#1a1308",
-                      fontSize: 13,
-                      letterSpacing: "0.1em",
-                      boxShadow: "0 15px 50px rgba(244,185,66,0.3)",
-                    }}
-                  >
-                    START PLANNING
-                    <ArrowUpRight className="w-4 h-4" />
-                  </motion.button>
+                  <Link href="/plan-trip">
+                    <motion.button
+                      whileHover={{ scale: 1.04, boxShadow: "0 0 50px rgba(244,185,66,0.4)" }}
+                      whileTap={{ scale: 0.97 }}
+                      className="flex items-center gap-2 px-7 py-4 rounded-2xl"
+                      style={{
+                        background:
+                          "linear-gradient(120deg, #F4B942 0%, #ffd06b 100%)",
+                        color: "#1a1308",
+                        fontSize: 13,
+                        letterSpacing: "0.1em",
+                        boxShadow: "0 15px 50px rgba(244,185,66,0.3)",
+                      }}
+                    >
+                      START PLANNING
+                      <ArrowUpRight className="w-4 h-4" />
+                    </motion.button>
+                  </Link>
 
-                  <motion.button
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 px-7 py-4 rounded-2xl border text-white"
-                    style={{
-                      background: "rgba(255,255,255,0.08)",
-                      borderColor: "rgba(255,255,255,0.22)",
-                      backdropFilter: "blur(14px)",
-                      fontSize: 13,
-                      letterSpacing: "0.1em",
-                    }}
+                  <a
+                    href={`https://wa.me/${WA_NUMBER}?text=${WA_GREETING}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    TALK TO AN EXPERT
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="flex items-center gap-2 px-7 py-4 rounded-2xl border text-white"
+                      style={{
+                        background: "rgba(255,255,255,0.08)",
+                        borderColor: "rgba(255,255,255,0.22)",
+                        backdropFilter: "blur(14px)",
+                        fontSize: 13,
+                        letterSpacing: "0.1em",
+                      }}
+                    >
+                      TALK TO AN EXPERT
+                    </motion.button>
+                  </a>
                 </div>
               </motion.div>
             </div>

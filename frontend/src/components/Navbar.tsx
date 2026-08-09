@@ -144,18 +144,17 @@ export function Navbar({ accent = "#F4B942", glow = "rgba(244,185,66,0.35)", sol
           {/* ③ CTA + hamburger */}
           <div className="flex items-center gap-2 flex-shrink-0 ml-auto xl:ml-0">
             <motion.button
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ scale: 1.04, boxShadow: "0 0 30px rgba(244,185,66,0.45)" }}
               whileTap={{ scale: 0.97 }}
               onClick={() => router.push("/plan-trip")}
-              className="hidden xl:block px-5 py-2 rounded-full border text-white"
+              className="hidden xl:block px-5 py-2 rounded-full"
               style={{
-                background: "rgba(255,255,255,0.1)",
-                borderColor: "rgba(255,255,255,0.22)",
-                backdropFilter: "blur(10px)",
+                background: "linear-gradient(120deg, #F4B942 0%, #ffd06b 100%)",
+                color: "#1a1308",
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 fontFamily: "'Clash Display',sans-serif",
-                boxShadow: `0 0 20px ${glow}`,
+                boxShadow: "0 0 20px rgba(244,185,66,0.35)",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
               }}

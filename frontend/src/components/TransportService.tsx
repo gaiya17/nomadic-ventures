@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import {
   ShieldCheck,
@@ -12,6 +11,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94715233845";
+const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
 
 const FEATURES = [
   {
@@ -51,9 +53,7 @@ const CLASS_OPTIONS = [
 ];
 
 export function TransportService({ transportImage = "https://images.unsplash.com/photo-1549424883-93666b3b05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1800" }: { transportImage?: string }) {
-  const router = useRouter();
   const [selectedClass, setSelectedClass] = useState("sedan");
-  const navigate = (path: string) => router.push(path);
   const [selectedFleet, setSelectedFleet] = useState(0);
 
   return (
@@ -362,7 +362,7 @@ export function TransportService({ transportImage = "https://images.unsplash.com
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate("/plan-trip")}
+                  onClick={() => window.open(`https://wa.me/${WA_NUMBER}?text=${WA_GREETING}`, "_blank")}
                   className="w-full flex items-center justify-between px-5 py-3.5 rounded-xl"
                   style={{
                     background: "#F4B942",
