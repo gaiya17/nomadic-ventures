@@ -35,7 +35,8 @@ export async function middleware(request: NextRequest) {
     const isPublicGet = request.method === 'GET' && (
       pathname.startsWith('/api/admin/tours') ||
       pathname.startsWith('/api/admin/resorts') ||
-      pathname.startsWith('/api/admin/resorts/categories')
+      pathname.startsWith('/api/admin/resorts/categories') ||
+      pathname.startsWith('/api/admin/experiences')
     );
 
     if (!isPublicGet) {
