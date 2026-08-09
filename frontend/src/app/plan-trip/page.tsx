@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import axios from "axios";
 import {
   ArrowUpRight,
   Mail,
@@ -12,10 +13,12 @@ import {
   Plus,
   Minus,
   Clock,
+  Check,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
+import { COUNTRIES } from "@/lib/countries";
 
 const CHANNELS = [
   {
@@ -87,40 +90,14 @@ const FAQS = [
   },
 ];
 
-const COUNTRIES = [
-  { name: "Australia", code: "+61" },
-  { name: "Canada", code: "+1" },
-  { name: "France", code: "+33" },
-  { name: "Germany", code: "+49" },
-  { name: "India", code: "+91" },
-  { name: "Maldives", code: "+960" },
-  { name: "Singapore", code: "+65" },
-  { name: "Sri Lanka", code: "+94" },
-  { name: "United Arab Emirates", code: "+971" },
-  { name: "United Kingdom", code: "+44" },
-  { name: "United States", code: "+1" },
-  { name: "Other", code: "" }
-];
-
-const SRI_LANKA_DESTINATIONS = [
-  "All of Sri Lanka",
-  "Cultural Triangle",
-  "Tea Country",
-  "South Coast",
-  "Yala National Park",
-  "Colombo City",
-];
-
-const MALDIVES_DESTINATIONS = [
-  "All of Maldives",
-  "North Malé Atoll",
-  "South Malé Atoll",
-  "Baa Atoll",
-  "Ari Atoll",
-];
+const NOT_SURE_YET = "Not sure yet — help me choose";
 
 export default function Page() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(false);
+  const [sriLankaPackages, setSriLankaPackages] = useState<string[]>([]);
+  const [maldivesResorts, setMaldivesResorts] = useState<string[]>([]);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -131,19 +108,51 @@ export default function Page() {
     children: "0",
     infants: "0",
     location: "Sri Lanka",
-    destination: "All of Sri Lanka",
+    destination: NOT_SURE_YET,
     travelDate: "",
     noOfNights: "7",
     description: "",
   });
 
+  // Populate the Destination dropdown with real, currently-published
+  // packages/resorts instead of a static hardcoded region list.
+  useEffect(() => {
+    axios.get("/api/chatbot/data").then((res) => {
+      if (!res.data?.success) return;
+      const tourNames: string[] = [];
+      (res.data.tourCategories || []).forEach((cat: any) => {
+        (cat.tours || []).forEach((t: any) => {
+          if (t?.name && !tourNames.includes(t.name)) tourNames.push(t.name);
+        });
+      });
+      const resortNames: string[] = [];
+      (res.data.resortCategories || []).forEach((cat: any) => {
+        (cat.resorts || []).forEach((r: any) => {
+          if (r?.name && !resortNames.includes(r.name)) resortNames.push(r.name);
+        });
+      });
+      setSriLankaPackages(tourNames);
+      setMaldivesResorts(resortNames);
+    }).catch(() => {});
+  }, []);
+
   const handleLocationChange = (val: string) => {
-    setForm((prev) => ({
-      ...prev,
-      location: val,
-      destination:
-        val === "Sri Lanka" ? SRI_LANKA_DESTINATIONS[0] : MALDIVES_DESTINATIONS[0],
-    }));
+    setForm((prev) => ({ ...prev, location: val, destination: NOT_SURE_YET }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formEl = e.currentTarget as HTMLFormElement;
+    if (formEl.checkValidity()) {
+      setIsSubmitting(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setFormSuccess(true);
+        setTimeout(() => setFormSuccess(false), 5000);
+      }, 1500);
+    } else {
+      formEl.reportValidity();
+    }
   };
 
   const handleCountryChange = (countryName: string) => {
@@ -348,7 +357,7 @@ export default function Page() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
             className="md:col-span-7 p-6 md:p-12 rounded-[32px] border"
             style={{
               background:
@@ -374,18 +383,25 @@ export default function Page() {
                 value={form.firstName}
                 onChange={(v) => setForm({ ...form, firstName: v })}
                 placeholder="Anjali"
+                required
+                pattern="[A-Za-z\s'-]+"
+                title="Letters only, please"
               />
               <Field
                 label="Last name *"
                 value={form.lastName}
                 onChange={(v) => setForm({ ...form, lastName: v })}
                 placeholder="Perera"
+                required
+                pattern="[A-Za-z\s'-]+"
+                title="Letters only, please"
               />
 
               <SelectField
                 label="Country *"
                 value={form.country}
                 onChange={handleCountryChange}
+                required
                 options={[
                   { label: "Select Country", value: "" },
                   ...COUNTRIES.map((c) => ({ label: c.name, value: c.name })),
@@ -396,6 +412,9 @@ export default function Page() {
                 value={form.mobileNo}
                 onChange={(v) => setForm({ ...form, mobileNo: v })}
                 placeholder="+94 77 123 4567"
+                required
+                pattern="[0-9+\s-]{7,}"
+                title="A valid phone number (7+ digits)"
               />
 
               <Field
@@ -404,6 +423,7 @@ export default function Page() {
                 onChange={(v) => setForm({ ...form, email: v })}
                 placeholder="anjali@email.com"
                 type="email"
+                required
               />
 
               <div>
@@ -412,7 +432,7 @@ export default function Page() {
                   <SelectField
                     value={form.adults}
                     onChange={(v) => setForm({ ...form, adults: v })}
-                    options={Array.from({ length: 10 }, (_, i) => ({
+                    options={Array.from({ length: 50 }, (_, i) => ({
                       label: `${i + 1} Adults`,
                       value: `${i + 1}`,
                     }))}
@@ -420,7 +440,7 @@ export default function Page() {
                   <SelectField
                     value={form.children}
                     onChange={(v) => setForm({ ...form, children: v })}
-                    options={Array.from({ length: 10 }, (_, i) => ({
+                    options={Array.from({ length: 50 }, (_, i) => ({
                       label: `${i} Kids`,
                       value: `${i}`,
                     }))}
@@ -428,7 +448,7 @@ export default function Page() {
                   <SelectField
                     value={form.infants}
                     onChange={(v) => setForm({ ...form, infants: v })}
-                    options={Array.from({ length: 10 }, (_, i) => ({
+                    options={Array.from({ length: 20 }, (_, i) => ({
                       label: `${i} Infants`,
                       value: `${i}`,
                     }))}
@@ -436,21 +456,35 @@ export default function Page() {
                 </div>
               </div>
 
+              <div>
+                <FieldLabel>Location *</FieldLabel>
+                <div className="grid grid-cols-2 gap-2">
+                  {["Sri Lanka", "Maldives"].map((loc) => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={() => handleLocationChange(loc)}
+                      className="px-5 py-3.5 rounded-[18px] border transition-colors"
+                      style={{
+                        background: form.location === loc ? "rgba(244,185,66,0.15)" : "rgba(7,18,14,0.5)",
+                        borderColor: form.location === loc ? "#F4B942" : "rgba(255,255,255,0.14)",
+                        color: form.location === loc ? "#F4B942" : "white",
+                        fontSize: 14,
+                      }}
+                    >
+                      {loc}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <SelectField
-                label="Location *"
-                value={form.location}
-                onChange={handleLocationChange}
-                options={["Sri Lanka", "Maldives"]}
-              />
-              <SelectField
-                label="Destination *"
+                label="Destination (Optional)"
                 value={form.destination}
                 onChange={(v) => setForm({ ...form, destination: v })}
-                options={
-                  form.location === "Sri Lanka"
-                    ? SRI_LANKA_DESTINATIONS
-                    : MALDIVES_DESTINATIONS
-                }
+                options={[
+                  NOT_SURE_YET,
+                  ...(form.location === "Sri Lanka" ? sriLankaPackages : maldivesResorts),
+                ]}
               />
 
               <Field
@@ -459,6 +493,8 @@ export default function Page() {
                 onChange={(v) => setForm({ ...form, travelDate: v })}
                 type="date"
                 icon={Calendar}
+                required
+                min={new Date().toISOString().split("T")[0]}
               />
 
               <div>
@@ -466,7 +502,7 @@ export default function Page() {
                   label="No of nights *"
                   value={form.noOfNights}
                   onChange={(v) => setForm({ ...form, noOfNights: v })}
-                  options={Array.from({ length: 30 }, (_, i) => ({
+                  options={Array.from({ length: 50 }, (_, i) => ({
                     label: `${i + 1} Nights`,
                     value: `${i + 1}`,
                   }))}
@@ -516,24 +552,36 @@ export default function Page() {
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-3 pl-7 pr-3 py-3 rounded-full"
+                disabled={isSubmitting || formSuccess}
+                whileHover={!isSubmitting && !formSuccess ? { scale: 1.03 } : {}}
+                whileTap={!isSubmitting && !formSuccess ? { scale: 0.97 } : {}}
+                className="inline-flex items-center gap-3 pl-7 pr-3 py-3 rounded-full disabled:opacity-90"
                 style={{
-                  background: "linear-gradient(135deg, #F4B942, #E8A923)",
-                  color: "#07120E",
+                  background: formSuccess ? "#22c55e" : "linear-gradient(135deg, #F4B942, #E8A923)",
+                  color: formSuccess ? "#fff" : "#07120E",
                   fontSize: 13,
                   letterSpacing: "0.18em",
-                  boxShadow: "0 18px 50px rgba(244,185,66,0.35)",
+                  boxShadow: formSuccess ? "0 18px 50px rgba(34,197,94,0.35)" : "0 18px 50px rgba(244,185,66,0.35)",
                 }}
               >
-                INQUIRE NOW
-                <span
-                  className="w-9 h-9 rounded-full flex items-center justify-center"
-                  style={{ background: "#07120E", color: "#F4B942" }}
-                >
-                  <ArrowUpRight className="w-4 h-4" />
-                </span>
+                {isSubmitting ? (
+                  <div className="w-4 h-4 border-2 border-[#07120E]/30 border-t-[#07120E] rounded-full animate-spin" />
+                ) : formSuccess ? (
+                  <>
+                    SENT SUCCESSFULLY
+                    <Check className="w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    INQUIRE NOW
+                    <span
+                      className="w-9 h-9 rounded-full flex items-center justify-center"
+                      style={{ background: "#07120E", color: "#F4B942" }}
+                    >
+                      <ArrowUpRight className="w-4 h-4" />
+                    </span>
+                  </>
+                )}
               </motion.button>
             </div>
           </motion.form>
@@ -916,6 +964,11 @@ function Field({
   placeholder,
   type = "text",
   icon: Icon,
+  required,
+  pattern,
+  title,
+  min,
+  max,
 }: {
   label: string;
   value: string;
@@ -923,6 +976,11 @@ function Field({
   placeholder?: string;
   type?: string;
   icon?: any;
+  required?: boolean;
+  pattern?: string;
+  title?: string;
+  min?: string;
+  max?: string;
 }) {
   return (
     <div>
@@ -945,6 +1003,11 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          required={required}
+          pattern={pattern}
+          title={title}
+          min={min}
+          max={max}
           className="bg-transparent outline-none flex-1 placeholder:text-white/35 text-white [color-scheme:dark]"
           style={{ fontSize: 14 }}
         />
@@ -960,6 +1023,7 @@ function SelectField({
   options,
   icon: Icon,
   className,
+  required,
 }: {
   label?: string;
   value: string;
@@ -967,6 +1031,7 @@ function SelectField({
   options: (string | { label: string; value: string })[];
   icon?: any;
   className?: string;
+  required?: boolean;
 }) {
   return (
     <div className={className}>
@@ -987,6 +1052,7 @@ function SelectField({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          required={required}
           className="bg-transparent outline-none flex-1 text-white appearance-none cursor-pointer"
           style={{ fontSize: 14 }}
         >
