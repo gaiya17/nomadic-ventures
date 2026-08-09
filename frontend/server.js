@@ -1,9 +1,9 @@
 // Custom Next.js server for Hostinger shared hosting Node.js add-on.
 // Hostinger's Apache proxies all traffic through this file, which
 // then lets Next.js handle every request — including /_next/static/ chunks.
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
+import { createServer } from 'http';
+import { parse } from 'url';
+import next from 'next';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const dev = process.env.NODE_ENV !== 'production';
