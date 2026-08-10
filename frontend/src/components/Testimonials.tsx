@@ -4,14 +4,23 @@ import { Star, Quote, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 
+const GOOGLE_REVIEW_URL =
+  "https://www.google.com/search?q=nomadic+ventures&oq=&gs_lcrp=EgZjaHJvbWUqCQgBECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIPCAMQLhgnGMcBGOoCGNEDMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gLSAQo1OTc0ODFqMGo3qAIIsAIB8QWARVpcQ9EclPEFgEVaXEPRHJQ&sourceid=chrome&source=chrome.ob&ie=UTF-8";
+
 interface TestimonialProps {
   featuredReview?: { quote: string; name: string; trip: string | null; avatar: string | null; source: string; rating: number } | null;
   standardReviews?: { id?: string; quote: string; name: string; trip: string | null; avatar: string | null; source: string; rating: number }[];
+  averageRating?: number;
+  reviewCount?: number;
+  reviewSources?: string[];
 }
 
 export function Testimonials({
   featuredReview,
   standardReviews = [],
+  averageRating = 0,
+  reviewCount = 0,
+  reviewSources = [],
 }: TestimonialProps) {
   const displayFeatured = featuredReview || (standardReviews.length > 0 ? standardReviews[0] : null);
   const displayReviews = featuredReview ? standardReviews : standardReviews.slice(1);
@@ -91,16 +100,19 @@ export function Testimonials({
                 className="text-white/65 max-w-[320px]"
                 style={{ fontSize: 14, lineHeight: 1.65 }}
               >
-                Real letters from 2,500+ travelers who let us design their
-                Sri Lanka and Maldives journeys.
+                Real letters from travelers who let us design their Sri
+                Lanka and Maldives journeys.
               </p>
-              <motion.button
+              <motion.a
+                href={GOOGLE_REVIEW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ x: 4 }}
                 className="flex items-center gap-2 text-white border-b border-white/30 pb-1 whitespace-nowrap"
                 style={{ fontSize: 13, letterSpacing: "0.1em" }}
               >
                 WRITE A REVIEW <ArrowUpRight className="w-4 h-4" />
-              </motion.button>
+              </motion.a>
             </div>
           </motion.div>
         </div>
@@ -143,7 +155,7 @@ export function Testimonials({
                       lineHeight: 1,
                     }}
                   >
-                    4.95
+                    {averageRating.toFixed(2)}
                   </span>
                   <span
                     className="text-white/55"
@@ -156,7 +168,7 @@ export function Testimonials({
                   className="text-white/65 mt-2"
                   style={{ fontSize: 12, letterSpacing: "0.05em" }}
                 >
-                  2,500+ verified traveler reviews
+                  {reviewCount} verified traveler review{reviewCount === 1 ? "" : "s"}
                 </div>
               </div>
 
@@ -179,17 +191,17 @@ export function Testimonials({
                       color: "#7EE0BD",
                     }}
                   >
-                    VERIFIED · TRUSTINDEX
+                    VERIFIED REVIEWS
                   </span>
                 </div>
-                <div
-                  className="text-white/50 text-right"
-                  style={{ fontSize: 10, letterSpacing: "0.18em" }}
-                >
-                  GOOGLE · TRIPADVISOR
-                  <br />
-                  TRUSTPILOT
-                </div>
+                {reviewSources.length > 0 && (
+                  <div
+                    className="text-white/50 text-right"
+                    style={{ fontSize: 10, letterSpacing: "0.18em" }}
+                  >
+                    {reviewSources.join(" · ")}
+                  </div>
+                )}
               </div>
             </motion.div>
 

@@ -68,6 +68,13 @@ export default async function Page() {
     }
   }
 
+  const reviewCount = dbReviews.length;
+  const averageRating =
+    reviewCount > 0
+      ? Math.round((dbReviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount) * 100) / 100
+      : 0;
+  const reviewSources = Array.from(new Set(dbReviews.map((r) => r.source.toUpperCase())));
+
   return (
     <>
       <Navbar accent="#F4B942" glow="rgba(244,185,66,0.35)" />
@@ -77,7 +84,13 @@ export default async function Page() {
       <JourneyCTA image={journeyCtaImage} />
       <MaldivesSection />
       <TransportService transportImage={transportHeroImage} />
-      <Testimonials featuredReview={featuredReview} standardReviews={standardReviews} />
+      <Testimonials
+        featuredReview={featuredReview}
+        standardReviews={standardReviews}
+        averageRating={averageRating}
+        reviewCount={reviewCount}
+        reviewSources={reviewSources}
+      />
       <Footer />
     </>
   );
