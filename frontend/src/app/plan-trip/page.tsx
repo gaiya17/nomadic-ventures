@@ -96,6 +96,7 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [formError, setFormError] = useState("");
   const [sriLankaPackages, setSriLankaPackages] = useState<string[]>([]);
   const [maldivesResorts, setMaldivesResorts] = useState<string[]>([]);
   const [form, setForm] = useState({
@@ -140,18 +141,39 @@ export default function Page() {
     setForm((prev) => ({ ...prev, location: val, destination: NOT_SURE_YET }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formEl = e.currentTarget as HTMLFormElement;
-    if (formEl.checkValidity()) {
-      setIsSubmitting(true);
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setFormSuccess(true);
-        setTimeout(() => setFormSuccess(false), 5000);
-      }, 1500);
-    } else {
+    if (!formEl.checkValidity()) {
       formEl.reportValidity();
+      return;
+    }
+    setFormError("");
+    setIsSubmitting(true);
+    try {
+      await axios.post("/api/inquiries", {
+        source: "plan-trip",
+        packageName: form.destination,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        country: form.country,
+        mobileNo: form.mobileNo,
+        adults: form.adults,
+        children: form.children,
+        infants: form.infants,
+        location: form.location,
+        destination: form.destination,
+        travelDate: form.travelDate,
+        noOfNights: form.noOfNights,
+        description: form.description,
+      });
+      setFormSuccess(true);
+      setTimeout(() => setFormSuccess(false), 5000);
+    } catch (err: any) {
+      setFormError(err?.response?.data?.error || "Something went wrong. Please try again or contact us on WhatsApp.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -584,6 +606,14 @@ export default function Page() {
                 )}
               </motion.button>
             </div>
+            {formError && (
+              <div
+                className="mt-4 text-right"
+                style={{ fontSize: 12, color: "#f87171" }}
+              >
+                {formError}
+              </div>
+            )}
           </motion.form>
 
           {/* Channels */}

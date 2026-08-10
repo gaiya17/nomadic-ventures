@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "motion/react";
+import axios from "axios";
 import {
   ArrowUpRight,
   Clock,
@@ -113,6 +114,7 @@ export function TourClientContent({ tour }: { tour: any }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const [form, setForm] = useState({
     firstName: "",
@@ -129,18 +131,37 @@ export function TourClientContent({ tour }: { tour: any }) {
     description: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formEl = e.currentTarget as HTMLFormElement;
-    if (formEl.checkValidity()) {
-      setIsSubmitting(true);
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setFormSuccess(true);
-        setTimeout(() => setFormSuccess(false), 5000);
-      }, 1500);
-    } else {
+    if (!formEl.checkValidity()) {
       formEl.reportValidity();
+      return;
+    }
+    setFormError("");
+    setIsSubmitting(true);
+    try {
+      await axios.post("/api/inquiries", {
+        source: "tour",
+        packageName: form.package,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        country: form.country,
+        mobileNo: form.mobileNo,
+        adults: form.adults,
+        children: form.children,
+        infants: form.infants,
+        travelDate: form.travelDate,
+        noOfNights: form.noOfNights,
+        description: form.description,
+      });
+      setFormSuccess(true);
+      setTimeout(() => setFormSuccess(false), 5000);
+    } catch (err: any) {
+      setFormError(err?.response?.data?.error || "Something went wrong. Please try again or contact us on WhatsApp.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -533,6 +554,14 @@ export function TourClientContent({ tour }: { tour: any }) {
                     </>
                   )}
                 </motion.button>
+                {formError && (
+                  <div
+                    className="mt-3 text-center"
+                    style={{ fontSize: 12, color: "#f87171" }}
+                  >
+                    {formError}
+                  </div>
+                )}
               </form>
             </motion.div>
           </div>
