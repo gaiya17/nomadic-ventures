@@ -60,7 +60,7 @@ function DestinationModal({
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 60, opacity: 0, scale: 0.98 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-4xl max-h-[94vh] lg:max-h-[88vh] overflow-y-auto rounded-t-[28px] lg:rounded-[28px] flex flex-col"
+        className="relative w-full max-w-4xl max-h-[94vh] lg:max-h-[88vh] overflow-hidden rounded-t-[28px] lg:rounded-[28px] flex flex-col"
         style={{
           background: "rgba(7,18,14,0.98)",
           border: "1px solid rgba(255,255,255,0.1)",
@@ -128,7 +128,7 @@ function DestinationModal({
         </div>
 
         {/* ── Scrollable content ── */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <div className="flex flex-col lg:grid lg:grid-cols-[1fr_280px] divide-y lg:divide-y-0 lg:divide-x" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
 
             {/* Left: description */}

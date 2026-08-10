@@ -71,3 +71,14 @@
     font-size: var(--font-size);
   }
 }
+
+/* Mobile browsers auto-zoom the page when a focused form field renders
+   below 16px. Forcing 16px only under this breakpoint keeps the compact
+   13-14px desktop input styling untouched while stopping the zoom. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
