@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94715233845";
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94771766134";
 const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
 
 const FEATURES = [

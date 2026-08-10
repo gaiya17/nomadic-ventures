@@ -17,11 +17,15 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94715233845";
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94771766134";
 const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
-const EMAIL = "hello@nomadicventures.com"; // ← Replace
-const PHONE = "+94 XXX XXX XXX"; // ← Replace
-const ADDRESS = "Colombo, Sri Lanka"; // ← Replace
+const EMAIL = "info@nomadicsrilanka.com";
+const PHONE_NUMBERS = [
+  { number: "+94 112 474 472", label: "(Call)" },
+  { number: "+94 77 17 66 134", label: "(Call / WhatsApp)" },
+  { number: "+94 77 11 56 646", label: "(WhatsApp)" },
+];
+const ADDRESS = "No 6/12, 3rd Lane, Nawala Road, Rajagiriya, Sri Lanka";
 const HOURS = "Mon – Sat, 9am – 6pm (IST)"; // ← Replace
 const ABOUT_BLURB = "Nomadic Ventures crafts extraordinary journeys across Sri Lanka and the Maldives — blending curated luxury with authentic local experiences. We believe travel should leave a meaningful mark.";
 
@@ -209,7 +213,10 @@ function BotMessage({ message }: { message: Message }) {
           <div className="text-white font-semibold text-sm mb-3" style={{ fontFamily: "'Clash Display', sans-serif" }}>Get In Touch</div>
           {[
             { icon: <MapPin className="w-3.5 h-3.5" />, label: ADDRESS },
-            { icon: <Phone className="w-3.5 h-3.5" />, label: PHONE },
+            ...PHONE_NUMBERS.map((p) => ({
+              icon: <Phone className="w-3.5 h-3.5" />,
+              label: `${p.number} ${p.label}`,
+            })),
             { icon: <Mail className="w-3.5 h-3.5" />, label: EMAIL },
             { icon: <Clock className="w-3.5 h-3.5" />, label: HOURS },
           ].map((row, i) => (

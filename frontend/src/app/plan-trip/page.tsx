@@ -24,21 +24,21 @@ const CHANNELS = [
   {
     icon: MessageCircle,
     label: "WhatsApp",
-    value: process.env.NEXT_PUBLIC_WHATSAPP_DISPLAY || "0715233845",
+    value: process.env.NEXT_PUBLIC_WHATSAPP_DISPLAY || "+94 77 17 66 134",
     note: "Fastest · 24/7 concierge",
     accent: "#25D366",
   },
   {
     icon: Phone,
     label: "Direct line",
-    value: "+94 11 234 5678",
+    value: "+94 112 474 472",
     note: "Mon–Sat · 08:00–20:00 IST",
     accent: "#F4B942",
   },
   {
     icon: Mail,
     label: "Studio email",
-    value: "hello@ewaytravels.com",
+    value: "info@nomadicsrilanka.com",
     note: "Reply within 4 hours",
     accent: "#89F3FF",
   },
@@ -48,7 +48,7 @@ const OFFICES = [
   {
     city: "Colombo",
     country: "Sri Lanka",
-    address: "12 Galle Face Court, Colombo 03",
+    address: "No 6/12, 3rd Lane, Nawala Road, Rajagiriya",
     hours: "08:00 – 20:00 IST",
     image:
       "https://images.unsplash.com/photo-1740812517495-812e90ca01b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
