@@ -16,6 +16,7 @@ export default function HomepageManager() {
   // Settings State
   const [homepageHero, setHomepageHero] = useState("");
   const [transportHero, setTransportHero] = useState("");
+  const [journeyCtaImage, setJourneyCtaImage] = useState("");
   
   const [maldivesHero, setMaldivesHero] = useState("");
 
@@ -35,6 +36,7 @@ export default function HomepageManager() {
       
       if (config.homepage_hero_image) setHomepageHero(config.homepage_hero_image);
       if (config.transport_hero_image) setTransportHero(config.transport_hero_image);
+      if (config.journey_cta_image) setJourneyCtaImage(config.journey_cta_image);
       if (config.maldives_hero_image) {
         setMaldivesHero(config.maldives_hero_image);
       }
@@ -54,6 +56,7 @@ export default function HomepageManager() {
       const payload = {
         homepage_hero_image: homepageHero,
         transport_hero_image: transportHero,
+        journey_cta_image: journeyCtaImage,
         maldives_hero_image: maldivesHero,
         travel_in_comfort_hero_image: travelComfortHero,
         travel_in_comfort_fleet_images: JSON.stringify(travelFleetImages),
@@ -130,11 +133,17 @@ export default function HomepageManager() {
                 onChange={setHomepageHero} 
                 folder="homepage" 
               />
-              <ImageUploader 
-                label="Transport Section Image" 
-                value={transportHero} 
-                onChange={setTransportHero} 
-                folder="homepage" 
+              <ImageUploader
+                label="Transport Section Image"
+                value={transportHero}
+                onChange={setTransportHero}
+                folder="homepage"
+              />
+              <ImageUploader
+                label="Private Designer Section Image"
+                value={journeyCtaImage}
+                onChange={setJourneyCtaImage}
+                folder="homepage"
               />
             </div>
           </div>

@@ -7,7 +7,11 @@ import Link from "next/link";
 const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "94715233845";
 const WA_GREETING = encodeURIComponent("Hi! I'm interested in a trip with Nomadic Ventures. Can you help?");
 
-export function JourneyCTA() {
+export function JourneyCTA({
+  image = "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=2000",
+}: {
+  image?: string;
+}) {
   return (
     <section
       className="relative w-full py-32 px-6 lg:px-20"
@@ -32,7 +36,7 @@ export function JourneyCTA() {
           {/* Background image */}
           <div className="absolute inset-0">
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=2000"
+              src={image}
               alt="Tropical paradise"
               className="w-full h-full object-cover"
             />

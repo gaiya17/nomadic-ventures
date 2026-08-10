@@ -46,11 +46,12 @@ export default async function Page() {
   }));
 
   const settings = await prisma.siteSettings.findMany({
-    where: { key: { in: ["homepage_hero_image", "transport_hero_image"] } }
+    where: { key: { in: ["homepage_hero_image", "transport_hero_image", "journey_cta_image"] } }
   });
-  
+
   const homepageHeroImage = settings.find(s => s.key === "homepage_hero_image")?.value || "https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
   const transportHeroImage = settings.find(s => s.key === "transport_hero_image")?.value || "https://images.unsplash.com/photo-1549424883-93666b3b05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1600";
+  const journeyCtaImage = settings.find(s => s.key === "journey_cta_image")?.value || "https://images.unsplash.com/photo-1746131272871-6058227a3f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=2000";
 
   const dbReviews = await prisma.review.findMany({
     orderBy: { createdAt: "desc" },
@@ -73,7 +74,7 @@ export default async function Page() {
       <LuxuryHero heroImage={homepageHeroImage} />
       <SriLankaExperiences categories={featuredCategories} />
       <SriLankaPackages tours={featuredTours} />
-      <JourneyCTA />
+      <JourneyCTA image={journeyCtaImage} />
       <MaldivesSection />
       <TransportService transportImage={transportHeroImage} />
       <Testimonials featuredReview={featuredReview} standardReviews={standardReviews} />
