@@ -240,36 +240,30 @@ export function FooterClient({
 
         {/* BOTTOM BAR */}
         <div className="pt-8 border-t" style={{ borderColor: "rgba(212,175,55,0.15)" }}>
-          {/* Mobile: compact centered */}
+          {/* Mobile: stacked centered */}
           <div className="md:hidden flex flex-col items-center gap-3 text-center">
-            <div className="text-white/40 flex flex-wrap items-center justify-center gap-x-2 gap-y-1" style={{ fontSize: 13 }}>
-              <span>© {new Date().getFullYear()} Nomadic Ventures.</span>
-              <span className="text-[#d4af37]/40">·</span>
-              <span>Crafted in Colombo &amp; Malé.</span>
-            </div>
-            <div className="flex items-center gap-2 text-[#d4af37]/70" style={{ fontSize: 12, letterSpacing: "0.05em" }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d4af37", boxShadow: "0 0 8px #d4af37" }} />
-              All systems operational
-            </div>
+            <span className="text-white/40" style={{ fontSize: 13 }}>
+              © {new Date().getFullYear()} Nomadic Ventures.
+            </span>
+            <span className="text-white/40" style={{ fontSize: 13 }}>
+              Created by MINDZ IT Solutions
+            </span>
+            <a href="/privacy-policy" className="text-white/50 hover:text-[#d4af37] transition-colors" style={{ fontSize: 13 }}>
+              Privacy Policy
+            </a>
           </div>
 
-          {/* Desktop: full 3-item row */}
+          {/* Desktop: 3-item row */}
           <div className="hidden md:flex items-center justify-between gap-5">
-            <div className="text-white/40 flex flex-wrap items-center gap-x-3 gap-y-1" style={{ fontSize: 13.5 }}>
-              <span>© {new Date().getFullYear()} Nomadic Ventures.</span>
-              <span className="text-[#d4af37]/40">·</span>
-              <span>Crafted in Colombo &amp; Malé.</span>
-            </div>
-            <div className="flex items-center gap-6 text-white/50" style={{ fontSize: 13.5 }}>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Privacy</a>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Terms</a>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Cookies</a>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">Sitemap</a>
-            </div>
-            <div className="flex items-center gap-2 text-[#d4af37]/70" style={{ fontSize: 12.5, letterSpacing: "0.05em" }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d4af37", boxShadow: "0 0 8px #d4af37" }} />
-              All systems operational
-            </div>
+            <span className="text-white/40" style={{ fontSize: 13.5 }}>
+              © {new Date().getFullYear()} Nomadic Ventures.
+            </span>
+            <span className="text-white/40" style={{ fontSize: 13.5 }}>
+              Created by MINDZ IT Solutions
+            </span>
+            <a href="/privacy-policy" className="text-white/50 hover:text-[#d4af37] transition-colors" style={{ fontSize: 13.5 }}>
+              Privacy Policy
+            </a>
           </div>
         </div>
       </div>
