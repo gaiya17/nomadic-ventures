@@ -7,17 +7,14 @@ import {
   Mail,
   Phone,
   MessageCircle,
-  MapPin,
   Calendar,
   Sparkles,
   Plus,
   Minus,
-  Clock,
   Check,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ImageWithFallback } from "@/components/figma/ImageWithFallback";
 import { COUNTRIES } from "@/lib/countries";
 
 const CHANNELS = [
@@ -41,33 +38,6 @@ const CHANNELS = [
     value: "info@nomadicsrilanka.com",
     note: "Reply within 4 hours",
     accent: "#89F3FF",
-  },
-];
-
-const OFFICES = [
-  {
-    city: "Colombo",
-    country: "Sri Lanka",
-    address: "No 6/12, 3rd Lane, Nawala Road, Rajagiriya",
-    hours: "08:00 – 20:00 IST",
-    image:
-      "https://images.unsplash.com/photo-1740812517495-812e90ca01b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
-  },
-  {
-    city: "Malé",
-    country: "Maldives",
-    address: "Boduthakurufaanu Magu, Henveiru, Malé",
-    hours: "09:00 – 18:00 MVT",
-    image:
-      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
-  },
-  {
-    city: "London",
-    country: "United Kingdom",
-    address: "By appointment · Marylebone",
-    hours: "10:00 – 18:00 GMT",
-    image:
-      "https://images.unsplash.com/photo-1672841828271-54340a6fbcd3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
   },
 ];
 
@@ -725,142 +695,6 @@ export default function Page() {
               );
             })}
           </motion.div>
-        </div>
-      </section>
-
-      {/* Offices */}
-      <section className="max-w-[1400px] mx-auto px-8 pb-32">
-        <div className="flex items-end justify-between gap-8 flex-wrap mb-14">
-          <div className="max-w-xl">
-            <div
-              className="flex items-center gap-3 mb-5"
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.4em",
-                color: "#89F3FF",
-              }}
-            >
-              <div
-                style={{
-                  width: 40,
-                  height: 1,
-                  background:
-                    "linear-gradient(90deg, transparent, #89F3FF)",
-                }}
-              />
-              WHERE WE WORK
-            </div>
-            <h2
-              style={{
-                fontFamily: "'Clash Display', sans-serif",
-                fontSize: "clamp(40px, 5vw, 64px)",
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Three studios,{" "}
-              <span
-                style={{
-                  background:
-                    "linear-gradient(120deg, #F4B942, #ffffff, #89F3FF)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontStyle: "italic",
-                }}
-              >
-                one team.
-              </span>
-            </h2>
-          </div>
-        </div>
-
-        <div 
-          className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:grid-cols-3 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-        >
-          {OFFICES.map((office, i) => (
-            <motion.div
-              key={office.city}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: i * 0.08 }}
-              className="group rounded-[24px] overflow-hidden border flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-align-none"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                borderColor: "rgba(255,255,255,0.10)",
-              }}
-            >
-              <div className="relative h-56 overflow-hidden">
-                <ImageWithFallback
-                  src={office.image}
-                  alt={office.city}
-                  className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.06]"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, transparent 40%, rgba(7,18,14,0.85) 100%)",
-                  }}
-                />
-                <div
-                  className="absolute top-4 left-4"
-                  style={{
-                    fontFamily: "'Clash Display', sans-serif",
-                    fontSize: 12,
-                    letterSpacing: "0.3em",
-                    color: "rgba(255,255,255,0.85)",
-                  }}
-                >
-                  0{i + 1}
-                </div>
-                <div className="absolute bottom-5 left-5">
-                  <div
-                    style={{
-                      fontSize: 10,
-                      letterSpacing: "0.3em",
-                      color: "#89F3FF",
-                    }}
-                  >
-                    {office.country.toUpperCase()}
-                  </div>
-                  <div
-                    className="mt-1"
-                    style={{
-                      fontFamily: "'Clash Display', sans-serif",
-                      fontSize: 30,
-                      lineHeight: 1,
-                      color: "white",
-                    }}
-                  >
-                    {office.city}
-                  </div>
-                </div>
-              </div>
-              <div className="p-6">
-                <div
-                  className="flex items-start gap-3 mb-4"
-                  style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}
-                >
-                  <MapPin
-                    className="w-4 h-4 mt-0.5 shrink-0"
-                    style={{ color: "#F4B942" }}
-                  />
-                  {office.address}
-                </div>
-                <div
-                  className="flex items-center gap-3"
-                  style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}
-                >
-                  <Clock
-                    className="w-4 h-4 shrink-0"
-                    style={{ color: "#F4B942" }}
-                  />
-                  {office.hours}
-                </div>
-              </div>
-            </motion.div>
-          ))}
         </div>
       </section>
 
