@@ -247,7 +247,7 @@ export function FooterClient({
               © {new Date().getFullYear()} Nomadic Ventures.
             </span>
             <span className="text-white/40" style={{ fontSize: 13 }}>
-              Created by MINDZ IT Solutions
+              Designed & Developed By MINDZ IT Solutions
             </span>
             <a href="/privacy-policy" className="text-white/50 hover:text-[#d4af37] transition-colors" style={{ fontSize: 13 }}>
               Privacy Policy
@@ -260,7 +260,7 @@ export function FooterClient({
               © {new Date().getFullYear()} Nomadic Ventures.
             </span>
             <span className="text-white/40" style={{ fontSize: 13.5 }}>
-              Created by MINDZ IT Solutions
+              Designed & Developed By MINDZ IT Solutions
             </span>
             <a href="/privacy-policy" className="text-white/50 hover:text-[#d4af37] transition-colors" style={{ fontSize: 13.5 }}>
               Privacy Policy
